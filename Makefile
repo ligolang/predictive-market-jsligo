@@ -1,4 +1,4 @@
-LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:0.51.0
+LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:0.52.0
 PROTOCOL_OPT=--protocol jakarta
 JSON_OPT=--michelson-format json
 
@@ -85,51 +85,51 @@ test: test_oracle test_betting
 
 test_oracle: test_oracle_manager test_oracle_signer test_oracle_pause test_oracle_events
 
-test_oracle_manager: test/oracle/test.manager.mligo
+test_oracle_manager: test/oracle/test.manager.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_oracle_signer: test/oracle/test.signer.mligo
+test_oracle_signer: test/oracle/test.signer.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_oracle_pause: test/oracle/test.pause.mligo
+test_oracle_pause: test/oracle/test.pause.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
 test_oracle_events: test_oracle_event_add test_oracle_event_update test_oracle_event_get
 
-test_oracle_event_add: test/oracle/test.eventAdd.mligo
+test_oracle_event_add: test/oracle/test.eventAdd.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_oracle_event_update: test/oracle/test.eventUpdate.mligo
+test_oracle_event_update: test/oracle/test.eventUpdate.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_oracle_event_get: test/oracle/test.eventGet.mligo
+test_oracle_event_get: test/oracle/test.eventGet.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
 test_betting: test_betting_manager test_betting_oracle test_betting_pause test_betting_events test_betting_bet
 
-test_betting_manager: test/betting/test.manager.mligo
+test_betting_manager: test/betting/test.manager.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_betting_oracle: test/betting/test.oracle.mligo
+test_betting_oracle: test/betting/test.oracle.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_betting_pause: test/betting/test.pause.mligo
+test_betting_pause: test/betting/test.pause.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
 test_betting_events: test_betting_event_add test_betting_event_update test_betting_event_get
 
-test_betting_event_add: test/betting/test.eventAdd.mligo
+test_betting_event_add: test/betting/test.eventAdd.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_betting_event_update: test/betting/test.eventUpdate.mligo
+test_betting_event_update: test/betting/test.eventUpdate.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_betting_event_get: test/betting/test.eventGet.mligo
+test_betting_event_get: test/betting/test.eventGet.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
 test_betting_bet: test_betting_bet_add test_betting_bet_finalize
 
-test_betting_bet_add: test/betting/test.betAdd.mligo
+test_betting_bet_add: test/betting/test.betAdd.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
 test_betting_bet_finalize: test/betting/test.betFinalize.mligo

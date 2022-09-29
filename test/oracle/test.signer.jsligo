@@ -1,0 +1,39 @@
+#import "../../src/contracts/cameligo/oracle/errors.mligo" "Errors"
+#import "helpers/bootstrap.mligo" "Bootstrap"
+#import "helpers/helper.mligo" "Helper"
+#import "helpers/assert.mligo" "Assert"
+#import "../common/log.mligo" "Log"
+
+const _log = Log.describe("[Oracle - ChangeSigner] test suite")
+
+const _test_change_signer_from_manager_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let _ = Assert.signer(oracle_taddress)(jeff);
+
+    let _ = Helper.trsc_change_signer_success(oracle_contract, elon, elon);
+    let _ = Assert.signer(oracle_taddress)(elon);
+    "OK"
+};
+
+const _test_change_signer_from_signer_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let _ = Assert.signer(oracle_taddress)(jeff);
+
+    let _ = Helper.trsc_change_signer_success(oracle_contract, jeff, elon);
+    let _ = Assert.signer(oracle_taddress)(elon);
+    "OK"
+};
+
+const _test_change_signer_from_unauthorized_address_should_not_work = () => {
+    let [oracle_contract, oracle_taddress, _, jeff, alice, _, _] = Bootstrap.bootstrap_oracle();
+    let _ = Assert.signer(oracle_taddress)(jeff);
+
+    let ret = Helper.trsc_change_signer (oracle_contract, alice, alice);
+    let _ = Assert.string_failure(ret)(Errors.not_manager_nor_signer);
+    let _ = Assert.signer(oracle_taddress)(jeff);
+    "OK"
+};
+
+const test_change_signer_from_manager_should_work = _test_change_signer_from_manager_should_work();
+const test_change_signer_from_signer_should_work = _test_change_signer_from_signer_should_work();
+const test_change_signer_from_unauthorized_address_should_not_work = _test_change_signer_from_unauthorized_address_should_not_work();

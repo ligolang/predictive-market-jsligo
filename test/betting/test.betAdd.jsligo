@@ -1,0 +1,91 @@
+#import "../../src/contracts/cameligo/betting/main.mligo" "Betting"
+#import "../../src/contracts/cameligo/betting/types.mligo" "Types"
+#import "helpers/bootstrap.mligo" "Bootstrap"
+#import "helpers/helper.mligo" "Helper"
+#import "helpers/assert.mligo" "Assert"
+#import "helpers/events.mligo" "Events"
+#import "../common/log.mligo" "Log"
+
+const _ = Log.describe("[AddBet] test suite");
+
+const _test_bet_team_one_should_work = () => {
+    let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+    let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
+    let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
+
+    let bet_one_map : big_map<nat, Types.event_bets> = Big_map.literal( list([
+    [0 as nat, {
+        bets_team_one : Map.literal(list([ [alice, 2000000 as mutez] ])),
+        bets_team_one_index : 1 as nat ,
+        bets_team_one_total : 2000000 as mutez ,
+        bets_team_two : (Map.empty as map<address, tez>),
+        bets_team_two_index : 0 as nat ,
+        bets_team_two_total : 0 as mutez
+        }
+        ]
+    ]));
+
+    let _ = Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 2000000 as mutez);
+    let _ = Assert.events_bet_map(betting_taddress)(bet_one_map);
+    "OK"
+
+};
+
+
+const _test_bet_team_both_should_work = () => {
+    let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+    let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
+    let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
+
+    let bet_both_map : big_map<nat, Types.event_bets>  = Big_map.literal(list([
+    [0 as nat, {
+        bets_team_one : Map.literal(list([ [alice, 2000000 as mutez] ])),
+        bets_team_one_index : 1 as nat ,
+        bets_team_one_total : 2000000 as mutez ,
+        bets_team_two : Map.literal(list([ [alice, 4000000 as mutez] ])),
+        bets_team_two_index : 1 as nat ,
+        bets_team_two_total : 4000000 as mutez
+        }
+        ]
+    ]));
+
+    let _ = Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 2000000 as mutez);
+    let _ = Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (false as bool), 4000000 as mutez);
+    let _ = Assert.events_bet_map(betting_taddress)(bet_both_map);
+    "OK"
+
+};
+
+
+const _test_bet_various_entries_should_work = () => {
+    let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+    let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
+    let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
+
+    let bet_last_map : big_map<nat, Types.event_bets> = Big_map.literal(list([
+    [0 as nat, {
+        bets_team_one : Map.literal(list([ [alice, (20000000 as mutez)], [bob, 1000000 as mutez] ])),
+        bets_team_one_index : (1 as nat) + (1 as nat),
+        bets_team_one_total : (20000000 as mutez) + (1000000 as mutez) ,
+        bets_team_two : Map.literal(list([ [alice, (10000000 as mutez)], [mike, 3000000 as mutez], [bob, 7000000 as mutez] ])),
+        bets_team_two_index : (1 as nat) + (1 as nat) + (1 as nat) ,
+        bets_team_two_total : (10000000 as mutez) + (3000000 as mutez) + (7000000 as mutez) 
+        }
+        ]
+    ]));
+
+    let _ = Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), (20000000 as mutez));
+    let _ = Helper.trsc_add_bet_success (betting_contract, bob, 0 as nat, (true as bool), 1000000 as mutez);
+    let _ = Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (false as bool), 10000000 as mutez);
+    let _ = Helper.trsc_add_bet_success (betting_contract, mike, 0 as nat, (false as bool), 3000000 as mutez);
+    let _ = Helper.trsc_add_bet_success (betting_contract, bob, 0 as nat, (false as bool), 7000000 as mutez);
+    let _ = Assert.events_bet_map(betting_taddress)(bet_last_map);
+    "OK"
+};
+
+const test_bet_team_one_should_work = _test_bet_team_one_should_work();
+const test_bet_team_both_should_work = _test_bet_team_both_should_work();
+const test_bet_various_entries_should_work = _test_bet_various_entries_should_work();

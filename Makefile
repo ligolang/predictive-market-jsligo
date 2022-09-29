@@ -132,7 +132,7 @@ test_betting_bet: test_betting_bet_add test_betting_bet_finalize
 test_betting_bet_add: test/betting/test.betAdd.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
-test_betting_bet_finalize: test/betting/test.betFinalize.mligo
+test_betting_bet_finalize: test/betting/test.betFinalize.jsligo
 	@$(LIGO) run test $^ $(PROTOCOL_OPT)
 
 # -------------------------

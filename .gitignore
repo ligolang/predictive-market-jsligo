@@ -1,0 +1,11 @@
+.env
+node_modules
+package-lock.json
+
+*.pyc
+__pycache__
+
+src/compiled/*
+deploy/*.js
+deployments/*
+deploy/node_modules

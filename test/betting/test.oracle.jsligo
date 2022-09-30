@@ -1,4 +1,4 @@
-#import "../../src/contracts/cameligo/betting/errors.mligo" "Errors"
+#import "../../src/contracts/jsligo/betting/errors.jsligo" "Errors"
 #import "helpers/bootstrap.mligo" "Bootstrap"
 #import "helpers/helper.mligo" "Helper"
 #import "helpers/assert.mligo" "Assert"

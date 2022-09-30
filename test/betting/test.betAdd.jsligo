@@ -1,9 +1,11 @@
-#import "../../src/contracts/cameligo/betting/main.mligo" "Betting"
-#import "../../src/contracts/cameligo/betting/types.mligo" "Types"
+
+#import "../../src/contracts/jsligo/betting/main.jsligo" "Betting"
+#import "../../src/contracts/jsligo/betting/types.jsligo" "Types"
 #import "helpers/bootstrap.mligo" "Bootstrap"
 #import "helpers/helper.mligo" "Helper"
 #import "helpers/assert.mligo" "Assert"
 #import "helpers/events.mligo" "Events"
+
 #import "../common/log.jsligo" "Log"
 
 const _ = Log.describe("[AddBet] test suite");

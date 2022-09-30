@@ -1,5 +1,5 @@
-#import "../../../src/contracts/cameligo/betting/main.mligo" "Betting"
-#import "../../../src/contracts/cameligo/betting/types.mligo" "Types"
+#import "../../../src/contracts/jsligo/betting/main.jsligo" "Betting"
+#import "../../../src/contracts/jsligo/betting/types.jsligo" "Types"
 #import "bootstrap.mligo" "Bootstrap"
 #import "assert.mligo" "Assert"
 #import "events.mligo" "Events"

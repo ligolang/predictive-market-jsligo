@@ -1,6 +1,6 @@
-#import "../../../src/contracts/cameligo/betting/callback/main.mligo" "Callback"
-#import "../../../src/contracts/cameligo/betting/main.mligo" "Betting"
-#import "../../../src/contracts/cameligo/betting/types.mligo" "Types"
+#import "../../../src/contracts/jsligo/betting/callback/main.jsligo" "Callback"
+#import "../../../src/contracts/jsligo/betting/main.jsligo" "Betting"
+#import "../../../src/contracts/jsligo/betting/types.jsligo" "Types"
 #import "callback.mligo" "Helper_betting_callback"
 
 let plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" : timestamp)
@@ -34,7 +34,7 @@ let bootstrap () =
   } in
 
   (* Boostrapping BETTING contract *)
-  let betting_path = "src/contracts/cameligo/betting/main.mligo" in
+  let betting_path = "src/contracts/cameligo/betting/main.jsligo" in
   let iBis = Test.run (fun (x : Types.storage) -> x) init_storage in
   let (betting_address, _, _) = Test.originate_from_file betting_path "main" (["getManager"; "getOracleAddress"; "getBettingStatus"; "getEventCreationStatus"; "getEvent"] : string list) iBis 0mutez in
   let betting_taddress = (Test.cast_address betting_address : (Types.action,Types.storage) typed_address) in

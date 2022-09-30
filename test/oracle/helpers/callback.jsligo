@@ -1,4 +1,4 @@
-#import "../../../src/contracts/cameligo/oracle/callback/main.mligo" "Callback"
+#import "../../../src/contracts/jsligo/oracle/callback/main.jsligo" "Callback"
 
 // Some types for readability
 type taddr = typed_address<Callback.parameter, Callback.storage>;

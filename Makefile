@@ -45,35 +45,35 @@ compile_callback_oracle: callback_oracle.tz callback_oracle.json
 
 compile_callback_betting: callback_betting.tz callback_betting.json
 
-oracle.tz: src/contracts/cameligo/oracle/main.mligo
+oracle.tz: src/contracts/jsligo/oracle/main.jsligo
 	@echo "Compiling Oracle smart contract to Michelson..."
 	@$(LIGO) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-oracle.json: src/contracts/cameligo/oracle/main.mligo
+oracle.json: src/contracts/jsligo/oracle/main.jsligo
 	@echo "Compiling Oracle smart contract to Michelson in JSON format..."
 	@$(LIGO) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-betting.tz: src/contracts/cameligo/betting/main.mligo
+betting.tz: src/contracts/jsligo/betting/main.jsligo
 	@echo "Compiling Betting smart contract to Michelson..."
 	@$(LIGO) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-betting.json: src/contracts/cameligo/betting/main.mligo
+betting.json: src/contracts/jsligo/betting/main.jsligo
 	@echo "Compiling Betting smart contract to Michelson in JSON format..."
 	@$(LIGO) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-callback_oracle.tz: src/contracts/cameligo/oracle/callback/main.mligo
+callback_oracle.tz: src/contracts/jsligo/oracle/callback/main.jsligo
 	@echo "Compiling callback_Oracle smart contract to Michelson..."
 	@$(LIGO) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-callback_oracle.json: src/contracts/cameligo/oracle/callback/main.mligo
+callback_oracle.json: src/contracts/jsligo/oracle/callback/main.jsligo
 	@echo "Compiling callback_Oracle smart contract to Michelson in JSON format..."
 	@$(LIGO) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-callback_betting.tz: src/contracts/cameligo/betting/callback/main.mligo
+callback_betting.tz: src/contracts/jsligo/betting/callback/main.jsligo
 	@echo "Compiling callback_Betting smart contract to Michelson..."
 	@$(LIGO) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 
-callback_betting.json: src/contracts/cameligo/betting/callback/main.mligo
+callback_betting.json: src/contracts/jsligo/betting/callback/main.jsligo
 	@echo "Compiling callback_Betting smart contract to Michelson in JSON format..."
 	@$(LIGO) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
 

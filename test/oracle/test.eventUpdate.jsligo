@@ -1,5 +1,5 @@
-#import "../../src/contracts/cameligo/oracle/errors.mligo" "Errors"
-#import "../../src/contracts/cameligo/oracle/types.mligo" "Types"
+#import "../../src/contracts/jsligo/oracle/errors.jsligo" "Errors"
+#import "../../src/contracts/jsligo/oracle/types.jsligo" "Types"
 #import "helpers/bootstrap.jsligo" "Bootstrap"
 #import "helpers/helper.jsligo" "Helper"
 #import "helpers/assert.jsligo" "Assert"

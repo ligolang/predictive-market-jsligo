@@ -1,11 +1,13 @@
-.env
-node_modules
-package-lock.json
+**/.DS_Store
+**/.vscode
 
-*.pyc
-__pycache__
+**/.ligo-project
+**/.ligo-work
+
+**/.env
+node_modules
 
 src/compiled/*
 deploy/*.js
 deployments/*
-deploy/node_modules
+backend/matches*.json

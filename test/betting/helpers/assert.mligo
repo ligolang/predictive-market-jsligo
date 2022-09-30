@@ -1,5 +1,5 @@
-#import "../../../src/contracts/cameligo/betting/types.mligo" "Types"
-#import "../../../src/contracts/cameligo/betting/callback/main.mligo" "Betting_Callback"
+#import "../../../src/contracts/jsligo/betting/types.jsligo" "Types"
+#import "../../../src/contracts/jsligo/betting/callback/main.jsligo" "Betting_Callback"
 
 (* Assert contract result is successful *)
 let tx_success (res: test_exec_result) : unit =

@@ -1,10 +1,10 @@
 
 #import "../../src/contracts/jsligo/betting/main.jsligo" "Betting"
 #import "../../src/contracts/jsligo/betting/types.jsligo" "Types"
-#import "helpers/bootstrap.mligo" "Bootstrap"
-#import "helpers/helper.mligo" "Helper"
-#import "helpers/assert.mligo" "Assert"
-#import "helpers/events.mligo" "Events"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "helpers/events.jsligo" "Events"
 
 #import "../common/log.jsligo" "Log"
 

@@ -1,8 +1,8 @@
 
 #import "../../src/contracts/jsligo/betting/main.jsligo" "Betting"
-#import "helpers/bootstrap.mligo" "Bootstrap"
-#import "helpers/helper.mligo" "Helper"
-#import "helpers/assert.mligo" "Assert"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
 #import "../common/log.jsligo" "Log"
 
 const _ = Log.describe("[Betting - ChangeManager] test suite")

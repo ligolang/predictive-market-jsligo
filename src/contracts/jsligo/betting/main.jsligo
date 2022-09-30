@@ -1,9 +1,9 @@
 // Betting & Predictive Market - CameLIGO contract
 
-#import "types.mligo" "Types"
-#import "errors.mligo" "Errors"
-#import "assert.mligo" "Assert"
-#import "callback/main.mligo" "Betting_Callback"
+#import "types.jsligo" "Types"
+#import "errors.jsligo" "Errors"
+#import "assert.jsligo" "Assert"
+#import "callback/main.jsligo" "Betting_Callback"
 
 
 // --------------------------------------
@@ -13,24 +13,24 @@
 let change_manager (p_new_manager : address)(s : Types.storage) : (operation list * Types.storage) =
   let _ = Assert.is_manager (Tezos.get_sender()) s.manager in
   let _ = Assert.not_previous_manager p_new_manager s.manager in
-  (([] : operation list), {s with manager = p_new_manager})
+  (([] : operation list), {...s, manager = p_new_manager})
 
 let change_oracle_address (p_new_oracle_address : address)(s : Types.storage) : (operation list * Types.storage) =
   let _ = Assert.is_manager (Tezos.get_sender()) s.manager in
   let _ = Assert.not_previous_oracle p_new_oracle_address s.oracle_address in
-  (([] : operation list), {s with oracle_address = p_new_oracle_address})
+  (([] : operation list), {...s, oracle_address = p_new_oracle_address})
 
 let switch_pause_event_creation (s : Types.storage) : (operation list * Types.storage) =
   let _ = Assert.is_manager (Tezos.get_sender()) s.manager in
-  (([] : operation list), {s with bet_config.is_event_creation_paused = (not s.bet_config.is_event_creation_paused)})
+  (([] : operation list), {...s, bet_config.is_event_creation_paused = (not s.bet_config.is_event_creation_paused)})
 
 let switch_pause_betting (s : Types.storage) : (operation list * Types.storage) =
   let _ = Assert.is_manager (Tezos.get_sender()) s.manager in
-  (([] : operation list), {s with bet_config.is_betting_paused = (not s.bet_config.is_betting_paused)})
+  (([] : operation list), {...s, bet_config.is_betting_paused = (not s.bet_config.is_betting_paused)})
 
 let update_config_type (p_new_bet_config : Types.bet_config_type)(s : Types.storage) : (operation list * Types.storage) =
   let _ = Assert.is_manager (Tezos.get_sender()) s.manager in
-  (([] : operation list), {s with bet_config = p_new_bet_config})
+  (([] : operation list), {...s, bet_config = p_new_bet_config})
 
 // --------------------------------------
 //          EVENT INTERACTIONS
@@ -54,24 +54,24 @@ let add_event (p_new_event : Types.add_event_parameter)(s : Types.storage) : (op
     start_bet_time = p_new_event.start_bet_time;
     closed_bet_time = p_new_event.closed_bet_time;
     is_claimed = False } in
-  let new_events : (nat, Types.event_type) big_map = (Big_map.add (s.events_index) new_event s.events) in
+  let new_events : big_map <nat, Types.event_type>  = (Big_map.add (s.events_index) new_event s.events) in
   let new_event_bet : Types.event_bets = {
-    bets_team_one = (Map.empty : (address, tez) map);
+    bets_team_one = (Map.empty : map <address, tez>);
     bets_team_one_index = 0n;
-    bets_team_one_total = 0mutez;
-    bets_team_two = (Map.empty : (address, tez) map);
+    bets_team_one_total = (0 as mutez);
+    bets_team_two = (Map.empty : map <address, tez>);
     bets_team_two_index = 0n;
-    bets_team_two_total = 0mutez;
+    bets_team_two_total = (0 as mutez);
   } in
-  let new_events_bets : (nat, Types.event_bets) big_map = (Big_map.add (s.events_index) new_event_bet s.events_bets) in
-  (([] : operation list), {s with events = new_events; events_bets = new_events_bets; events_index = (s.events_index + 1n)})
+  let new_events_bets : big_map <nat, Types.event_bets> = (Big_map.add (s.events_index) new_event_bet s.events_bets) in
+  (([] : operation list), {...s, events = new_events; events_bets = new_events_bets; events_index = (s.events_index + 1n)})
 
 let get_event (requested_event_id : nat)(callbackAddr : address)(s : Types.storage) : (operation list * Types.storage) =
-  let cbk_event = match Big_map.find_opt requested_event_id s.events with
+  let cbk_event = match Big_map.find_opt requested_event_id s.event...s,
     | Some event -> event
     | None -> (failwith Errors.no_event_id)
     in
-  let cbk_eventbet = match Big_map.find_opt requested_event_id s.events_bets with
+  let cbk_eventbet = match Big_map.find_opt requested_event_id s.events_bet...s,
     | Some eventbet -> eventbet
     | None -> (failwith Errors.no_event_id)
     in
@@ -97,7 +97,7 @@ let get_event (requested_event_id : nat)(callbackAddr : address)(s : Types.stora
     | None -> failwith("Unknown contract")
     | Some ctr -> ctr
   in
-  let op : operation = Tezos.transaction payload 0mutez destination in
+  let op : operation = Tezos.transaction payload (0 as mutez) destination in
   ([op], s)
 
 
@@ -107,13 +107,13 @@ let update_event (updated_event_id : nat)(updated_event : Types.event_type)(s : 
   let _ = Assert.event_bet_start_to_end_date updated_event.start_bet_time updated_event.closed_bet_time in
   let _ = Assert.event_bet_start_after_end updated_event.start_bet_time updated_event.end_at in
   let _ = Assert.event_bet_ends_after_end updated_event.closed_bet_time updated_event.end_at in
-  let requested_event = match Big_map.find_opt updated_event_id s.events with
+  let requested_event = match Big_map.find_opt updated_event_id s.event...s,
     | Some event -> event
     | None -> (failwith Errors.no_event_id)
   in
   let _ = Assert.betting_not_finalized (requested_event.game_status) in
   let new_events : (nat, Types.event_type) big_map = Big_map.update updated_event_id (Some(updated_event)) s.events in
-  (([] : operation list), {s with events = new_events})
+  (([] : operation list), {...s, events = new_events})
 
 // --------------------------------------
 //         BETTING INTERACTIONS
@@ -181,7 +181,7 @@ let add_bet (p_requested_event_id : nat)(team_one_bet : bool)(s : Types.storage)
     else ( let uEvent : Types.event_bets = add_bet_team_two requested_event_bets in (uEvent) )
   in
   let new_events_map : (nat, Types.event_bets) big_map = (Big_map.update p_requested_event_id (Some(updated_bet_event)) s.events_bets) in
-  (([] : operation list), {s with events_bets = new_events_map;})
+  (([] : operation list), {...s, events_bets = new_events_map;})
 
 let make_transfer_op (addr : address ) ( value_won : tez ) (profit_quota : nat): operation =
   let quota_to_send : nat = abs(100n - profit_quota) in
@@ -215,7 +215,7 @@ let refund_bet (event_bets : Types.event_bets) (profit_quota : nat) : operation 
   total_refund
 
 let resolve_team_win (event_bets : Types.event_bets) (is_team_one_win : bool) (profit_quota : nat) : operation list =
-  if (event_bets.bets_team_one_total = 0mutez or event_bets.bets_team_two_total = 0mutez)
+  if (event_bets.bets_team_one_total = (0 as mutez) or event_bets.bets_team_two_total = (0 as mutez))
   then refund_bet event_bets 0n
   else if (is_team_one_win)
     then
@@ -238,20 +238,20 @@ let finalize_bet (p_requested_event_id : nat)(s : Types.storage) : (operation li
   let _ = Assert.finalizing_before_period_end (requested_event.end_at) in
   let profit_quota : nat = s.bet_config.retained_profit_quota in
   let modified_events = Big_map.update p_requested_event_id (Some({ requested_event with is_claimed = True })) s.events in
-  let op_list : operation list = match requested_event.game_status with 
+  let op_list : operation list = match requested_event.game_statu...s, 
     | Ongoing  -> failwith Errors.bet_no_team_outcome
     | Team1Win -> resolve_team_win event_bets true  profit_quota
     | Team2Win -> resolve_team_win event_bets false profit_quota
     | Draw     -> refund_bet event_bets profit_quota
   in
-  ((op_list : operation list), { s with events = modified_events })
+  ((op_list : operation list), { ...s, events = modified_events })
 
 // --------------------------------------
 //            MAIN FUNCTION
 // --------------------------------------
 
 let main (params, s : Types.action * Types.storage) : (operation list * Types.storage) =
-  let result = match params with
+  let result = match param...s,
     | ChangeManager m -> change_manager m s
     | ChangeOracleAddress o -> change_oracle_address o s
     | SwitchPauseBetting -> switch_pause_betting s

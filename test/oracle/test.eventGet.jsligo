@@ -1,8 +1,8 @@
-#import "../../src/contracts/cameligo/oracle/errors.mligo" "Errors"
-#import "helpers/bootstrap.mligo" "Bootstrap"
-#import "helpers/helper.mligo" "Helper"
-#import "helpers/assert.mligo" "Assert"
-#import "../common/log.mligo" "Log"
+#import "../../src/contracts/cameligo/oracle/errors.jsligo" "Errors"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "../common/log.jsligo" "Log"
 
 const _ = Log.describe("[Oracle - EventGet] test suite");
 

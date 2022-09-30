@@ -1,5 +1,5 @@
-#import "../../../src/contracts/cameligo/oracle/types.mligo" "Types"
-#import "../../../src/contracts/cameligo/oracle/callback/main.mligo" "Callback"
+#import "../../../src/contracts/cameligo/oracle/types.jsligo" "Types"
+#import "../../../src/contracts/cameligo/oracle/callback/main.jsligo" "Callback"
 
 (* Assert contract result is successful *)
 let tx_success (res: test_exec_result) : unit =

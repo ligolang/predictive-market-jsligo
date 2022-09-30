@@ -1,8 +1,8 @@
-#import "../../../src/contracts/cameligo/betting/main.mligo" "Betting"
-#import "../../../src/contracts/cameligo/betting/types.mligo" "Types"
-#import "bootstrap.mligo" "Bootstrap"
-#import "assert.mligo" "Assert"
-#import "events.mligo" "Events"
+#import "../../../src/contracts/cameligo/betting/main.jsligo" "Betting"
+#import "../../../src/contracts/cameligo/betting/types.jsligo" "Types"
+#import "bootstrap.jsligo" "Bootstrap"
+#import "assert.jsligo" "Assert"
+#import "events.jsligo" "Events"
 
 //  VARIABLES
 

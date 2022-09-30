@@ -1,6 +1,6 @@
-#import "../../../src/contracts/cameligo/oracle/types.mligo" "Types"
-#import "../../../src/contracts/cameligo/oracle/callback/main.mligo" "Callback"
-#import "callback.mligo" "Helper_Callback"
+#import "../../../src/contracts/cameligo/oracle/types.jsligo" "Types"
+#import "../../../src/contracts/cameligo/oracle/callback/main.jsligo" "Callback"
+#import "callback.jsligo" "Helper_Callback"
 
 let plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" : timestamp)
 
@@ -48,7 +48,7 @@ let bootstrap_oracle () =
     } in
 
     (* Boostrapping Oracle contract *)
-    let oracle_path = "src/contracts/cameligo/oracle/main.mligo" in
+    let oracle_path = "src/contracts/cameligo/oracle/main.jsligo" in
     let iBis = Test.run (fun (x : Types.storage) -> x) init_storage in
     let (oracle_address, _, _) = Test.originate_from_file oracle_path "main" (["getManager"; "getSigner"; "getStatus"; "getEvent"] : string list) iBis 0mutez in
     let oracle_taddress = (Test.cast_address oracle_address : (Types.action,Types.storage) typed_address) in

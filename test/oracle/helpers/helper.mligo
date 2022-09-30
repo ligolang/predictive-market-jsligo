@@ -1,6 +1,6 @@
-#import "../../../src/contracts/cameligo/oracle/types.mligo" "Types"
-#import "bootstrap.mligo" "Bootstrap"
-#import "assert.mligo" "Assert"
+#import "../../../src/contracts/cameligo/oracle/types.jsligo" "Types"
+#import "bootstrap.jsligo" "Bootstrap"
+#import "assert.jsligo" "Assert"
 
 //  VARIABLES
 

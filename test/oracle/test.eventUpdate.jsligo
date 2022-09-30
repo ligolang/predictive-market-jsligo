@@ -1,9 +1,9 @@
-#import "../../src/contracts/cameligo/oracle/errors.mligo" "Errors"
-#import "../../src/contracts/cameligo/oracle/types.mligo" "Types"
-#import "helpers/bootstrap.mligo" "Bootstrap"
-#import "helpers/helper.mligo" "Helper"
-#import "helpers/assert.mligo" "Assert"
-#import "../common/log.mligo" "Log"
+#import "../../src/contracts/cameligo/oracle/errors.jsligo" "Errors"
+#import "../../src/contracts/cameligo/oracle/types.jsligo" "Types"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "../common/log.jsligo" "Log"
 
 const _ = Log.describe("[Oracle - EventUpdate] test suite")
 

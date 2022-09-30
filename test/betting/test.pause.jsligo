@@ -1,8 +1,8 @@
-#import "../../src/contracts/cameligo/betting/main.mligo" "Betting"
-#import "helpers/bootstrap.mligo" "Bootstrap"
-#import "helpers/helper.mligo" "Helper"
-#import "helpers/assert.mligo" "Assert"
-#import "../common/log.mligo" "Log"
+#import "../../src/contracts/cameligo/betting/main.jsligo" "Betting"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "../common/log.jsligo" "Log"
 
 let _ = Log.describe("[Betting - SwitchPause] test suite")
 

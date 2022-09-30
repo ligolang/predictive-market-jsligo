@@ -1,4 +1,4 @@
-#import "../../../src/contracts/cameligo/betting/types.mligo" "Types"
+#import "../../../src/contracts/cameligo/betting/types.jsligo" "Types"
 
 let plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" : timestamp)
 

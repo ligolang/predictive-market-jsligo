@@ -2,7 +2,7 @@
 #import "helpers/bootstrap.mligo" "Bootstrap"
 #import "helpers/helper.mligo" "Helper"
 #import "helpers/assert.mligo" "Assert"
-#import "../common/log.mligo" "Log"
+#import "../common/log.jsligo" "Log"
 
 const _ = Log.describe("[Betting - ChangeManager] test suite")
 

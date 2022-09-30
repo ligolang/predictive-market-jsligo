@@ -3,9 +3,9 @@
 #import "helpers/helper.mligo" "Helper"
 #import "helpers/assert.mligo" "Assert"
 #import "helpers/events.mligo" "Events"
-#import "../common/log.mligo" "Log"
+#import "../common/log.jsligo" "Log"
 
-let _ = Log.describe("[Betting - FinalizeBet] test suite");
+const _ = Log.describe("[Betting - FinalizeBet] test suite");
 
 // Basic Win Reward Test
 
@@ -76,7 +76,7 @@ const _test_win_weighted_team1_should_work = () => {
   //  Some: (b: tez) => b,
   //  None: ()   => failwith("Weighted Win Reward Test Fails")
   //]));
-  let bob_bal_error : tez =Option.unopt(expected_bob_balance - Test.get_balance(bob));
+  let bob_bal_error : tez = Option.unopt(expected_bob_balance - Test.get_balance(bob));
   //let bob_bal_error : tez = match() (expected_bob_balance - Test.get_balance(bob)), list([
   //  Some: (b: tez) => b,
   //  None: ()   => failwith("Weighted Win Reward Test Fails")

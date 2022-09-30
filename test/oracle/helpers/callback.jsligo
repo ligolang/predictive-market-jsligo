@@ -1,0 +1,39 @@
+#import "../../../src/contracts/cameligo/oracle/callback/main.mligo" "Callback"
+
+// Some types for readability
+type taddr = typed_address<Callback.parameter, Callback.storage>;
+type contr = contract<Callback.parameter>; 
+type originated = {
+    addr: address,
+    taddr: taddr,
+    contr: contr,
+}
+
+const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
+
+type game_status = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+
+// Base Callback storage
+const base_storage : Callback.storage = {
+    name : "",
+    videogame : "",
+    begin_at : plain_timestamp + 2000,
+    end_at : plain_timestamp + 4000,
+    modified_at : plain_timestamp,
+    opponents : { team_one : "", team_two : ""},
+    game_status : Ongoing(),
+    metadata : (Map.empty as map<string, bytes>)
+}
+
+const originate_from_file = (initial_storage : Callback.storage) : originated => {
+    let oracle_path = "../../../src/contracts/cameligo/oracle/callback/main.mligo";
+    let iTres = Test.run( (x : Callback.storage) => x, initial_storage);
+    let [callback_addr, _, _] = Test.originate_from_file(oracle_path, "main", (list([]) as list<string>), iTres, 0 as mutez);
+    let callback_taddress = (Test.cast_address(callback_addr) as taddr);
+    let callback_contract = Test.to_contract(callback_taddress);
+    return {
+        contr : callback_contract,
+        taddr : callback_taddress,
+        addr : callback_addr,
+    }
+};

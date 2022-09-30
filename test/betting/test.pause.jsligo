@@ -2,9 +2,9 @@
 #import "helpers/bootstrap.mligo" "Bootstrap"
 #import "helpers/helper.mligo" "Helper"
 #import "helpers/assert.mligo" "Assert"
-#import "../common/log.mligo" "Log"
+#import "../common/log.jsligo" "Log"
 
-let _ = Log.describe("[Betting - SwitchPause] test suite")
+const _ = Log.describe("[Betting - SwitchPause] test suite")
 
 
 const _test_success_switch_pause_by_manager = () => {

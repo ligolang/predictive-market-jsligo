@@ -60,14 +60,14 @@ const bettingNotPaused = (p_betting_paused : bool) => {
 const bettingNotFinalized = (p : Types.gameStatus) => 
   match (p , {
     Ongoing : (c) => c,
-    Team1Win : _ => {return failwith(Errors.bet_finished)},
-    Team2Win : _ => {return failwith(Errors.bet_finished)},
-    Draw : _ => {return failwith(Errors.bet_finished)}
+    Team1Win : () => {return failwith(Errors.bet_finished)},
+    Team2Win : () => {return failwith(Errors.bet_finished)},
+    Draw : () => {return failwith(Errors.bet_finished)}
   });
 
 const bettingFinalized = (p : Types.gameStatus) => 
   match (p , {
-    Ongoing : _ => {return failwith(Errors.bet_finished)},
+    Ongoing : () => {return failwith(Errors.bet_finished)},
     Team1Win : (c) => c,
     Team2Win : (c) => c,
     Draw : (c) => c

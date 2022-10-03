@@ -31,7 +31,7 @@ const _test_add_event_unauthorized_should_not_work = () => {
     let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
     // Adding an Event from unauthorized address
     let result = Helper.trsc_add_event (betting_contract, alice, Events.eventype_to_addeventparam(Events.primary_event));
-    let _ = Assert.string_failure(result)(Errors.not_manager_nor_oracle); 
+    let _ = Assert.string_failure(result, Errors.not_manager_nor_oracle); 
     let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
     "OK"
 };

@@ -8,22 +8,22 @@ const primary_event : Types.event_type =
     {
         name : "First Event",
         videogame : "Videogame ONE",
-        begin_at : plain_timestamp,
-        end_at : plain_timestamp + 4096,
-        modified_at : plain_timestamp,
-        opponents : { team_one : "Team ONE", team_two : "Team TWO"},
-        game_status : Ongoing()
+        beginAt : plain_timestamp,
+        endAt : plain_timestamp + 4096,
+        modifiedAt : plain_timestamp,
+        opponents : {teamOne : "Team ONE", teamTwo : "Team TWO"},
+        gameStatus : Ongoing()
     };
 
 const secondary_event : Types.event_type =
     {
         name : "Secondary Event",
         videogame : "Videogame TWO",
-        begin_at : plain_timestamp,
-        end_at : plain_timestamp + 4096,
-        modified_at : plain_timestamp,
-        opponents : { team_one : "Team THREE", team_two : "Team FOUR"},
-        game_status : Ongoing()
+        beginAt : plain_timestamp,
+        endAt : plain_timestamp + 4096,
+        modifiedAt : plain_timestamp,
+        opponents : {teamOne : "Team THREE", teamTwo : "Team FOUR"},
+        gameStatus : Ongoing()
     };
 
 const bootstrap_oracle = () => {
@@ -36,21 +36,20 @@ const bootstrap_oracle = () => {
     let bob: address = Test.nth_bootstrap_account(4);
     let james: address = Test.nth_bootstrap_account(5);
 
-
     // Boostrapping storage
     let init_storage : Types.storage = {
         isPaused : false,
         manager : elon,
         signer : jeff,
         events : (Map.empty as map<nat, Types.event_type>),
-        events_index : 0 as nat,
+        eventsIndex : 0 as nat,
         metadata : (Map.empty as map<string, bytes>)
     };
 
     // Boostrapping Oracle contract 
     let oracle_path = "src/contracts/jsligo/oracle/main.jsligo";
     let iBis = Test.run( (x : Types.storage) => x, init_storage);
-    let [oracle_address, _, _] = Test.originate_from_file(oracle_path, "main", (list(["getManager", "getSigner", "getStatus", "getEvent"]) as list<string>), iBis, 0 as mutez);
+    let [oracle_address, _, _] = Test.originate_from_file(oracle_path, "main", (list(["getManager", "getSigner", "getStatus"]) as list<string>), iBis, 0 as mutez);
     let oracle_taddress = (Test.cast_address(oracle_address) as typed_address<Types.action,Types.storage>);
     let oracle_contract = Test.to_contract(oracle_taddress);
     

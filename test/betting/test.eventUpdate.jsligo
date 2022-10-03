@@ -36,7 +36,7 @@ const _test_update_event_from_unauthorized_address_should_not_work = () => {
     let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     // Updating the first Event from unauthorized address
     let result = Helper.trsc_update_event (betting_contract, alice, 0 as nat, Events.secondary_event);
-    let _ = Assert.string_failure(result)(Errors.not_manager_nor_oracle);
+    let _ = Assert.string_failure(result, Errors.not_manager_nor_oracle);
     let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
     "OK"
 };

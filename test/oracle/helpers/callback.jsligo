@@ -11,22 +11,22 @@ type originated = {
 
 const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
 
-type game_status = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
 // Base Callback storage
 const base_storage : Callback.storage = {
     name : "",
     videogame : "",
-    begin_at : plain_timestamp + 2000,
-    end_at : plain_timestamp + 4000,
-    modified_at : plain_timestamp,
-    opponents : { team_one : "", team_two : ""},
-    game_status : Ongoing(),
+    beginAt : plain_timestamp + 2000,
+    endAt : plain_timestamp + 4000,
+    modifiedAt : plain_timestamp,
+    opponents : { teamOne : "", teamTwo : ""},
+    gameStatus : Ongoing(),
     metadata : (Map.empty as map<string, bytes>)
 }
 
 const originate_from_file = (initial_storage : Callback.storage) : originated => {
-    let oracle_path = "../../../src/contracts/cameligo/oracle/callback/main.mligo";
+    let oracle_path = "../../../src/contracts/jsligo/oracle/callback/main.jsligo";
     let iTres = Test.run( (x : Callback.storage) => x, initial_storage);
     let [callback_addr, _, _] = Test.originate_from_file(oracle_path, "main", (list([]) as list<string>), iTres, 0 as mutez);
     let callback_taddress = (Test.cast_address(callback_addr) as taddr);

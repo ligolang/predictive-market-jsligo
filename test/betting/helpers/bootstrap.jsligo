@@ -18,8 +18,8 @@ const bootstrap = () => {
   let init_bet_config : Types.bet_config_type = {
     is_betting_paused       : false,
     is_event_creation_paused : false,
-    min_bet_amount          : 1tez,
-    retained_profit_quota   : 10n
+    min_bet_amount          : (1000000 as mutez),
+    retained_profit_quota   : (10 as nat)
   };
   
   // Boostrapping storage
@@ -29,14 +29,14 @@ const bootstrap = () => {
     bet_config     : init_bet_config,
     events        : (Big_map.empty as big_map<nat, Types.event_type>),
     events_bets   : (Big_map.empty as big_map<nat, Types.event_bets>),
-    events_index  : 0n,
+    eventsIndex  : (0 as nat),
     metadata      : (Map.empty as map<string, bytes>)
   };
 
   // Boostrapping BETTING contract 
   let betting_path = "src/contracts/jsligo/betting/main.jsligo";
   let iBis = Test.run( (x : Types.storage) => x, init_storage);
-  let [betting_address, _, _] = Test.originate_from_file(betting_path, "main", (list(["getManager"; "getOracleAddress"; "getBettingStatus"; "getEventCreationStatus"; "getEvent"]) : list<string>), iBis, 0 as mutez);
+  let [betting_address, _, _] = Test.originate_from_file(betting_path, "main", list(["getManager", "getOracleAddress", "getBettingStatus", "getEventCreationStatus", "retrieveEvent"]), iBis, 0 as mutez);
   let betting_taddress = (Test.cast_address(betting_address) as typed_address<Types.action,Types.storage> );
   let betting_contract = Test.to_contract (betting_taddress);
   

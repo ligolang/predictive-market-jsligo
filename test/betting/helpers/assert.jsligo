@@ -1,18 +1,18 @@
 #import "../../../src/contracts/jsligo/betting/types.jsligo" "Types"
-#import "../../../src/contracts/jsligo/betting/callback/main.jsligo" "Betting_Callback"
+#import "../../../src/contracts/jsligo/betting/callback/main.jsligo" "Callback"
 
 // Assert contract call results; failwith with given string
-const string_failure = ([res, p_expected]: [test_exec_result, string]) : unit => {
+const string_failure = ([res, p_expected] : [test_exec_result, string]) : unit => {
   let expected = Test.eval (p_expected) ;
   match (res, {
     Fail: (x: test_exec_error) => (
       match (x, {
-        Rejected: (x:[michelson_code,address]) => assert (Test.michelson_equal (x[0], expected)),
-        Balance_too_low: (_: { contract_too_low : address , contract_balance : tez , spend_request : tez }) => Test.failwith ("contract failed for an unknown reason"),
-        Other: (_:string) => Test.failwith ("contract failed for an unknown reason")
+        Rejected : (x : [michelson_code, address]) => assert (Test.michelson_equal (x[0], expected)),
+        Balance_too_low : (_: {contract_too_low : address, contract_balance : tez, spend_request : tez}) => Test.failwith ("contract failed for an unknown reason"),
+        Other : (_ : string) => Test.failwith ("contract failed for an unknown reason")
       })),
     Success: (_:nat) => Test.failwith ("bad price check")
-  } );
+  } )
 } ;
 
 // Assert contract result is successful
@@ -29,10 +29,11 @@ let balance = ([p_address, expected] : [address, tez]) : unit => {
 };
 
 // Assert Manager parameter with expected result 
-let manager = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, address]) : unit => {
+let manager = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : address) : unit => {
     let ctr_storage : Types.storage = Test.get_storage(ctr_taddr);
     let ctr_value : address = (ctr_storage.manager);
     assert (ctr_value == expected)
+};
 
 // Assert Oracle Address parameter with expected result 
 let oracle = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, address]) : unit => {
@@ -58,7 +59,7 @@ let is_event_creation_paused = ([ctr_taddr, expected] : [typed_address<Types.act
 // Assert Events Map parameter with expected result 
 let events_map = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, big_map<nat, Types.event_type>] ) : unit => {
     let ctr_storage = Test.get_storage(ctr_taddr);
-    let ctr_value : (nat, Types.event_type) big_map = (ctr_storage.events);
+    let ctr_value : big_map <nat, Types.event_type> = ctr_storage.events;
     assert (ctr_value == expected)
 };
 
@@ -69,14 +70,14 @@ let events_bet_map = ([ctr_taddr, expected] : [typed_address<Types.action, Types
     assert (ctr_value == expected)
 };
 
-let event = ([taddr, expected_event] : [typed_address<Betting_Callback.parameter, Betting_Callback.storage>, Types.event_type]) : unit => {
+let event = ([taddr, expected_event] : [typed_address<Callback.parameter, Callback.storage>, Types.event_type]) : unit => {
     let storage = Test.get_storage(taddr);
     let _ = assert(storage.name == expected_event.name);
     let _ = assert(storage.videogame == expected_event.videogame);
-    let _ = assert(storage.begin_at == expected_event.begin_at);
-    let _ = assert(storage.end_at == expected_event.end_at);
-    let _ = assert(storage.modified_at == expected_event.modified_at);
+    let _ = assert(storage.beginAt == expected_event.beginAt);
+    let _ = assert(storage.endAt == expected_event.endAt);
+    let _ = assert(storage.modifiedAt == expected_event.modifiedAt);
     let _ = assert(storage.opponents == expected_event.opponents);
-    let _ = assert(storage.game_status == expected_event.game_status);
-    ()
+    let _ = assert(storage.gameStatus == expected_event.gameStatus);
+    return unit
 };

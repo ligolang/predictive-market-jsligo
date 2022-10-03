@@ -1,4 +1,4 @@
-LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:0.52.0
+LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:0.51.0
 PROTOCOL_OPT=--protocol kathmandu
 JSON_OPT=--michelson-format json
 

@@ -58,9 +58,9 @@ const event = ([taddr, expected_event] : [taddrCallback, Types.event_type]) : un
     let storage = Test.get_storage(taddr);
     let _ = assert(storage.name == expected_event.name);
     let _ = assert(storage.videogame == expected_event.videogame);
-    let _ = assert(storage.begin_at == expected_event.begin_at);
-    let _ = assert(storage.end_at == expected_event.end_at);
-    let _ = assert(storage.modified_at == expected_event.modified_at);
+    let _ = assert(storage.beginAt == expected_event.beginAt);
+    let _ = assert(storage.endAt == expected_event.endAt);
+    let _ = assert(storage.modifiedAt == expected_event.modifiedAt);
     let _ = assert(storage.opponents == expected_event.opponents);
-    let _ = assert(storage.game_status == expected_event.game_status);
+    let _ = assert(storage.gameStatus == expected_event.gameStatus);
 };

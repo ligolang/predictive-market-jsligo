@@ -43,7 +43,7 @@ const _test_callback_contract_no_event_should_not_work = () => {
     let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
     
     let ret = Helper.trsc_get_event (betting_contract, elon, originated_betting_callback.addr, 3 as nat);
-    let _ = Assert.string_failure(ret)(Errors.no_event_id);
+    let _ = Assert.string_failure(ret, Errors.no_event_id);
     "OK"
 };
 

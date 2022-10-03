@@ -210,7 +210,7 @@ const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) :
 
 const compose_payment = ( winner_map : map <address, tez>, total_value_bet : tez, total_value_won : tez, profit_quota : nat) : list<operation> => {
   //TODO
-  let folded_op_list = ([op_list, [address, bet_amount]] : [list<operation>, [address, tez]]) => {
+  let folded_op_list = (op_list : list<operation>, [address, bet_amount] : [address, tez] ) => {
     let won_reward_percentage : nat = (10000000 as nat) * bet_amount / total_value_bet;
     let added_reward : tez =  total_value_won * won_reward_percentage / (10000000 as nat);
     let reward_to_distribute : tez = bet_amount + added_reward;
@@ -220,10 +220,10 @@ const compose_payment = ( winner_map : map <address, tez>, total_value_bet : tez
   let empty_op_list : list<operation> = list([]);
   Map.fold(folded_op_list, winner_map, empty_op_list)
   };
-  
+
 const refund_bet = (event_bets : Types.event_bets, profit_quota : nat) : list<operation> => {
   //TODO
-  let folded_op_list = ([op_list, [address, bet_amount]] : [list<operation>, [address, tez]] ) => {
+  let folded_op_list = (op_list : list<operation>, [address, bet_amount] : [address, tez] ) => {
     let refund_op : operation = make_transfer_op(address, bet_amount, profit_quota);
     list([refund_op, ...op_list])
   };
@@ -267,10 +267,10 @@ const finalize_bet = (p_requestedEventId : nat, s : Types.storage) : Types.retur
   let profit_quota : nat = s.bet_config.retained_profit_quota;
   let modified_events = Big_map.update(p_requestedEventId, (Some({...requested_event, is_claimed : true })), s.events);
   let op_list : list<operation> = match(requested_event.gameStatus, { 
-    Ongoing  : _ => {return failwith(Errors.bet_no_team_outcome)},
-    Team1Win : _ => resolve_team_win(event_bets, true, profit_quota),
-    Team2Win : _ => resolve_team_win(event_bets, false, profit_quota),
-    Draw     : _ => refund_bet(event_bets, profit_quota)
+    Ongoing  : () => {return failwith(Errors.bet_no_team_outcome)},
+    Team1Win : () => resolve_team_win(event_bets, true, profit_quota),
+    Team2Win : () => resolve_team_win(event_bets, false, profit_quota),
+    Draw     : () => refund_bet(event_bets, profit_quota)
   });
   [op_list, {...s, events : modified_events}]
 };
@@ -279,8 +279,8 @@ const main = (params : Types.action, s : Types.storage) : Types.return_ =>
   match(params, {
     ChangeManager : m => changeManager(m, s),
     ChangeOracleAddress : o => changeOracleAddress(o, s),
-    SwitchPauseBetting : _ => switchPauseBetting(s),
-    SwitchPauseEventCreation : _ => switchPauseEventCreation(s),
+    SwitchPauseBetting : () => switchPauseBetting(s),
+    SwitchPauseEventCreation : () => switchPauseEventCreation(s),
     UpdateConfigType : c => updateConfigType(c, s),
     AddEvent : e => addEvent(e, s),
     GetEvent : p => getEvent(p.requestedEventId, p.callback, s),

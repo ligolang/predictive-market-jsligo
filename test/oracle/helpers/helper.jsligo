@@ -65,8 +65,8 @@ const trsc_update_event = ([contr, from, event_num, event] : [contract<Types.act
     let _= Test.set_source (from);
     let updateEventParam : Types.update_event_parameter =
     {
-        updated_event_id : event_num,
-        updated_event : event
+        updatedEventId : event_num,
+        updatedEvent : event
     };
    
     let result : test_exec_result = Test.transfer_to_contract(contr, (UpdateEvent (updateEventParam)), 0 as mutez);
@@ -81,7 +81,7 @@ const trsc_get_event = ([contr, from, cbk_addr, event_num] : [contract<Types.act
     let _= Test.set_source (from);
     let callbackParameter : Types.callback_asked_parameter =
     {
-        requested_event_id : event_num,
+        requestedEventId : event_num,
         callback : cbk_addr
     };
     let result_cbk = Test.transfer_to_contract(contr, (GetEvent (callbackParameter)), 0 as mutez);

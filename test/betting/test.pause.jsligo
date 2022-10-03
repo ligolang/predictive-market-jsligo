@@ -25,7 +25,7 @@ const _test_failure_switch_pause_unauthorized = () => {
     let _ = Assert.is_betting_paused(betting_taddress)(false);
 
     let result = Helper.trsc_switch_pauseBetting (betting_contract, jeff);
-    let _ = Assert.string_failure(result)(Betting.Errors.not_manager);
+    let _ = Assert.string_failure(result, Betting.Errors.not_manager);
     let _ = Assert.is_betting_paused(betting_taddress)(false);
     "OK"
 };
@@ -41,7 +41,7 @@ const _test_switch_pause_event_creation = () => {
     let _ = Assert.is_event_creation_paused(betting_taddress)(false);
 
     let ret = Helper.trsc_switch_pauseEventCreation (betting_contract, jeff);
-    let _ = Assert.string_failure(ret)(Betting.Errors.not_manager);
+    let _ = Assert.string_failure(ret, Betting.Errors.not_manager);
     let _ = Assert.is_event_creation_paused(betting_taddress)(false);
     "OK"
 };

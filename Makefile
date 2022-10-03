@@ -29,7 +29,7 @@ clean:
 	@echo "Removing Michelson files..."
 	@rm -f src/compiled/*.tz src/compiled/*.json
 	@echo "Removing JS deploy files..."
-	@rm -f src/deploy/*.js
+	@rm -f deploy/*.js
 
 # -------------------------
 # 		LIGO SECTION
@@ -169,7 +169,7 @@ deploy_callback_betting:
 # -------------------------
 
 flextesa-start:
-	@./src/deploy/run-flextesa.sh
+	@./deploy/run-flextesa.sh
 
 flextesa-stop:
 	@docker stop flextesa

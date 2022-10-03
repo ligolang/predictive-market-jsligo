@@ -2,7 +2,7 @@ import { char2Bytes } from "@taquito/utils";
 import { InMemorySigner } from '@taquito/signer';
 import { TezosToolkit, MichelsonMap } from '@taquito/taquito';
 import * as dotenv from 'dotenv'
-import compiled from '../compiled/callback_betting.json';
+import compiled from '../src/compiled/callback_betting.json';
 import metadataJson from "./metadata/metadata_callback_betting.json";
 
 dotenv.config(({ path: __dirname + '/.env' }))

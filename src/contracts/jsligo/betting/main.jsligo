@@ -66,12 +66,12 @@ const getEvent = (requestedEventId : nat, callbackAddr : address, s : Types.stor
   //TODO
   let cbk_event = match((Big_map.find_opt(requestedEventId, s.events)), {
     Some: event => event,
-    None: () => (failwith(Errors.no_event_id))
-   });
+    None: () => {return failwith(Errors.no_event_id)}
+  });
   let cbk_eventbet = match((Big_map.find_opt(requestedEventId, s.events_bets)), {
     Some: eventbet => eventbet,
-    None: ()  => (failwith(Errors.no_event_id))
-   });
+    None: ()  => {return failwith(Errors.no_event_id)}
+  });
   let payload : Callback.requested_event_param = {
     name : cbk_event.name,
     videogame : cbk_event.videogame,
@@ -92,7 +92,7 @@ const getEvent = (requestedEventId : nat, callbackAddr : address, s : Types.stor
   // TODO
   let destination : contract<Callback.requested_event_param> = 
     match((Tezos.get_entrypoint_opt("%saveEvent", callbackAddr) as option<contract<Callback.requested_event_param>>), {
-      None: () => failwith("Unknown contract"),
+      None: () => {return failwith("Unknown contract")},
       Some: ctr => ctr
     });
   let op : operation = Tezos.transaction(payload, (0 as mutez), destination);
@@ -108,58 +108,58 @@ const update_event = (updatedEventId : nat, updatedEvent : Types.event_type, s :
   let _ = Assert.eventBetEndsAfterEnd(updatedEvent.closed_bet_time,updatedEvent.endAt);
   let requested_event = match((Big_map.find_opt(updatedEventId, s.events)), {
     Some: event => event,
-    None: ()  => (failwith(Errors.no_event_id))
+    None: ()  => {return failwith(Errors.no_event_id)}
     });
   let _ = Assert.bettingNotFinalized (requested_event.gameStatus);
   let new_events : big_map<nat, Types.event_type> = Big_map.update(updatedEventId, (Some(updatedEvent)), s.events);
   [list([]), {...s, events : new_events }]
   };
 
-const add_bet_teamOne_amount_to_existing_user = (p_requestedEventId : Types.event_bets, pPreviousAmount : tez) => {
+const add_bet_teamOne_amount_to_existing_user = (p_requestedEventBets : Types.event_bets, pPreviousAmount : tez) => {
   //TODO
-  let p_new_bets_teamOne : map<address, tez> = Map.update((Tezos.get_sender()), (Some(pPreviousAmount + Tezos.get_amount())), p_requestedEventId.bets_teamOne);
-  [p_new_bets_teamOne, p_requestedEventId.bets_teamOne_index]
+  let p_new_bets_teamOne : map<address, tez> = Map.update((Tezos.get_sender()), (Some(pPreviousAmount + Tezos.get_amount())), p_requestedEventBets.bets_teamOne);
+  [p_new_bets_teamOne, p_requestedEventBets.bets_teamOne_index]
   };
 
-const add_bet_teamOne_amount_to_new_user = (p_requestedEventId : Types.event_bets) => {
+const add_bet_teamOne_amount_to_new_user = (p_requestedEventBets : Types.event_bets) => {
   //TODO
-  let p_new_bets_teamOne : map<address, tez> = Map.add((Tezos.get_sender()), (Tezos.get_amount()), p_requestedEventId.bets_teamOne);
-  let p_new_bets_teamOne_index : nat = p_requestedEventId.bets_teamOne_index + (1 as nat);
+  let p_new_bets_teamOne : map<address, tez> = Map.add((Tezos.get_sender()), (Tezos.get_amount()), p_requestedEventBets.bets_teamOne);
+  let p_new_bets_teamOne_index : nat = p_requestedEventBets.bets_teamOne_index + (1 as nat);
   [p_new_bets_teamOne, p_new_bets_teamOne_index]
   };
 
-const add_bet_teamOne = (p_requestedEventId : Types.event_bets) : Types.event_bets => {
+const add_bet_teamOne = (p_requestedEventBets : Types.event_bets) : Types.event_bets => {
   //TODO
-  let [new_bets_teamOne, new_bets_teamOne_index] : [map <address, tez> , nat] = match ((Map.find_opt(Tezos.get_sender(), p_requestedEventId.bets_teamOne)), {
-    Some : prevAmount => add_bet_teamOne_amount_to_existing_user(p_requestedEventId, prevAmount),
-    None: ()  => add_bet_teamOne_amount_to_new_user(p_requestedEventId)
+  let [new_bets_teamOne, new_bets_teamOne_index] : [map <address, tez> , nat] = match ((Map.find_opt(Tezos.get_sender(), p_requestedEventBets.bets_teamOne)), {
+    Some: prevAmount => add_bet_teamOne_amount_to_existing_user(p_requestedEventBets, prevAmount),
+    None: ()  => add_bet_teamOne_amount_to_new_user(p_requestedEventBets)
   });
-  let new_bets_teamOne_total : tez = (p_requestedEventId.bets_teamOne_total + Tezos.get_amount());
-  let r_updatedEvent : Types.event_bets = {...p_requestedEventId, bets_teamOne : new_bets_teamOne, bets_teamOne_index : new_bets_teamOne_index, bets_teamOne_total : new_bets_teamOne_total};
+  let new_bets_teamOne_total : tez = (p_requestedEventBets.bets_teamOne_total + Tezos.get_amount());
+  let r_updatedEvent : Types.event_bets = {...p_requestedEventBets, bets_teamOne : new_bets_teamOne, bets_teamOne_index : new_bets_teamOne_index, bets_teamOne_total : new_bets_teamOne_total};
   (r_updatedEvent)
   };
 
-const add_bet_teamTwo_amount_to_existing_user = (p_requestedEventId : Types.event_bets, pPreviousAmount : tez) => {
+const add_bet_teamTwo_amount_to_existing_user = (p_requestedEventBets : Types.event_bets, pPreviousAmount : tez) => {
   //TODO
-  let p_newbets_teamTwo : map <address, tez> = Map.update(Tezos.get_sender(), Some(pPreviousAmount + Tezos.get_amount()), p_requestedEventId.bets_teamTwo);
-  [p_newbets_teamTwo, p_requestedEventId.bets_teamTwo_index]
+  let p_newbets_teamTwo : map <address, tez> = Map.update(Tezos.get_sender(), Some(pPreviousAmount + Tezos.get_amount()), p_requestedEventBets.bets_teamTwo);
+  [p_newbets_teamTwo, p_requestedEventBets.bets_teamTwo_index]
   };
 
-const add_bet_teamTwoAmountToNewUser = (p_requestedEventId : Types.event_bets) => {
+const add_bet_teamTwoAmountToNewUser = (p_requestedEventBets : Types.event_bets) => {
   //TODO
-  let p_newbets_teamTwo : map <address, tez> = Map.add((Tezos.get_sender()), (Tezos.get_amount()), p_requestedEventId.bets_teamTwo);
-  let p_newbets_teamTwo_index : nat = p_requestedEventId.bets_teamTwo_index + (1 as nat);
+  let p_newbets_teamTwo : map <address, tez> = Map.add((Tezos.get_sender()), (Tezos.get_amount()), p_requestedEventBets.bets_teamTwo);
+  let p_newbets_teamTwo_index : nat = p_requestedEventBets.bets_teamTwo_index + (1 as nat);
   [p_newbets_teamTwo, p_newbets_teamTwo_index]
   };
 
-const add_bet_teamTwo = (p_requestedEventId : Types.event_bets) : Types.event_bets => {
+const add_bet_teamTwo = (p_requestedEventBets : Types.event_bets) : Types.event_bets => {
   //TODO
-  let [newbets_teamTwo, newbets_teamTwo_index] : [map <address, tez>, nat] = match ((Map.find_opt(Tezos.get_sender(), p_requestedEventId.bets_teamTwo)), {
-    Some : prevAmount => add_bet_teamTwo_amount_to_existing_user(p_requestedEventId, prevAmount),
-    None: ()  => add_bet_teamTwoAmountToNewUser(p_requestedEventId)
+  let [newbets_teamTwo, newbets_teamTwo_index] : [map <address, tez>, nat] = match ((Map.find_opt(Tezos.get_sender(), p_requestedEventBets.bets_teamTwo)), {
+    Some: prevAmount => add_bet_teamTwo_amount_to_existing_user(p_requestedEventBets, prevAmount),
+    None: ()  => add_bet_teamTwoAmountToNewUser(p_requestedEventBets)
   });
-  let newbets_teamTwo_total : tez = p_requestedEventId.bets_teamTwo_total + Tezos.get_amount();
-  let r_updatedEvent : Types.event_bets = { ...p_requestedEventId, 
+  let newbets_teamTwo_total : tez = p_requestedEventBets.bets_teamTwo_total + Tezos.get_amount();
+  let r_updatedEvent : Types.event_bets = { ...p_requestedEventBets, 
     bets_teamTwo : newbets_teamTwo, 
     bets_teamTwo_index : newbets_teamTwo_index, 
     bets_teamTwo_total : newbets_teamTwo_total
@@ -167,38 +167,33 @@ const add_bet_teamTwo = (p_requestedEventId : Types.event_bets) : Types.event_be
   r_updatedEvent
   };
 
-const add_bet = (p_requestedEventId : nat, teamOne_bet : bool, s : Types.storage) : Types.return_ => {
-  //TODO
-  let _ = Assert.notManagerNorOracle(Tezos.get_sender(), s.manager, s.oracle_address);
-  let _ = Assert.noTez (Tezos.get_amount());
-  let _ = Assert.tezLowerThanMin (Tezos.get_amount(), s.bet_config.min_bet_amount);
-  let requested_event : Types.event_type = match ((Big_map.find_opt(p_requestedEventId, s.events)), {
-    Some: event => event,
-    None: ()  => failwith(Errors.no_event_id)
-  });
-  let _ = Assert.bettingNotFinalized (requested_event.gameStatus);
-  let _ = Assert.bettingBeforePeriodStart (requested_event.start_bet_time);
-  let _ = Assert.bettingAfterPeriodEnd (requested_event.closed_bet_time);
-  let requested_event_bets : Types.event_bets = match ((Big_map.find_opt(p_requestedEventId, s.events_bets)), {
+let add_bet (p_requested_event_id : nat, team_one_bet : bool, s : Types.storage) : Types.return_ => {
+  let _ = Assert.not_manager_nor_oracle (Tezos.get_sender(), s.manager, s.oracle_address);
+  let _ = Assert.no_tez (Tezos.get_amount());
+  let _ = Assert.tez_lower_than_min (Tezos.get_amount(), s.bet_config.min_bet_amount);
+  let requested_event : Types.event_type = match (Big_map.find_opt(p_requested_event_id, s.events), {
     Some : event => event,
-    None: ()  => failwith(Errors.no_event_bets)
+    None : () => {return failwith(Errors.no_event_id)}
   });
-
-
-  if (teamOne_bet) {
-    let newValue = add_bet_teamOne(requested_event_bets);
-  [list([]), {...s, events_bets : Big_map.update(p_requestedEventId, Some(newValue), s.events_bets)}]
-  } else {
-    let newValue = add_bet_teamTwo(requested_event_bets);
-  [list([]), {...s, events_bets : Big_map.update(p_requestedEventId, Some(newValue), s.events_bets)}]
-  };
-
-  // let updated_bet_event : Types.event_bets = if (teamOne_bet)
-  //   { let uEvent : Types.event_bets = add_bet_teamOne(requested_event_bets, uEvent) }
-  //   else
-  //   { let uEvent : Types.event_bets = add_bet_teamTwo(requested_event_bets, uEvent) }
-  // let new_events_map : big_map <nat, Types.event_bets> = Big_map.update(p_requestedEventId, Some(updated_bet_event), s.events_bets);
-  // [list([]), {...s, events_bets : new_events_map}]
+  let _ = Assert.betting_not_finalized (requested_event.game_status);
+  let _ = Assert.betting_before_period_start (requested_event.start_bet_time);
+  let _ = Assert.betting_after_period_end (requested_event.closed_bet_time);
+  let requested_event_bets : Types.event_bets = match (Big_map.find_opt(p_requested_event_id, s.events_bets), {
+    Some: event => event,
+    None: () => {return failwith(Errors.no_event_bets)}
+  });
+  if (team_one_bet)
+    {
+      let updated_bet_event : Types.event_bets = add_bet_teamOne(requested_event_bets);
+      let new_events_map : big_map <nat, Types.event_bets> = (Big_map.update(p_requested_event_id, (Some(updated_bet_event)), s.events_bets));
+      [list([]), {...s, events_bets : new_events_map}]
+    }
+  else
+    {
+      let updated_bet_event : Types.event_bets = add_bet_teamTwo(requested_event_bets);
+      let new_events_map : big_map <nat, Types.event_bets> = (Big_map.update(p_requested_event_id, (Some(updated_bet_event)), s.events_bets));
+      [list([]), {...s, events_bets : new_events_map}]
+    }
   };
 
 const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) : operation => {
@@ -207,7 +202,7 @@ const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) :
   let value_to_send : tez = value_won * quota_to_send / (100 as nat);
   let dest_opt : option<contract<unit>> = Tezos.get_contract_opt(addr);
   let destination : contract<unit> = match(dest_opt, {
-    None: ()  => failwith("Not found"),
+    None: ()  => {return failwith("Not found")},
     Some: ct => ct
   });
   Tezos.transaction(unit, value_to_send, destination)
@@ -260,19 +255,19 @@ const finalize_bet = (p_requestedEventId : nat, s : Types.storage) : Types.retur
   let _ = Assert.isManager((Tezos.get_sender()), s.manager);
   let requested_event : Types.event_type = match ((Big_map.find_opt(p_requestedEventId,s.events)), {
     Some: event => event,
-    None: () => failwith(Errors.no_event_id)
+    None: () => {return failwith(Errors.no_event_id)}
   });
   let _check_is_claimed : unit = assert_with_error((requested_event.is_claimed == false), Errors.event_already_claimed);
   let _ = Assert.bettingFinalized (requested_event.gameStatus);
   let event_bets : Types.event_bets = match ((Big_map.find_opt(p_requestedEventId, s.events_bets)), {
     Some: event => event,
-    None: () => failwith(Errors.no_event_bets)
+    None: () => {return failwith(Errors.no_event_bets)}
   });
   let _ = Assert.finalizingBeforePeriodEnd(requested_event.endAt);
   let profit_quota : nat = s.bet_config.retained_profit_quota;
   let modified_events = Big_map.update(p_requestedEventId, (Some({...requested_event, is_claimed : true })), s.events);
   let op_list : list<operation> = match(requested_event.game_status, { 
-    Ongoing  : _ => failwith(Errors.bet_no_team_outcome),
+    Ongoing  : _ => {return failwith(Errors.bet_no_team_outcome)},
     Team1Win : _ => resolve_team_win(event_bets, true, profit_quota),
     Team2Win : _ => resolve_team_win(event_bets, false, profit_quota),
     Draw     : _ => refund_bet(event_bets, profit_quota)
@@ -310,5 +305,5 @@ const getEventCreationStatus = ([_, s] : [unit, Types.storage]) => s.bet_config.
 let retrieveEvent = ([p_requestedEventId, s] : [nat, Types.storage]) : [timestamp, Types.event_type] =>
   match ((Big_map.find_opt(p_requestedEventId, s.events)), {
     Some : event => event,
-    None: ()  => failwith(Errors.no_event_id)
+    None: ()  => {return failwith(Errors.no_event_id)}
   });

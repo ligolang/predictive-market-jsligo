@@ -1,25 +1,14 @@
-type bet_config_type = {
-  // is betting on events paused (true), or is it allowed (false)
-  is_betting_paused : bool,
-  // is creating new events paused (true), or is it allowed (false)
-  is_event_creation_paused : bool,
-  // what is the minimum amount to bet on an event in one transaction
-  min_bet_amount : tez,
-  // what is the quota to be retained from bet profits (deduced as operating gains to the contract, shown as percentage, theorical max is 100)
-  retained_profit_quota : nat
-};
-
-type game_status = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
 type event_type = 
   [@layout:comb] {
   name : string,
   videogame : string,
-  begin_at : timestamp,
-  end_at : timestamp,
-  modified_at : timestamp,
-  opponents : { team_one : string, team_two : string},
-  game_status : game_status,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : gameStatus,
   start_bet_time : timestamp,
   closed_bet_time : timestamp,
   is_claimed : bool
@@ -27,15 +16,22 @@ type event_type =
 
 type event_bets =
   [@layout:comb] {
-  bets_team_one : map <address, tez>,
-  bets_team_one_index : nat,
-  bets_team_one_total : tez,
-  bets_team_two : map <address, tez>,
-  bets_team_two_index : nat,
-  bets_team_two_total : tez
+  bets_teamOne : map <address, tez>,
+  bets_teamOne_index : nat,
+  bets_teamOne_total : tez,
+  bets_teamTwo : map <address, tez>,
+  bets_teamTwo_index : nat,
+  bets_teamTwo_total : tez
   };
 
 type event_key = nat;
+
+type bet_config_type = {
+  is_betting_paused : bool,
+  is_event_creation_paused : bool,
+  min_bet_amount : tez,
+  retained_profit_quota : nat
+};
 
 type storage = {
   manager : address,
@@ -43,26 +39,26 @@ type storage = {
   bet_config : bet_config_type,
   events : big_map <event_key, event_type>,
   events_bets : big_map <event_key, event_bets>,
-  events_index : event_key,
+  eventsIndex : event_key,
   metadata : map <string, bytes>
 };
 
 type callback_asked_parameter =
   [@layout:comb] {
-  requested_event_id : nat,
+  requestedEventId : nat,
   callback : address
 };
 
 type update_event_parameter =
   [@layout:comb] {
-  updated_event_id : nat,
-  updated_event : event_type
+  updatedEventId : nat,
+  updatedEvent : event_type
 };
 
 type add_bet_parameter =
   [@layout:comb] {
-  requested_event_id : nat,
-  team_one_bet : bool
+  requestedEventId : nat,
+  teamOne_bet : bool
 };
 
 type finalize_bet_parameter = nat;
@@ -71,11 +67,11 @@ type add_event_parameter =
 [@layout:comb] {
   name : string,
   videogame : string,
-  begin_at : timestamp,
-  end_at : timestamp,
-  modified_at : timestamp,
-  opponents : { team_one : string, team_two : string},
-  game_status : game_status,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : gameStatus,
   start_bet_time : timestamp,
   closed_bet_time : timestamp
 };
@@ -90,4 +86,6 @@ type action =
   | ["GetEvent", callback_asked_parameter]
   | ["UpdateEvent", update_event_parameter]
   | ["AddBet", add_bet_parameter]
-  | ["FinalizeBet", finalize_bet_parameter]
+  | ["FinalizeBet", finalize_bet_parameter];
+
+  type return_ = [list<operation>, storage];

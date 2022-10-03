@@ -1,14 +1,14 @@
-type game_status = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
 type storage = 
   [@layout:comb] {
   name : string,
   videogame : string,
-  begin_at : timestamp,
-  end_at : timestamp,
-  modified_at : timestamp,
-  opponents : { team_one : string, team_two : string},
-  game_status : game_status,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : gameStatus,
   metadata : map <string, bytes>
   };
 
@@ -16,11 +16,11 @@ type requested_event_param =
   [@layout:comb] {
     name : string,
     videogame : string,
-    begin_at : timestamp,
-    end_at : timestamp,
-    modified_at : timestamp,
-    opponents : { team_one : string, team_two : string},
-    game_status : game_status
+    beginAt : timestamp,
+    endAt : timestamp,
+    modifiedAt : timestamp,
+    opponents : { teamOne : string, teamTwo : string},
+    gameStatus : gameStatus
   };
 
 type parameter = ["SaveEvent", requested_event_param] | ["Nothing", unit];
@@ -31,11 +31,11 @@ const saveEvent = (param: requested_event_param, store : storage) =>
   [list([]),  {...store,
     name : param.name,
     videogame : param.videogame,
-    begin_at : param.begin_at,
-    end_at : param.end_at,
-    modified_at : param.modified_at,
+    beginAt : param.beginAt,
+    endAt : param.endAt,
+    modifiedAt : param.modifiedAt,
     opponents : param.opponents,
-    game_status : param.game_status
+    gameStatus : param.gameStatus
   }];
 
 const main = (param: parameter, store: storage) : return_ =>

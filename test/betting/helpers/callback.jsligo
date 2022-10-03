@@ -9,10 +9,10 @@ type originated = {
     contr: contr
 };
 
-let plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
+const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
 
 // Base Callback storage 
-let base_storage = (bettingAddr : address) : Callback.storage => {return {
+const base_storage = (bettingAddr : address) : Callback.storage => {return {
     name                : "",
     videogame           : "",
     beginAt            : plain_timestamp + 2048,
@@ -32,7 +32,7 @@ let base_storage = (bettingAddr : address) : Callback.storage => {return {
     bettingAddr         : bettingAddr
 }};
 
-let originate_from_file = (initial_storage : Callback.storage) : originated => {
+const originate_from_file = (initial_storage : Callback.storage) : originated => {
     let betting_path           = "../../../src/contracts/jsligo/betting/callback/main.jsligo";
     let iTres                  = Test.run( (x : Callback.storage) => x, initial_storage);
     let [callback_addr, _, _]  = Test.originate_from_file(betting_path, "main", (list([]) as list<string>), iTres, 0 as mutez);

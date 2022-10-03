@@ -302,7 +302,7 @@ const getBettingStatus = ([_, s] : [unit, Types.storage]) => s.bet_config.is_bet
 const getEventCreationStatus = ([_, s] : [unit, Types.storage]) => s.bet_config.is_event_creation_paused;
 
 // @view
-let retrieveEvent = ([p_requestedEventId, s] : [nat, Types.storage]) : Types.event_type =>
+const retrieveEvent = ([p_requestedEventId, s] : [nat, Types.storage]) : Types.event_type =>
   match ((Big_map.find_opt(p_requestedEventId, s.events)), {
     Some : event => event,
     None: ()  => {return failwith(Errors.no_event_id)}

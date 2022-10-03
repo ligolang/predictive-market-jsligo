@@ -10,37 +10,37 @@ const _ = Log.describe("[Betting - EventGet] test suite")
 
 const _test_callback_contract_from_manager_should_work = () => {
     let [betting_address, betting_contract, betting_taddress, elon, _, _, _, _] = Bootstrap.bootstrap();
-    let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
+    let _ = Assert.events_map(betting_taddress, Helper.empty_map);
     let originated_betting_callback = Bootstrap.bootstrap_betting_callback(betting_address); 
     
     let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-    let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
+    let _ = Assert.events_map(betting_taddress, Helper.one_event_map);
     
     let _ = Helper.trsc_get_event_success (betting_contract, elon, originated_betting_callback.addr, 0 as nat);
-    let _ = Assert.event(originated_betting_callback.taddr)(Events.primary_event);
+    let _ = Assert.event(originated_betting_callback.taddr, Events.primary_event);
     "OK"
 };
 
 const _test_callback_contract_from_user_should_work = () => {
     let [betting_address, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
-    let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
+    let _ = Assert.events_map(betting_taddress, Helper.empty_map);
     let originated_betting_callback = Bootstrap.bootstrap_betting_callback(betting_address); 
     
     let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-    let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
+    let _ = Assert.events_map(betting_taddress, Helper.one_event_map);
     
     let _ = Helper.trsc_get_event_success (betting_contract, alice, originated_betting_callback.addr, 0 as nat);
-    let _ = Assert.event(originated_betting_callback.taddr)(Events.primary_event);
+    let _ = Assert.event(originated_betting_callback.taddr, Events.primary_event);
     "OK"
 };
 
 const _test_callback_contract_no_event_should_not_work = () => {
     let [betting_address, betting_contract, betting_taddress, elon, _, _, _, _] = Bootstrap.bootstrap();
-    let _ = Assert.events_map(betting_taddress)(Helper.empty_map);
+    let _ = Assert.events_map(betting_taddress, Helper.empty_map);
     let originated_betting_callback = Bootstrap.bootstrap_betting_callback(betting_address); 
     
     let _ = Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-    let _ = Assert.events_map(betting_taddress)(Helper.one_event_map);
+    let _ = Assert.events_map(betting_taddress, Helper.one_event_map);
     
     let ret = Helper.trsc_get_event (betting_contract, elon, originated_betting_callback.addr, 3 as nat);
     let _ = Assert.string_failure(ret, Errors.no_event_id);

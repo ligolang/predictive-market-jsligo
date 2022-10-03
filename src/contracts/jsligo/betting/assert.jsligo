@@ -13,6 +13,10 @@ const isManagerOrOracle = (p_sender : address, p_manager : address, p_oracle : a
   if ((p_sender != p_manager) && (p_sender != p_oracle) ) {return failwith(Errors.not_manager_nor_oracle)}
   };
 
+const notManagerNorOracle = (p_sender : address, p_manager : address, p_oracle : address) => {
+  if ((p_sender == p_manager) || (p_sender == p_oracle) ) {return failwith(Errors.not_manager_nor_oracle)}
+  };
+
 const notPreviousManager = (p_new_manager : address, p_prev_manager : address) => {
   if (p_new_manager == p_prev_manager) {return failwith(Errors.same_previous_manager)}
   };

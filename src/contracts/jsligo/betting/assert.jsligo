@@ -67,7 +67,7 @@ const bettingNotFinalized = (p : Types.gameStatus) =>
 
 const bettingFinalized = (p : Types.gameStatus) => 
   match (p , {
-    Ongoing : () => {return failwith(Errors.bet_finished)},
+    Ongoing : () => {return failwith(Errors.bet_not_finished)},
     Team1Win : (c) => c,
     Team2Win : (c) => c,
     Draw : (c) => c

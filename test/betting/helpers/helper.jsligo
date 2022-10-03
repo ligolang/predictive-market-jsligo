@@ -20,17 +20,6 @@ const three_event_map : big_map<nat, Types.event_type> = Big_map.literal(list([
   [(2 as nat), Events.primary_event]
   ]));
 
-const assert_string_failure = (res : test_exec_result, expected : string) => {
-  let _expected = Test.eval(expected);
-  match(res, {
-    // Fail : (Rejected (actual,_)) => assert (Test.michelson_equal(actual, expected)),
-    // Fail : (Balance_too_low (_p)) => failwith("contract failed: balance too low"),
-    // Fail : (Other (s)) => failwith(s),
-    Fail : s => failwith(s),
-    Success : _gas => failwith("contract did not failed but was expected to fail")
-  });
-};
-
 const trsc_change_manager = ([contr, from, new_] : [contract<Types.action>, address, address]) => {
   let _ = Test.set_source (from);
   let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeManager (new_)), (0 as mutez));

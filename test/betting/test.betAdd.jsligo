@@ -8,7 +8,7 @@
 
 #import "../common/log.jsligo" "Log"
 
-const _ = Log.describe("[AddBet] test suite");
+const _ = Log.describe("[Betting - AddBet] test suite");
 
 const _test_bet_team_one_should_work = () => {
     let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();

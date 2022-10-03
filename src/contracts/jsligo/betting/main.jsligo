@@ -31,6 +31,7 @@ const updateConfigType = (p_new_bet_config : Types.bet_config_type, s : Types.st
   };
 
 const addEvent = (p_new_event : Types.add_event_parameter, s : Types.storage) : Types.return_ => {
+  //TODO
   let _ = Assert.isManagerOrOracle (Tezos.get_sender()) s.manager s.oracle_address;
   let _ = Assert.eventCreationNotPaused s.bet_config.is_event_creation_paused;
   let _ = Assert.eventStartToEndDate p_new_event.beginAt p_new_event.endAt;
@@ -62,6 +63,7 @@ const addEvent = (p_new_event : Types.add_event_parameter, s : Types.storage) : 
   };
 
 const getEvent = (requestedEventId : nat, callbackAddr : address, s : Types.storage) : Types.return_ => {
+  //TODO
   let cbk_event = match((Big_map.find_opt(requestedEventId, s.events)), {
     Some : event => event,
     None : _ => (failwith Errors.no_event_id)
@@ -98,6 +100,7 @@ const getEvent = (requestedEventId : nat, callbackAddr : address, s : Types.stor
   };
 
 const update_event = (updatedEventId : nat, updatedEvent : Types.event_type, s : Types.storage) : Types.return_ => {
+  //TODO
   let _ = Assert.isManagerOrOracle (Tezos.get_sender()) s.manager s.oracle_address;
   let _ = Assert.eventStartToEndDate updatedEvent.beginAt updatedEvent.endAt;
   let _ = Assert.eventBetStartToEndDate updatedEvent.start_bet_time updatedEvent.closed_bet_time;
@@ -113,17 +116,20 @@ const update_event = (updatedEventId : nat, updatedEvent : Types.event_type, s :
   };
 
 const add_bet_teamOne_amount_to_existing_user = (p_requestedEventId : Types.event_bets, pPreviousAmount : tez) => {
+  //TODO
   let p_new_bets_teamOne : (address, tez) map = Map.update (Tezos.get_sender()) (Some(pPreviousAmount + Tezos.get_amount())) p_requestedEventId.bets_teamOne;
   (p_new_bets_teamOne, p_requestedEventId.bets_teamOne_index)
   };
 
 const add_bet_teamOne_amount_to_new_user = (p_requestedEventId : Types.event_bets) => {
+  //TODO
   let p_new_bets_teamOne : (address, tez) map = Map.add (Tezos.get_sender()) (Tezos.get_amount()) p_requestedEventId.bets_teamOne;
   let p_new_bets_teamOne_index : nat = (p_requestedEventId.bets_teamOne_index + (1 as nat));
   (p_new_bets_teamOne, p_new_bets_teamOne_index)
   };
 
 const add_bet_teamOne = (p_requestedEventId : Types.event_bets) : Types.event_bets => {
+  //TODO
   let ([new_bets_teamOne, new_bets_teamOne_index] : [map <address, tez> , nat]) = match ((Map.find_opt(Tezos.get_sender(), p_requestedEventId.bets_teamOne)), {
     Some : prevAmount => add_bet_teamOne_amount_to_existing_user(p_requestedEventId, prevAmount),
     None : _ => add_bet_teamOne_amount_to_new_user(p_requestedEventId)
@@ -134,17 +140,20 @@ const add_bet_teamOne = (p_requestedEventId : Types.event_bets) : Types.event_be
   };
 
 const add_bet_teamTwo_amount_to_existing_user = (p_requestedEventId : Types.event_bets, pPreviousAmount : tez) => {
+  //TODO
   let p_newbets_teamTwo : map <address, tez> = Map.update(Tezos.get_sender(), Some(pPreviousAmount + Tezos.get_amount()), p_requestedEventId.bets_teamTwo);
   (p_newbets_teamTwo, p_requestedEventId.bets_teamTwo_index)
   };
 
 const add_bet_teamTwoAmountToNewUser = (p_requestedEventId : Types.event_bets) => {
+  //TODO
   let p_newbets_teamTwo : map <address, tez> = Map.add (Tezos.get_sender()) (Tezos.get_amount()) p_requestedEventId.bets_teamTwo;
   let p_newbets_teamTwo_index : nat = (p_requestedEventId.bets_teamTwo_index + (1 as nat));
   (p_newbets_teamTwo, p_newbets_teamTwo_index)
   };
 
 const add_bet_teamTwo = (p_requestedEventId : Types.event_bets) : Types.event_bets => {
+  //TODO
   let ([newbets_teamTwo, newbets_teamTwo_index] : [map <address, tez>, nat]) = match ((Map.find_opt(Tezos.get_sender(), p_requestedEventId.bets_teamTwo)), {
     Some : prevAmount => add_bet_teamTwo_amount_to_existing_user(p_requestedEventId, prevAmount),
     None : _ => add_bet_teamTwoAmountToNewUser(p_requestedEventId)
@@ -155,6 +164,7 @@ const add_bet_teamTwo = (p_requestedEventId : Types.event_bets) : Types.event_be
   };
 
 const add_bet = (p_requestedEventId : nat, teamOne_bet : bool, s : Types.storage) : Types.return_ => {
+  //TODO
   let _ = Assert.notManagerNorOracle (Tezos.get_sender(), s.manager, s.oracle_address);
   let _ = Assert.noTez (Tezos.get_amount());
   let _ = Assert.tezLowerThanMin (Tezos.get_amount(), s.bet_config.min_bet_amount);
@@ -178,6 +188,7 @@ const add_bet = (p_requestedEventId : nat, teamOne_bet : bool, s : Types.storage
   };
 
 const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) : operation => {
+  //TODO
   let quota_to_send : nat = abs((100 as nat) - profit_quota);
   let value_to_send : tez = value_won * quota_to_send / (100 as nat);
   let dest_opt : unit contract option = Tezos.get_contract_opt(addr);
@@ -189,6 +200,7 @@ const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) :
   };
 
 const compose_payment = ( winner_map : map <address, tez>, total_value_bet : tez, total_value_won : tez, profit_quota : nat) : operation list => {
+  //TODO
   let folded_op_list = fun (op_list, (address, bet_amount) : operation list, (address, tez) ) => 
     let won_reward_percentage : nat = (10000000 as nat) * bet_amount / total_value_bet;
     let added_reward : tez =  total_value_won * won_reward_percentage / (10000000 as nat);    
@@ -200,6 +212,7 @@ const compose_payment = ( winner_map : map <address, tez>, total_value_bet : tez
   };
   
 let refund_bet = (event_bets : Types.event_bets, profit_quota : nat) : operation list => {
+  //TODO
   let folded_op_list = fun (op_list, (address, bet_amount) : operation list * (address * tez) ) => 
     let refund_op : operation = make_transfer_op(address, bet_amount, profit_quota);
     let op_list = list([refund_op, ...op_list])
@@ -210,6 +223,7 @@ let refund_bet = (event_bets : Types.event_bets, profit_quota : nat) : operation
   };
 
 const resolve_team_win = (event_bets : Types.event_bets) (is_teamOne_win : bool) (profit_quota : nat) : operation list => {
+  //TODO
   if (event_bets.bets_teamOne_total == (0 as mutez) || event_bets.bets_teamTwo_total == (0 as mutez) )
     {
       refund_bet(event_bets, (0 as nat))
@@ -226,6 +240,7 @@ const resolve_team_win = (event_bets : Types.event_bets) (is_teamOne_win : bool)
   };
 
 const finalize_bet = (p_requestedEventId : nat, s : Types.storage) : Types.return_ => {
+  //TODO
   let _ = Assert.isManager (Tezos.get_sender()) s.manager;
   let requested_event : Types.event_type = match ((Big_map.find_opt(p_requestedEventId,s.events)), {
     Some event => event,

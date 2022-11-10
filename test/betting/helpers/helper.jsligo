@@ -20,57 +20,57 @@ const three_event_map : big_map<nat, Types.event_type> = Big_map.literal(list([
   [(2 as nat), Events.primary_event]
   ]));
 
-const trsc_change_manager = ([contr, from, new_] : [contract<Types.action>, address, address]) => {
+const trsc_change_manager = (contr, from, new_) => {
   Test.set_source (from);
   let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeManager (new_)), (0 as mutez));
   result
 };
 
-const trsc_change_manager_success = ([contr, from, new_] : [contract<Types.action>, address, address]) => {
+const trsc_change_manager_success = (contr, from, new_) => {
   Assert.tx_success (trsc_change_manager(contr, from, new_))
 };
 
-const trsc_change_oracle_address = ([contr, from, new_] : [contract<Types.action>, address, address]) => {
+const trsc_change_oracle_address = (contr, from, new_) => {
   Test.set_source (from);
   let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeOracleAddress (new_)), (0 as mutez));
   result
 };
 
-const trsc_change_oracle_address_success = ([contr, from, new_] : [contract<Types.action>, address, address]) => {
+const trsc_change_oracle_address_success = (contr, from, new_) => {
   Assert.tx_success (trsc_change_oracle_address(contr, from, new_))
 };
 
-const trsc_switch_pauseBetting = ([contr, from] : [contract<Types.action>, address]) => {
+const trsc_switch_pauseBetting = (contr, from) => {
   Test.set_source (from);
   let result : test_exec_result = Test.transfer_to_contract(contr ,(SwitchPauseBetting()), (0 as mutez));
   result
 };
 
-const trsc_switch_pauseBetting_success = ([contr, from] : [contract<Types.action>, address]) => {
+const trsc_switch_pauseBetting_success = (contr, from) => {
   Assert.tx_success (trsc_switch_pauseBetting(contr, from))
 };
 
-const trsc_switch_pauseEventCreation = ([contr, from] : [contract<Types.action>, address]) => {
+const trsc_switch_pauseEventCreation = (contr, from) => {
   Test.set_source (from);
   let result : test_exec_result = Test.transfer_to_contract(contr, (SwitchPauseEventCreation()), (0 as mutez));
   result
 };
 
-const trsc_switch_pauseEventCreation_success = ([contr, from] : [contract<Types.action>, address]) => {
+const trsc_switch_pauseEventCreation_success = (contr, from) => {
   Assert.tx_success (trsc_switch_pauseEventCreation(contr, from))
 };
 
-const trsc_add_event = ([contr, from, event] : [contract<Types.action>, address, Types.add_event_parameter]) => {
+const trsc_add_event = (contr, from, event) => {
   Test.set_source (from);
   let result : test_exec_result = Test.transfer_to_contract(contr, (AddEvent(event)), (0 as mutez));
   result
 };
 
-const trsc_add_event_success = ([contr, from, event] : [contract<Types.action>, address, Types.add_event_parameter]) => {
+const trsc_add_event_success = (contr, from, event) => {
   Assert.tx_success (trsc_add_event(contr, from, event))
 };
 
-const trsc_update_event = ([contr, from, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
+const trsc_update_event = (contr, from, event_num, event) => {
   Test.set_source (from);
   let updateEventParam : Types.update_event_parameter =
   {
@@ -81,11 +81,11 @@ const trsc_update_event = ([contr, from, event_num, event] : [contract<Types.act
   result
 };
 
-const trsc_update_event_success = ([contr, from, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
+const trsc_update_event_success = (contr, from, event_num, event) => {
   Assert.tx_success (trsc_update_event(contr, from, event_num, event))
 };
 
-const trsc_get_event = ([contr, from, cbk_addr, event_num] : [contract<Types.action>, address, address, nat]) => {
+const trsc_get_event = (contr, from, cbk_addr, event_num) => {
     Test.set_source (from);
     let callbackParameter : Types.callback_asked_parameter =
     {
@@ -96,11 +96,11 @@ const trsc_get_event = ([contr, from, cbk_addr, event_num] : [contract<Types.act
     result_cbk
 };
 
-const trsc_get_event_success = ([contr, from, cbk_addr, event_num ]: [contract<Types.action>, address, address, nat]) => {
+const trsc_get_event_success = (contr, from, cbk_addr, event_num) => {
   Assert.tx_success (trsc_get_event(contr, from, cbk_addr, event_num))
 };
 
-const trsc_add_bet = ([contr, from, pRequestedEventID, pTeamOneBet, pBetAmount] : [contract<Types.action>, address, nat, bool, tez]) => {
+const trsc_add_bet = (contr, from, pRequestedEventID, pTeamOneBet, pBetAmount) => {
   Test.set_source (from);
   let addBetParam : Types.add_bet_parameter = {
       requestedEventId : pRequestedEventID,
@@ -110,16 +110,16 @@ const trsc_add_bet = ([contr, from, pRequestedEventID, pTeamOneBet, pBetAmount] 
   result_tx
 };
 
-const trsc_add_bet_success = ([contr, from, pRequestedEventID, pTeamOneBet, pBetAmount] : [contract<Types.action>, address, nat, bool, tez]) => {
+const trsc_add_bet_success = (contr, from, pRequestedEventID, pTeamOneBet, pBetAmount) => {
   Assert.tx_success (trsc_add_bet(contr, from, pRequestedEventID, pTeamOneBet, pBetAmount))
 };
 
-const trsc_finalize_bet = ([contr, from, pRequestedEventID] : [contract<Types.action>, address, nat]) => {
+const trsc_finalize_bet = (contr, from, pRequestedEventID) => {
   Test.set_source (from);
   let result_tx = Test.transfer_to_contract(contr, (FinalizeBet (pRequestedEventID)), (0 as mutez));
   result_tx
 };
 
-const trsc_finalize_bet_success = ([contr, from, pRequestedEventID] : [contract<Types.action>, address, nat]) => {
+const trsc_finalize_bet_success = (contr, from, pRequestedEventID) => {
   Assert.tx_success (trsc_finalize_bet(contr, from, pRequestedEventID))
 };

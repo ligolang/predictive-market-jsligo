@@ -25,7 +25,7 @@ const base_storage : Callback.storage = {
     metadata : (Map.empty as map<string, bytes>)
 }
 
-const originate_from_file = (initial_storage : Callback.storage) : originated => {
+const originate_from_file = (initial_storage : Callback.storage) => {
     let oracle_path = "../../../src/contracts/jsligo/oracle/callback/main.jsligo";
     let iTres = Test.run( (x : Callback.storage) => x, initial_storage);
     let [callback_addr, _, _] = Test.originate_from_file(oracle_path, "main", (list([]) as list<string>), iTres, 0 as mutez);

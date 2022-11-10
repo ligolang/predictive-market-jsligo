@@ -8,19 +8,19 @@
 // --------------------------------------
 
 const changeManager = (pNewManager: address, s: Types.storage) : Types.return_ => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
-  let _ = Assert.notPreviousManager (pNewManager, s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.notPreviousManager (pNewManager, s.manager);
   [list([]), {...s, manager:pNewManager}]
   };
 
 const switchPause = (s: Types.storage) : Types.return_ => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
   [list([]), {...s, isPaused: !s.isPaused}]
   };
 
 const changeSigner = (new_signer: address, s: Types.storage) : Types.return_ => {
-  let _ = Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
-  let _ = Assert.notPreviousSigner (new_signer, s.signer);
+  Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
+  Assert.notPreviousSigner (new_signer, s.signer);
   [list([]), {...s, signer: new_signer}]
   };
   
@@ -29,8 +29,8 @@ const changeSigner = (new_signer: address, s: Types.storage) : Types.return_ => 
 // --------------------------------------
 
 const addEvent = (new_event: Types.event_type, s: Types.storage) : Types.return_ => {
-  let _ = Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
-  let _ = Assert.eventCreationNotPaused (s.isPaused);
+  Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
+  Assert.eventCreationNotPaused (s.isPaused);
   let new_events: map <nat, Types.event_type> = Map.add (s.eventsIndex, new_event, s.events);
   [list([]), {...s, events: new_events, eventsIndex: s.eventsIndex + (1 as nat) }]
   };
@@ -50,7 +50,7 @@ const getEvent = (requestedEventId: nat, callbackAddr: address, s: Types.storage
   };
 
 const updateEvent = (updatedEventId: nat, updatedEvent: Types.event_type, s: Types.storage) : Types.return_ => {
-  let _ = Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
+  Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
   let _ = match(Map.find_opt(updatedEventId, s.events), {
       Some: event => event,
       None: () => failwith(Errors.no_event_id)

@@ -28,7 +28,7 @@ const secondary_event : Types.event_type =
 
 const bootstrap_oracle = () => {
     // Boostrapping accounts
-    let _ = Test.reset_state(6 as nat, (list([]) as list<tez>));
+    Test.reset_state(6 as nat, (list([]) as list<tez>));
     let _baker: address = Test.nth_bootstrap_account(0);
     let elon: address = Test.nth_bootstrap_account(1);
     let jeff: address = Test.nth_bootstrap_account(2);

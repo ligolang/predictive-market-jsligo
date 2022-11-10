@@ -8,30 +8,30 @@ const _ = Log.describe("[Oracle - SwitchPause] test suite")
 
 const _test_switch_pause_from_manager_should_work = () => {
     let [oracle_contract, oracle_taddress, elon, _, _, _, _] = Bootstrap.bootstrap_oracle();
-    let _ = Assert.ispaused(oracle_taddress, false);
+    Assert.ispaused(oracle_taddress, false);
 
-    let _ = Helper.trsc_switch_pause_success (oracle_contract, elon);
-    let _ = Assert.ispaused(oracle_taddress, true);
+    Helper.trsc_switch_pause_success (oracle_contract, elon);
+    Assert.ispaused(oracle_taddress, true);
     "OK"
 };
 
 const _test_switch_pause_from_signer_should_not_work = () => {
     let [oracle_contract, oracle_taddress, _, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
-    let _ = Assert.ispaused(oracle_taddress, false);
+    Assert.ispaused(oracle_taddress, false);
 
     let ret = Helper.trsc_switch_pause (oracle_contract, jeff);
-    let _ = Assert.string_failure(ret, Errors.not_manager);
-    let _ = Assert.ispaused(oracle_taddress, false);
+    Assert.string_failure(ret, Errors.not_manager);
+    Assert.ispaused(oracle_taddress, false);
     "OK"
 };
 
 const _test_switch_pause_from_unauthorized_address_should_not_work = () => {
     let [oracle_contract, oracle_taddress, _, _, alice, _, _] = Bootstrap.bootstrap_oracle();
-    let _ = Assert.ispaused(oracle_taddress, false);
+    Assert.ispaused(oracle_taddress, false);
 
     let ret = Helper.trsc_switch_pause (oracle_contract, alice);
-    let _ = Assert.string_failure(ret, Errors.not_manager);
-    let _ = Assert.ispaused(oracle_taddress, false);
+    Assert.string_failure(ret, Errors.not_manager);
+    Assert.ispaused(oracle_taddress, false);
     "OK"
 };
 

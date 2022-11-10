@@ -4,40 +4,40 @@
 #import "callback/main.jsligo" "Callback"
 
 const changeManager = (pNewManager: address, s: Types.storage) => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
-  let _ = Assert.notPreviousManager (pNewManager, s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.notPreviousManager (pNewManager, s.manager);
   [list([]), {...s, manager:pNewManager}]
   };
 
 const changeOracleAddress = (p_new_oracle_address: address, s: Types.storage)  => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
-  let _ = Assert.notPreviousOracle (p_new_oracle_address, s.oracle_address);
+  Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.notPreviousOracle (p_new_oracle_address, s.oracle_address);
   [list([]), {...s, oracle_address: p_new_oracle_address}]
   };
 
 const switchPauseEventCreation = (s : Types.storage) => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
   [list([]), {...s, bet_config : {...s.bet_config, is_event_creation_paused: !s.bet_config.is_event_creation_paused }}]
   };
 
 const switchPauseBetting = (s : Types.storage) => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
   [list([]), {...s, bet_config : {...s.bet_config, is_betting_paused: !s.bet_config.is_betting_paused }}]
   };
 
 const updateConfigType = (p_new_bet_config : Types.bet_config_type, s : Types.storage) => {
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
   [list([]), {...s, bet_config : p_new_bet_config}]
   };
 
 const addEvent = (p_new_event : Types.add_event_parameter, s : Types.storage) : Types.return_ => {
   //TODO
-  let _ = Assert.isManagerOrOracle( (Tezos.get_sender()), s.manager, s.oracle_address);
-  let _ = Assert.eventCreationNotPaused(s.bet_config.is_event_creation_paused);
-  let _ = Assert.eventStartToEndDate(p_new_event.beginAt, p_new_event.endAt);
-  let _ = Assert.eventBetStartToEndDate(p_new_event.start_bet_time, p_new_event.closed_bet_time);
-  let _ = Assert.eventBetStartAfterEnd(p_new_event.start_bet_time, p_new_event.endAt);
-  let _ = Assert.eventBetEndsAfterEnd(p_new_event.closed_bet_time, p_new_event.endAt);
+  Assert.isManagerOrOracle( (Tezos.get_sender()), s.manager, s.oracle_address);
+  Assert.eventCreationNotPaused(s.bet_config.is_event_creation_paused);
+  Assert.eventStartToEndDate(p_new_event.beginAt, p_new_event.endAt);
+  Assert.eventBetStartToEndDate(p_new_event.start_bet_time, p_new_event.closed_bet_time);
+  Assert.eventBetStartAfterEnd(p_new_event.start_bet_time, p_new_event.endAt);
+  Assert.eventBetEndsAfterEnd(p_new_event.closed_bet_time, p_new_event.endAt);
   let new_event : Types.event_type = { 
     name : p_new_event.name,
     videogame :  p_new_event.videogame,
@@ -101,16 +101,16 @@ const getEvent = (requestedEventId : nat, callbackAddr : address, s : Types.stor
 
 const update_event = (updatedEventId : nat, updatedEvent : Types.event_type, s : Types.storage) : Types.return_ => {
   //TODO
-  let _ = Assert.isManagerOrOracle((Tezos.get_sender()), s.manager, s.oracle_address);
-  let _ = Assert.eventStartToEndDate(updatedEvent.beginAt,updatedEvent.endAt);
-  let _ = Assert.eventBetStartToEndDate(updatedEvent.start_bet_time,updatedEvent.closed_bet_time);
-  let _ = Assert.eventBetStartAfterEnd(updatedEvent.start_bet_time,updatedEvent.endAt);
-  let _ = Assert.eventBetEndsAfterEnd(updatedEvent.closed_bet_time,updatedEvent.endAt);
+  Assert.isManagerOrOracle((Tezos.get_sender()), s.manager, s.oracle_address);
+  Assert.eventStartToEndDate(updatedEvent.beginAt,updatedEvent.endAt);
+  Assert.eventBetStartToEndDate(updatedEvent.start_bet_time,updatedEvent.closed_bet_time);
+  Assert.eventBetStartAfterEnd(updatedEvent.start_bet_time,updatedEvent.endAt);
+  Assert.eventBetEndsAfterEnd(updatedEvent.closed_bet_time,updatedEvent.endAt);
   let requested_event = match((Big_map.find_opt(updatedEventId, s.events)), {
     Some: event => event,
     None: ()  => {return failwith(Errors.no_event_id)}
     });
-  let _ = Assert.bettingNotFinalized (requested_event.gameStatus);
+  Assert.bettingNotFinalized (requested_event.gameStatus);
   let new_events : big_map<nat, Types.event_type> = Big_map.update(updatedEventId, (Some(updatedEvent)), s.events);
   [list([]), {...s, events : new_events }]
   };
@@ -168,16 +168,16 @@ const add_bet_teamTwo = (p_requestedEventBets : Types.event_bets) : Types.event_
   };
 
 const add_bet = (p_requested_event_id : nat, team_one_bet : bool, s : Types.storage) : Types.return_ => {
-  let _ = Assert.notManagerNorOracle (Tezos.get_sender(), s.manager, s.oracle_address);
-  let _ = Assert.noTez (Tezos.get_amount());
-  let _ = Assert.tezLowerThanMin (Tezos.get_amount(), s.bet_config.min_bet_amount);
+  Assert.notManagerNorOracle (Tezos.get_sender(), s.manager, s.oracle_address);
+  Assert.noTez (Tezos.get_amount());
+  Assert.tezLowerThanMin (Tezos.get_amount(), s.bet_config.min_bet_amount);
   let requested_event : Types.event_type = match (Big_map.find_opt(p_requested_event_id, s.events), {
     Some : event => event,
     None : () => {return failwith(Errors.no_event_id)}
   });
-  let _ = Assert.bettingNotFinalized (requested_event.gameStatus);
-  let _ = Assert.bettingBeforePeriodStart (requested_event.start_bet_time);
-  let _ = Assert.bettingAfterPeriodEnd (requested_event.closed_bet_time);
+  Assert.bettingNotFinalized (requested_event.gameStatus);
+  Assert.bettingBeforePeriodStart (requested_event.start_bet_time);
+  Assert.bettingAfterPeriodEnd (requested_event.closed_bet_time);
   let requested_event_bets : Types.event_bets = match (Big_map.find_opt(p_requested_event_id, s.events_bets), {
     Some: event => event,
     None: () => {return failwith(Errors.no_event_bets)}
@@ -252,18 +252,18 @@ const resolve_team_win = (event_bets : Types.event_bets, is_teamOne_win : bool, 
 
 const finalize_bet = (p_requestedEventId : nat, s : Types.storage) : Types.return_ => {
   //TODO
-  let _ = Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.isManager (Tezos.get_sender(), s.manager);
   let requested_event : Types.event_type = match ((Big_map.find_opt(p_requestedEventId,s.events)), {
     Some: event => event,
     None: () => {return failwith(Errors.no_event_id)}
   });
   let _check_is_claimed : unit = assert_with_error((requested_event.is_claimed == false), Errors.event_already_claimed);
-  let _ = Assert.bettingFinalized (requested_event.gameStatus);
+  Assert.bettingFinalized (requested_event.gameStatus);
   let event_bets : Types.event_bets = match ((Big_map.find_opt(p_requestedEventId, s.events_bets)), {
     Some: event => event,
     None: () => {return failwith(Errors.no_event_bets)}
   });
-  let _ = Assert.finalizingBeforePeriodEnd(requested_event.endAt);
+  Assert.finalizingBeforePeriodEnd(requested_event.endAt);
   let profit_quota : nat = s.bet_config.retained_profit_quota;
   let modified_events = Big_map.update(p_requestedEventId, (Some({...requested_event, is_claimed : true })), s.events);
   let op_list : list<operation> = match(requested_event.gameStatus, { 

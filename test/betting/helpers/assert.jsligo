@@ -72,12 +72,12 @@ const events_bet_map = ([ctr_taddr, expected] : [typed_address<Types.action, Typ
 
 const event = ([taddr, expected_event] : [typed_address<Callback.parameter, Callback.storage>, Types.event_type]) : unit => {
     let storage = Test.get_storage(taddr);
-    let _ = assert(storage.name == expected_event.name);
-    let _ = assert(storage.videogame == expected_event.videogame);
-    let _ = assert(storage.beginAt == expected_event.beginAt);
-    let _ = assert(storage.endAt == expected_event.endAt);
-    let _ = assert(storage.modifiedAt == expected_event.modifiedAt);
-    let _ = assert(storage.opponents == expected_event.opponents);
-    let _ = assert(storage.gameStatus == expected_event.gameStatus);
+    assert(storage.name == expected_event.name);
+    assert(storage.videogame == expected_event.videogame);
+    assert(storage.beginAt == expected_event.beginAt);
+    assert(storage.endAt == expected_event.endAt);
+    assert(storage.modifiedAt == expected_event.modifiedAt);
+    assert(storage.opponents == expected_event.opponents);
+    assert(storage.gameStatus == expected_event.gameStatus);
     return unit
 };

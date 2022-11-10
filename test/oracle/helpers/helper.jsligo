@@ -22,8 +22,8 @@ const three_event_map : map<nat, Types.event_type> = Map.literal(list([
 //  FUNCTIONS
 
 const trsc_change_manager = (contr, from_, new) => {
-    let _ = Test.set_source(from_);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeManager (new) as Types.action), 0 as mutez);
+    Test.set_source(from_);
+    let result = Test.transfer_to_contract(contr, (ChangeManager (new) as Types.action), 0 as mutez);
     result
 };
 
@@ -33,7 +33,7 @@ const trsc_change_manager_success = ([contr, from_, new] : [contract<Types.actio
 
 const trsc_change_signer = ([contr, from_, new] : [contract<Types.action>, address, address]) => {
     let _= Test.set_source(from_);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeSigner (new) as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (ChangeSigner (new) as Types.action), 0 as mutez);
     result
 };
 
@@ -43,7 +43,7 @@ const trsc_change_signer_success = ([contr, from_, new] : [contract<Types.action
 
 const trsc_switch_pause = ([contr, from_] : [contract<Types.action>, address]) => {
     let _= Test.set_source (from_);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (SwitchPause() as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (SwitchPause() as Types.action), 0 as mutez);
     result
 };
 
@@ -53,7 +53,7 @@ const trsc_switch_pause_success = ([contr, from_] : [contract<Types.action>, add
 
 const trsc_add_event = ([contr, from_, event] : [contract<Types.action>, address, Types.event_type]) => {
     let _= Test.set_source (from_);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (AddEvent (event) as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (AddEvent (event) as Types.action), 0 as mutez);
     result
 };
 
@@ -63,13 +63,13 @@ const trsc_add_event_success = ([contr, from_, event] : [contract<Types.action>,
 
 const trsc_update_event = ([contr, from_, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
     let _= Test.set_source (from_);
-    let updateEventParam : Types.update_event_parameter =
+    let updateEventParam =
     {
         updatedEventId : event_num,
         updatedEvent : event
     };
    
-    let result : test_exec_result = Test.transfer_to_contract(contr, (UpdateEvent (updateEventParam) as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (UpdateEvent (updateEventParam) as Types.action), 0 as mutez);
     result
 };
 
@@ -79,7 +79,7 @@ const trsc_update_event_success = ([contr, from_, event_num, event] : [contract<
 
 const trsc_get_event = ([contr, from_, cbk_addr, event_num] : [contract<Types.action>, address, address, nat]) => {
     let _= Test.set_source (from_);
-    let callbackParameter : Types.callback_asked_parameter =
+    let callbackParameter =
     {
         requestedEventId : event_num,
         callback : cbk_addr

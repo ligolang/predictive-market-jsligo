@@ -16,7 +16,7 @@ const _test_bet_team_one_should_work = () => {
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
 
-    let bet_one_map : big_map<nat, Types.event_bets> = Big_map.literal( list([
+    let bet_one_map = Big_map.literal( list([
     [0 as nat, {
         bets_teamOne : Map.literal(list([ [alice, 2000000 as mutez] ])),
         bets_teamOne_index : 1 as nat ,
@@ -41,7 +41,7 @@ const _test_bet_team_both_should_work = () => {
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
 
-    let bet_both_map : big_map<nat, Types.event_bets>  = Big_map.literal(list([
+    let bet_both_map = Big_map.literal(list([
     [0 as nat, {
         bets_teamOne : Map.literal(list([ [alice, 2000000 as mutez] ])),
         bets_teamOne_index : 1 as nat ,
@@ -67,7 +67,7 @@ const _test_bet_various_entries_should_work = () => {
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
 
-    let bet_last_map : big_map<nat, Types.event_bets> = Big_map.literal(list([
+    let bet_last_map = Big_map.literal(list([
     [0 as nat, {
         bets_teamOne : Map.literal(list([ [alice, (20000000 as mutez)], [bob, 1000000 as mutez] ])),
         bets_teamOne_index : (1 as nat) + (1 as nat),

@@ -19,7 +19,7 @@ const _test_win_basic_team1_should_work = () => {
   Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), (800000000000 as mutez));
   Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left : nat = abs((100 as nat) - storage.bet_config.retained_profit_quota);
+  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
   let expected_alice_balance = Test.get_balance(alice) + ((800000000000 as mutez) + (400000000000 as mutez)) * quota_left / (100 as nat);
   let expected_bob_balance   = Test.get_balance(bob)   + ((800000000000 as mutez) + (400000000000 as mutez)) * quota_left / (100 as nat);
   let expected_mike_balance  = Test.get_balance(mike);
@@ -42,7 +42,7 @@ const _test_draw_should_work = () => {
   Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), (800000000000 as mutez));
   Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_draw);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left : nat = abs((100 as nat) - storage.bet_config.retained_profit_quota);
+  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
   let expected_alice_balance = Test.get_balance(alice) + (800000000000 as mutez) * quota_left / (100 as nat);
   let expected_bob_balance   = Test.get_balance(bob)   + (800000000000 as mutez) * quota_left / (100 as nat);
   let expected_mike_balance  = Test.get_balance(mike)  + (800000000000 as mutez) * quota_left / (100 as nat);
@@ -66,19 +66,19 @@ const _test_win_weighted_team1_should_work = () => {
   Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), (600000000000 as mutez));
   Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left : nat = abs((100 as nat) - storage.bet_config.retained_profit_quota);
+  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
   let expected_alice_balance = Test.get_balance(alice) + ((800000000000 as mutez) + (400000000000 as mutez)) * quota_left / (100 as nat);
   let expected_bob_balance   = Test.get_balance(bob)   + ((400000000000 as mutez) + (200000000000 as mutez)) * quota_left / (100 as nat);
   //When
   Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
   //Then
-  let alice_bal_error : tez = Option.unopt(expected_alice_balance - Test.get_balance(alice));
-  //let alice_bal_error : tez = match( (expected_alice_balance - Test.get_balance(alice)), list([
+  let alice_bal_error  = Option.unopt(expected_alice_balance - Test.get_balance(alice));
+  //let alice_bal_error  = match( (expected_alice_balance - Test.get_balance(alice)), list([
   //  Some: (b: tez) => b,
   //  None: ()   => failwith("Weighted Win Reward Test Fails")
   //]));
-  let bob_bal_error : tez = Option.unopt(expected_bob_balance - Test.get_balance(bob));
-  //let bob_bal_error : tez = match() (expected_bob_balance - Test.get_balance(bob)), list([
+  let bob_bal_error  = Option.unopt(expected_bob_balance - Test.get_balance(bob));
+  //let bob_bal_error  = match() (expected_bob_balance - Test.get_balance(bob)), list([
   //  Some: (b: tez) => b,
   //  None: ()   => failwith("Weighted Win Reward Test Fails")
   //]));
@@ -98,19 +98,19 @@ const _test_win_weighted_team2_should_work = () => {
   Helper.trsc_add_bet_success (betting_contract, bob,   (0 as nat), (false as bool), 30000 as tez);
   Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team2_win);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left : nat = abs((100 as nat) - storage.bet_config.retained_profit_quota);
+  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
   let expected_mike_balance = Test.get_balance(mike) + ((60000 as tez) + (20000 as tez)) * quota_left / (100 as nat);
   let expected_bob_balance = Test.get_balance(bob) + ((30000 as tez) + (10000 as tez)) * quota_left / (100 as nat);
   //When
   Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
   //Then
-  let mike_bal_error : tez = Option.unopt(expected_mike_balance - Test.get_balance(mike));
-  //let mike_bal_error : tez = match( (expected_mike_balance - Test.get_balance(mike)), list([
+  let mike_bal_error  = Option.unopt(expected_mike_balance - Test.get_balance(mike));
+  //let mike_bal_error  = match( (expected_mike_balance - Test.get_balance(mike)), list([
   //  Some: (b: tez) => b, 
   //  None: () => failwith("Double Weighted Win Reward Test Team 2 Fails")
   //]));
-  let bob_bal_error : tez =Option.unopt(expected_bob_balance - Test.get_balance(bob));
-  //let bob_bal_error : tez = match((expected_bob_balance - Test.get_balance(bob)), list([
+  let bob_bal_error  =Option.unopt(expected_bob_balance - Test.get_balance(bob));
+  //let bob_bal_error  = match((expected_bob_balance - Test.get_balance(bob)), list([
   //  Some: (b: tez) => b, 
   //  None: () => failwith("Double Weighted Win Reward Test Team 2 Fails")
   //]));

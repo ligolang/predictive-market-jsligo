@@ -24,7 +24,7 @@ const tx_success = (res: test_exec_result) : unit =>
 
 // Assert Manager parameter with expected result
 const balance = ([p_address, expected] : [address, tez]) => {
-    let balance_value : tez = Test.get_balance(p_address);
+    let balance_value = Test.get_balance(p_address);
     assert (balance_value == expected)
 };
 
@@ -44,29 +44,29 @@ const oracle = ([ctr_taddr, expected] : [typed_address<Types.action, Types.stora
 
 // Assert is_betting_paused parameter with expected result 
 const is_betting_paused = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, bool]) => {
-    let ctr_storage : Types.storage = Test.get_storage(ctr_taddr);
-    let ctr_value : bool = (ctr_storage.bet_config.is_betting_paused);
+    let ctr_storage = Test.get_storage(ctr_taddr);
+    let ctr_value = (ctr_storage.bet_config.is_betting_paused);
     assert(ctr_value == expected)
 };
 
 // Assert isPauseis_event_creation_pausedd parameter with expected result 
 const is_event_creation_paused = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, bool]) => {
-    let ctr_storage : Types.storage = Test.get_storage(ctr_taddr);
-    let ctr_value : bool = (ctr_storage.bet_config.is_event_creation_paused);
+    let ctr_storage = Test.get_storage(ctr_taddr);
+    let ctr_value = (ctr_storage.bet_config.is_event_creation_paused);
     assert (ctr_value == expected)
 };
 
 // Assert Events Map parameter with expected result 
 const events_map = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, big_map<nat, Types.event_type>] ) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
-    let ctr_value : big_map <nat, Types.event_type> = ctr_storage.events;
+    let ctr_value = ctr_storage.events;
     assert (ctr_value == expected)
 };
 
 // Assert Events Bets Map parameter with expected result 
 const events_bet_map = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, big_map<nat, Types.event_bets>]) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
-    let ctr_value : big_map<nat, Types.event_bets>  = (ctr_storage.events_bets);
+    let ctr_value = (ctr_storage.events_bets);
     assert (ctr_value == expected)
 };
 

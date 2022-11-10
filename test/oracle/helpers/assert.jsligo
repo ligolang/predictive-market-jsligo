@@ -42,15 +42,15 @@ const signer = ([ctr_taddr, expected] : [taddr,  address]) =>  {
 };
 // Assert isPaused parameter with expected result
 const ispaused = ([ctr_taddr, expected] : [taddr, bool]) =>  {
-    let ctr_storage : Types.storage = Test.get_storage(ctr_taddr);
-    let ctr_value : bool = (ctr_storage.isPaused);
+    let ctr_storage = Test.get_storage(ctr_taddr);
+    let ctr_value = (ctr_storage.isPaused);
     assert (ctr_value == expected)
 };
 
 // Assert isPaused parameter with expected result
 const events_map = ([ctr_taddr, expected] : [taddr,  map<nat, Types.event_type>]) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
-    let ctr_value : map<nat, Types.event_type> = ctr_storage.events;
+    let ctr_value = ctr_storage.events;
     assert (ctr_value == expected)
 };
 

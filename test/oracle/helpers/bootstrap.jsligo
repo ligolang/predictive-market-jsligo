@@ -37,7 +37,7 @@ const bootstrap_oracle = () => {
     let james: address = Test.nth_bootstrap_account(5);
 
     // Boostrapping storage
-    let init_storage : Types.storage = {
+    let init_storage = {
         isPaused : false,
         manager : elon,
         signer : jeff,

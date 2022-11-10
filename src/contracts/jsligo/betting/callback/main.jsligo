@@ -65,16 +65,16 @@ const saveEvent = (param: requested_event_param, store : storage) =>
   }];
 
 const requestEvent = (param: nat, store : storage) => {
-  let payload : BETTING_Types.callback_asked_parameter = {
+  let payload = {
     requestedEventId : param,
     callback : Tezos.get_self_address()
   };
-  let c_opt : option<contract<BETTING_Types.callback_asked_parameter>> = Tezos.get_entrypoint_opt("%getEvent", store.bettingAddr);
-  let destination : contract<BETTING_Types.callback_asked_parameter> = match (c_opt , {
-    Some:(c : contract<BETTING_Types.callback_asked_parameter>) => c,
+  let c_opt = Tezos.get_entrypoint_opt("%getEvent", store.bettingAddr);
+  let destination = match (c_opt , {
+    Some:(c) => c,
     None:() => (failwith("missing_entrypoint_sendvalue") as contract<BETTING_Types.callback_asked_parameter>)
   });
-  let op : operation = Tezos.transaction(payload, (0 as mutez), destination);
+  let op = Tezos.transaction(payload, (0 as mutez), destination);
   [list([op]), store]
 };
 

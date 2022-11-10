@@ -1,7 +1,7 @@
 
 // Return str repeated n times
 const repeat = (str: string, n: nat) => {
-    const loop = (n: nat, acc: string) => {
+    const loop = (n: nat, acc: string) : string => {
         if (n == (0 as nat)) {
             return acc;
         } else {

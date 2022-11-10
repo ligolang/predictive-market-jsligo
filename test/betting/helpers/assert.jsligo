@@ -8,18 +8,18 @@ const string_failure = ([res, p_expected] : [test_exec_result, string]) => {
     Fail: (x: test_exec_error) => (
       match (x, {
         Rejected : (x : [michelson_code, address]) => assert (Test.michelson_equal (x[0], expected)),
-        Balance_too_low : (_: {contract_too_low : address, contract_balance : tez, spend_request : tez}) => Test.failwith ("contract failed for an unknown reason"),
+        Balance_too_low : _ => Test.failwith ("contract failed for an unknown reason"),
         Other : (_ : string) => Test.failwith ("contract failed for an unknown reason")
       })),
-    Success: (_:nat) => Test.failwith ("bad price check")
+    Success: _ => Test.failwith ("bad price check")
   } )
 } ;
 
 // Assert contract result is successful
 const tx_success = (res: test_exec_result) : unit =>
   match (res, {
-    Fail: (_: test_exec_error) => Test.failwith("Transaction should not fail"),
-    Success: (_:nat) => unit
+    Fail: _ => Test.failwith("Transaction should not fail"),
+    Success: _ => unit
   } );
 
 // Assert Manager parameter with expected result
@@ -30,15 +30,15 @@ const balance = ([p_address, expected] : [address, tez]) => {
 
 // Assert Manager parameter with expected result 
 const manager = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : address) => {
-    let ctr_storage : Types.storage = Test.get_storage(ctr_taddr);
-    let ctr_value : address = (ctr_storage.manager);
+    let ctr_storage = Test.get_storage(ctr_taddr);
+    let ctr_value = (ctr_storage.manager);
     assert (ctr_value == expected)
 };
 
 // Assert Oracle Address parameter with expected result 
 const oracle = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, address]) => {
-    let ctr_storage : Types.storage = Test.get_storage(ctr_taddr);
-    let ctr_value : address = (ctr_storage.oracle_address);
+    let ctr_storage = Test.get_storage(ctr_taddr);
+    let ctr_value = (ctr_storage.oracle_address);
     assert (ctr_value == expected)
 };
 

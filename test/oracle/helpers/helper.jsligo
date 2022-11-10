@@ -21,73 +21,73 @@ const three_event_map : map<nat, Types.event_type> = Map.literal(list([
 
 //  FUNCTIONS
 
-const trsc_change_manager = ([contr, from, new] : [contract<Types.action>, address, address]) => {
-    Test.set_source(from);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeManager (new)), 0 as mutez);
+const trsc_change_manager = (contr, from_, new) => {
+    let _ = Test.set_source(from_);
+    let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeManager (new) as Types.action), 0 as mutez);
     result
 };
 
-const trsc_change_manager_success = ([contr, from, new] : [contract<Types.action>, address, address]) => {
-  Assert.tx_success (trsc_change_manager(contr, from, new))
+const trsc_change_manager_success = ([contr, from_, new] : [contract<Types.action>, address, address]) => {
+  Assert.tx_success (trsc_change_manager(contr, from_, new))
 };
 
-const trsc_change_signer = ([contr, from, new] : [contract<Types.action>, address, address]) => {
-    let _= Test.set_source(from);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeSigner (new)), 0 as mutez);
+const trsc_change_signer = ([contr, from_, new] : [contract<Types.action>, address, address]) => {
+    let _= Test.set_source(from_);
+    let result : test_exec_result = Test.transfer_to_contract(contr, (ChangeSigner (new) as Types.action), 0 as mutez);
     result
 };
 
-const trsc_change_signer_success = ([contr, from, new] : [contract<Types.action>, address, address]) => {
-  Assert.tx_success (trsc_change_signer(contr, from, new))
+const trsc_change_signer_success = ([contr, from_, new] : [contract<Types.action>, address, address]) => {
+  Assert.tx_success (trsc_change_signer(contr, from_, new))
 };
 
-const trsc_switch_pause = ([contr, from] : [contract<Types.action>, address]) => {
-    let _= Test.set_source (from);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (SwitchPause()), 0 as mutez);
+const trsc_switch_pause = ([contr, from_] : [contract<Types.action>, address]) => {
+    let _= Test.set_source (from_);
+    let result : test_exec_result = Test.transfer_to_contract(contr, (SwitchPause() as Types.action), 0 as mutez);
     result
 };
 
-const trsc_switch_pause_success = ([contr, from] : [contract<Types.action>, address]) => {
-  Assert.tx_success (trsc_switch_pause(contr, from))
+const trsc_switch_pause_success = ([contr, from_] : [contract<Types.action>, address]) => {
+  Assert.tx_success (trsc_switch_pause(contr, from_))
 };
 
-const trsc_add_event = ([contr, from, event] : [contract<Types.action>, address, Types.event_type]) => {
-    let _= Test.set_source (from);
-    let result : test_exec_result = Test.transfer_to_contract(contr, (AddEvent (event)), 0 as mutez);
+const trsc_add_event = ([contr, from_, event] : [contract<Types.action>, address, Types.event_type]) => {
+    let _= Test.set_source (from_);
+    let result : test_exec_result = Test.transfer_to_contract(contr, (AddEvent (event) as Types.action), 0 as mutez);
     result
 };
 
-const trsc_add_event_success = ([contr, from, event] : [contract<Types.action>, address, Types.event_type]) => {
-  Assert.tx_success (trsc_add_event(contr, from, event))
+const trsc_add_event_success = ([contr, from_, event] : [contract<Types.action>, address, Types.event_type]) => {
+  Assert.tx_success (trsc_add_event(contr, from_, event))
 };
 
-const trsc_update_event = ([contr, from, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
-    let _= Test.set_source (from);
+const trsc_update_event = ([contr, from_, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
+    let _= Test.set_source (from_);
     let updateEventParam : Types.update_event_parameter =
     {
         updatedEventId : event_num,
         updatedEvent : event
     };
    
-    let result : test_exec_result = Test.transfer_to_contract(contr, (UpdateEvent (updateEventParam)), 0 as mutez);
+    let result : test_exec_result = Test.transfer_to_contract(contr, (UpdateEvent (updateEventParam) as Types.action), 0 as mutez);
     result
 };
 
-const trsc_update_event_success = ([contr, from, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
-  Assert.tx_success (trsc_update_event(contr, from, event_num, event))
+const trsc_update_event_success = ([contr, from_, event_num, event] : [contract<Types.action>, address, nat, Types.event_type]) => {
+  Assert.tx_success (trsc_update_event(contr, from_, event_num, event))
 };
 
-const trsc_get_event = ([contr, from, cbk_addr, event_num] : [contract<Types.action>, address, address, nat]) => {
-    let _= Test.set_source (from);
+const trsc_get_event = ([contr, from_, cbk_addr, event_num] : [contract<Types.action>, address, address, nat]) => {
+    let _= Test.set_source (from_);
     let callbackParameter : Types.callback_asked_parameter =
     {
         requestedEventId : event_num,
         callback : cbk_addr
     };
-    let result_cbk = Test.transfer_to_contract(contr, (GetEvent (callbackParameter)), 0 as mutez);
+    let result_cbk = Test.transfer_to_contract(contr, (GetEvent (callbackParameter) as Types.action), 0 as mutez);
     result_cbk
 };
 
-const trsc_get_event_success = ([contr, from, cbk_addr, event_num] : [contract<Types.action>, address, address, nat]) => {
-  Assert.tx_success (trsc_get_event(contr, from, cbk_addr, event_num))
+const trsc_get_event_success = ([contr, from_, cbk_addr, event_num] : [contract<Types.action>, address, address, nat]) => {
+  Assert.tx_success (trsc_get_event(contr, from_, cbk_addr, event_num))
 };

@@ -3,7 +3,7 @@
 const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
 
 const eventype_to_addeventparam = (evttype : Types.event_type) => {
-  let addEvtParam = {
+  let addEvtParam : Types.add_event_parameter = {
     name            : evttype.name,
     videogame       : evttype.videogame,
     beginAt        : evttype.beginAt,
@@ -17,7 +17,7 @@ const eventype_to_addeventparam = (evttype : Types.event_type) => {
   return addEvtParam;
 };
 
-const primary_event = {
+const primary_event : Types.event_type = {
   name             : "First Event",
   videogame        : "Videogame ONE",
   beginAt         : plain_timestamp + 3074,
@@ -30,7 +30,7 @@ const primary_event = {
   is_claimed       : false
 };
 
-const secondary_event = {
+const secondary_event : Types.event_type = {
   name             : "Secondary Event",
   videogame        : "Videogame TWO",
   beginAt         : plain_timestamp + 3074,
@@ -43,7 +43,7 @@ const secondary_event = {
   is_claimed       : false
 };
 
-const finalized_event_team1_win = {
+const finalized_event_team1_win : Types.event_type = {
   name             : "First Event",
   videogame        : "Videogame ONE",
   beginAt         : plain_timestamp + 3,
@@ -56,7 +56,7 @@ const finalized_event_team1_win = {
   is_claimed       : false
 };
 
-const finalized_event_team2_win = {
+const finalized_event_team2_win : Types.event_type = {
   name            : "First Event",
   videogame       : "Videogame ONE",
   beginAt        : plain_timestamp + 3,
@@ -69,7 +69,7 @@ const finalized_event_team2_win = {
   is_claimed      : false
 }
 
-const finalized_event_draw = {
+const finalized_event_draw : Types.event_type = {
   name             : "First Event",
   videogame        : "Videogame ONE",
   beginAt         : plain_timestamp + 3,
@@ -82,7 +82,7 @@ const finalized_event_draw = {
   is_claimed       : false
 }
 
-const finalized_event_too_long = {
+const finalized_event_too_long : Types.event_type = {
   name            : "First Event",
   videogame       : "Videogame ONE",
   beginAt        : plain_timestamp + 3,

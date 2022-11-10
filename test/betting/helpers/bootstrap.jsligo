@@ -15,7 +15,7 @@ const bootstrap = () => {
   let bob:    address = Test.nth_bootstrap_account(4);
   let james:  address = Test.nth_bootstrap_account(5);
 
-  let init_bet_config : Types.bet_config_type = {
+  let init_bet_config = {
     is_betting_paused       : false,
     is_event_creation_paused : false,
     min_bet_amount          : (1000000 as mutez),
@@ -23,7 +23,7 @@ const bootstrap = () => {
   };
   
   // Boostrapping storage
-  let init_storage : Types.storage = {
+  let init_storage = {
     manager       : elon,
     oracle_address : jeff,
     bet_config     : init_bet_config,

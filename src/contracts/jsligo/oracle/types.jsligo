@@ -1,0 +1,50 @@
+type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+
+type event_type = 
+  [@layout:comb] {
+  name : string,
+  videogame : string,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : gameStatus
+};
+
+type storage =
+  [@layout:comb] {
+  isPaused : bool,
+  manager : address,
+  signer : address,
+  events : map <nat, event_type>,
+  eventsIndex : nat,
+  metadata : map <string, bytes>
+};
+
+type update_event_parameter =
+  [@layout:comb] {
+  updatedEventId : nat,
+  updatedEvent : event_type
+};
+
+type callback_asked_parameter =
+  [@layout:comb] {
+  requestedEventId : nat,
+  callback : address
+};
+
+type callback_returned_value =
+  [@layout:comb] {
+  requestedEvent : event_type,
+  callback : address
+};
+
+type action =
+  | ["ChangeManager", address]
+  | ["ChangeSigner", address]
+  | ["SwitchPause"]
+  | ["AddEvent", event_type]
+  | ["GetEvent", callback_asked_parameter]
+  | ["UpdateEvent", update_event_parameter];
+
+type return_ = [list<operation>, storage];

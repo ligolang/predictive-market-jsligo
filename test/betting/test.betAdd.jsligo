@@ -1,0 +1,93 @@
+
+#import "../../src/contracts/jsligo/betting/main.jsligo" "Betting"
+#import "../../src/contracts/jsligo/betting/types.jsligo" "Types"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "helpers/events.jsligo" "Events"
+
+#import "../common/log.jsligo" "Log"
+
+const _ = Log.describe("[Betting - AddBet] test suite");
+
+const _test_bet_team_one_should_work = () => {
+    let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+    Assert.events_map(betting_taddress, Helper.empty_map);
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Assert.events_map(betting_taddress, Helper.one_event_map);
+
+    let bet_one_map = Big_map.literal( list([
+    [0 as nat, {
+        bets_teamOne : Map.literal(list([ [alice, 2000000 as mutez] ])),
+        bets_teamOne_index : 1 as nat ,
+        bets_teamOne_total : 2000000 as mutez ,
+        bets_teamTwo : (Map.empty as map<address, tez>),
+        bets_teamTwo_index : 0 as nat ,
+        bets_teamTwo_total : 0 as mutez
+        }
+        ]
+    ]));
+
+    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 2000000 as mutez);
+    Assert.events_bet_map(betting_taddress, bet_one_map);
+    "OK"
+
+};
+
+
+const _test_bet_team_both_should_work = () => {
+    let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+    Assert.events_map(betting_taddress, Helper.empty_map);
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Assert.events_map(betting_taddress, Helper.one_event_map);
+
+    let bet_both_map = Big_map.literal(list([
+    [0 as nat, {
+        bets_teamOne : Map.literal(list([ [alice, 2000000 as mutez] ])),
+        bets_teamOne_index : 1 as nat ,
+        bets_teamOne_total : 2000000 as mutez ,
+        bets_teamTwo : Map.literal(list([ [alice, 4000000 as mutez] ])),
+        bets_teamTwo_index : 1 as nat ,
+        bets_teamTwo_total : 4000000 as mutez
+        }
+        ]
+    ]));
+
+    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 2000000 as mutez);
+    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (false as bool), 4000000 as mutez);
+    Assert.events_bet_map(betting_taddress, bet_both_map);
+    "OK"
+
+};
+
+
+const _test_bet_various_entries_should_work = () => {
+    let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+    Assert.events_map(betting_taddress, Helper.empty_map);
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Assert.events_map(betting_taddress, Helper.one_event_map);
+
+    let bet_last_map = Big_map.literal(list([
+    [0 as nat, {
+        bets_teamOne : Map.literal(list([ [alice, (20000000 as mutez)], [bob, 1000000 as mutez] ])),
+        bets_teamOne_index : (1 as nat) + (1 as nat),
+        bets_teamOne_total : (20000000 as mutez) + (1000000 as mutez) ,
+        bets_teamTwo : Map.literal(list([ [alice, (10000000 as mutez)], [mike, 3000000 as mutez], [bob, 7000000 as mutez] ])),
+        bets_teamTwo_index : (1 as nat) + (1 as nat) + (1 as nat) ,
+        bets_teamTwo_total : (10000000 as mutez) + (3000000 as mutez) + (7000000 as mutez) 
+        }
+        ]
+    ]));
+
+    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), (20000000 as mutez));
+    Helper.trsc_add_bet_success (betting_contract, bob, 0 as nat, (true as bool), 1000000 as mutez);
+    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (false as bool), 10000000 as mutez);
+    Helper.trsc_add_bet_success (betting_contract, mike, 0 as nat, (false as bool), 3000000 as mutez);
+    Helper.trsc_add_bet_success (betting_contract, bob, 0 as nat, (false as bool), 7000000 as mutez);
+    Assert.events_bet_map(betting_taddress, bet_last_map);
+    "OK"
+};
+
+const test_bet_team_one_should_work = _test_bet_team_one_should_work();
+const test_bet_team_both_should_work = _test_bet_team_both_should_work();
+const test_bet_various_entries_should_work = _test_bet_various_entries_should_work();

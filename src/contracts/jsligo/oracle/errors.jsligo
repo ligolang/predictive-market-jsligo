@@ -1,0 +1,8 @@
+const not_manager = "Not the Manager of the contract";
+const not_manager_nor_signer = "Not the Manager or signer of the contract";
+
+const same_previous_manager = "New Manager address can't be the same as the current one";
+const same_previous_signer = "New Signer address can't be the same as the current one";
+
+const no_event_id = "No Event with this ID";
+const event_creation_paused = "Event Creation is Paused";

@@ -1,0 +1,74 @@
+#import "../../src/contracts/jsligo/betting/types.jsligo" "Types"
+#import "../../src/contracts/jsligo/betting/errors.jsligo" "Errors"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "helpers/events.jsligo" "Events"
+#import "../common/log.jsligo" "Log"
+
+const _ = Log.describe("[Betting - EventUpdate] test suite")
+
+const updated_eventMap : big_map<nat, Types.event_type>  = Big_map.literal(list([
+    [0 as nat, Events.secondary_event]
+    ]))
+
+
+const _test_update_event_from_manager_should_work = () => {
+    let [_betting_address, betting_contract, betting_taddress, elon, _, _, _, _] = Bootstrap.bootstrap();
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    // Updating the first Event from Manager
+    Helper.trsc_update_event_success (betting_contract, elon, 0 as nat, Events.secondary_event);
+    Assert.events_map(betting_taddress, updated_eventMap);
+    "OK"
+};
+
+const _test_update_event_from_oracle_should_work = () => {
+    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap();
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    // Updating the first Event from Manager
+    Helper.trsc_update_event_success (betting_contract, jeff, 0 as nat, Events.secondary_event);
+    Assert.events_map(betting_taddress, updated_eventMap);
+    "OK"
+};
+
+const _test_update_event_from_unauthorized_address_should_not_work = () => {
+    let [_betting_address, betting_contract, betting_taddress, elon, _jeff, alice, _, _] = Bootstrap.bootstrap();
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    // Updating the first Event from unauthorized address
+    let result = Helper.trsc_update_event (betting_contract, alice, 0 as nat, Events.secondary_event);
+    Assert.string_failure(result, Errors.not_manager_nor_oracle);
+    Assert.events_map(betting_taddress, Helper.one_event_map);
+    "OK"
+};
+
+const _test_update_third_event_from_manager_should_work = () => {
+    let [_betting_address, betting_contract, betting_taddress, elon, _, _, _, _] = Bootstrap.bootstrap();
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Assert.events_map(betting_taddress, Helper.three_event_map);
+
+    // Updating the third Event from Manager
+    Helper.trsc_update_event_success (betting_contract, elon, 1 as nat, Events.primary_event);
+    Assert.events_map(betting_taddress, Helper.three_event_map);
+    "OK"
+};
+
+const _test_update_third_event_from_oracle_should_work = () => {
+    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap();
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
+    Assert.events_map(betting_taddress, Helper.three_event_map);
+
+    // Updating the third Event from Oracle
+    Helper.trsc_update_event_success (betting_contract, jeff, 1 as nat, Events.primary_event);
+    Assert.events_map(betting_taddress, Helper.three_event_map);
+    "OK"
+};
+
+const test_update_event_from_manager_should_work = _test_update_event_from_manager_should_work();
+const test_update_event_from_oracle_should_work = _test_update_event_from_oracle_should_work();
+const test_update_event_from_unauthorized_address_should_not_work = _test_update_event_from_unauthorized_address_should_not_work();
+const test_update_third_event_from_manager_should_work = _test_update_third_event_from_manager_should_work();
+const test_update_third_event_from_oracle_should_work = _test_update_third_event_from_oracle_should_work();

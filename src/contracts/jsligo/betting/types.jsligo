@@ -1,0 +1,91 @@
+type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+
+type event_type = 
+  [@layout:comb] {
+  name : string,
+  videogame : string,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : gameStatus,
+  start_bet_time : timestamp,
+  closed_bet_time : timestamp,
+  is_claimed : bool
+};
+
+type event_bets =
+  [@layout:comb] {
+  bets_teamOne : map <address, tez>,
+  bets_teamOne_index : nat,
+  bets_teamOne_total : tez,
+  bets_teamTwo : map <address, tez>,
+  bets_teamTwo_index : nat,
+  bets_teamTwo_total : tez
+  };
+
+type event_key = nat;
+
+type bet_config_type = {
+  is_betting_paused : bool,
+  is_event_creation_paused : bool,
+  min_bet_amount : tez,
+  retained_profit_quota : nat
+};
+
+type storage = {
+  manager : address,
+  oracle_address : address,
+  bet_config : bet_config_type,
+  events : big_map <event_key, event_type>,
+  events_bets : big_map <event_key, event_bets>,
+  eventsIndex : event_key,
+  metadata : map <string, bytes>
+};
+
+type callback_asked_parameter =
+  [@layout:comb] {
+  requestedEventId : nat,
+  callback : address
+};
+
+type update_event_parameter =
+  [@layout:comb] {
+  updatedEventId : nat,
+  updatedEvent : event_type
+};
+
+type add_bet_parameter =
+  [@layout:comb] {
+  requestedEventId : nat,
+  teamOne_bet : bool
+};
+
+type finalize_bet_parameter = nat;
+
+type add_event_parameter = 
+[@layout:comb] {
+  name : string,
+  videogame : string,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : gameStatus,
+  start_bet_time : timestamp,
+  closed_bet_time : timestamp
+};
+
+type action =
+  | ["ChangeManager", address]
+  | ["ChangeOracleAddress", address]
+  | ["SwitchPauseBetting"]
+  | ["SwitchPauseEventCreation"]
+  | ["UpdateConfigType", bet_config_type]
+  | ["AddEvent", add_event_parameter]
+  | ["GetEvent", callback_asked_parameter]
+  | ["UpdateEvent", update_event_parameter]
+  | ["AddBet", add_bet_parameter]
+  | ["FinalizeBet", finalize_bet_parameter];
+
+  type return_ = [list<operation>, storage];

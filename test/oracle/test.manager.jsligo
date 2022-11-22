@@ -1,0 +1,41 @@
+#import "../../src/contracts/jsligo/oracle/errors.jsligo" "Errors"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "../common/log.jsligo" "Log"
+
+const _ = Log.describe("[Oracle - ChangeManager] test suite")
+
+const _test_change_manager_from_manager_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    Assert.manager(oracle_taddress, elon);
+
+    let ret = Helper.trsc_change_manager (oracle_contract, elon, jeff);
+    Assert.tx_success(ret);
+    Assert.manager(oracle_taddress, jeff);
+    return "OK"
+}
+
+const _test_change_manager_from_signer_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    Assert.manager(oracle_taddress, elon);
+
+    let ret = Helper.trsc_change_manager (oracle_contract, jeff, jeff);
+    Assert.string_failure(ret, Errors.not_manager);
+    Assert.manager(oracle_taddress, elon);
+    "OK"
+}
+
+const _test_change_manager_from_unauthorized_address_should_not_work = () => {
+    let [oracle_contract, oracle_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap_oracle();
+    Assert.manager(oracle_taddress, elon);
+
+    let ret = Helper.trsc_change_manager (oracle_contract, alice, alice);
+    Assert.string_failure(ret, Errors.not_manager);
+    Assert.manager(oracle_taddress, elon);
+    "OK"
+}
+
+const test_change_manager_from_manager_should_work = _test_change_manager_from_manager_should_work();
+const test_change_manager_from_signer_should_work = _test_change_manager_from_signer_should_work();
+const test_change_manager_from_unauthorized_address_should_not_work = _test_change_manager_from_unauthorized_address_should_not_work();

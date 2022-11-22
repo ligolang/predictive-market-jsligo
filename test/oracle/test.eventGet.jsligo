@@ -1,0 +1,51 @@
+#import "../../src/contracts/jsligo/oracle/errors.jsligo" "Errors"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "../common/log.jsligo" "Log"
+
+const _ = Log.describe("[Oracle - EventGet] test suite");
+
+const _test_callback_contract_from_manager_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, _, _, _, _] = Bootstrap.bootstrap_oracle(); 
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    let originated_oracle_callback = Bootstrap.bootstrap_oracle_callback();
+    
+    Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
+    Assert.events_map(oracle_taddress, Helper.one_event_map);
+    
+    Helper.trsc_get_event_success (oracle_contract, elon, originated_oracle_callback.addr, 0 as nat);
+    Assert.event(originated_oracle_callback.taddr, Bootstrap.primary_event);
+    "OK"
+};
+
+const _test_callback_contract_from_user_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap_oracle(); 
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    let originated_oracle_callback = Bootstrap.bootstrap_oracle_callback();
+    
+    Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
+    Assert.events_map(oracle_taddress, Helper.one_event_map);
+    
+    Helper.trsc_get_event_success (oracle_contract, alice, originated_oracle_callback.addr, 0 as nat);
+    Assert.event(originated_oracle_callback.taddr, Bootstrap.primary_event);
+    "OK"
+};
+
+const _test_callback_contract_no_event_should_not_work = () => {
+    let [oracle_contract, oracle_taddress, elon, _, _, _, _] = Bootstrap.bootstrap_oracle(); 
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    let originated_oracle_callback = Bootstrap.bootstrap_oracle_callback();
+    
+    Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
+    Assert.events_map(oracle_taddress, Helper.one_event_map);
+    
+    let ret = Helper.trsc_get_event (oracle_contract, elon, originated_oracle_callback.addr, 3 as nat);
+    Assert.string_failure(ret, Errors.no_event_id);
+    "OK"
+    };
+
+
+const test_callback_contract_from_manager_should_work = _test_callback_contract_from_manager_should_work();
+const test_callback_contract_from_user_should_work = _test_callback_contract_from_user_should_work();
+const test_callback_contract_no_event_should_not_work = _test_callback_contract_no_event_should_not_work();

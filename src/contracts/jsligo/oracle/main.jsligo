@@ -1,0 +1,80 @@
+#import "types.jsligo" "Types"
+#import "assert.jsligo" "Assert"
+#import "errors.jsligo" "Errors"
+#import "callback/main.jsligo" "Callback"
+
+// --------------------------------------
+//      CONFIGURATION INTERACTIONS
+// --------------------------------------
+
+const changeManager = (pNewManager, s: Types.storage) => {
+  Assert.isManager (Tezos.get_sender(), s.manager);
+  Assert.notPreviousManager (pNewManager, s.manager);
+  [list([]), {...s, manager:pNewManager}]
+  };
+
+const switchPause = (s: Types.storage) => {
+  Assert.isManager (Tezos.get_sender(), s.manager);
+  [list([]), {...s, isPaused: !s.isPaused}]
+  };
+
+const changeSigner = (new_signer, s: Types.storage) => {
+  Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
+  Assert.notPreviousSigner (new_signer, s.signer);
+  [list([]), {...s, signer: new_signer}]
+  };
+  
+// --------------------------------------
+//          EVENT INTERACTIONS
+// --------------------------------------
+
+const addEvent = (new_event, s: Types.storage) => {
+  Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
+  Assert.eventCreationNotPaused (s.isPaused);
+  let new_events: map <nat, Types.event_type> = Map.add (s.eventsIndex, new_event, s.events);
+  [list([]), {...s, events: new_events, eventsIndex: s.eventsIndex + (1 as nat) }]
+  };
+
+const getEvent = (requestedEventId, callbackAddr, s: Types.storage) => {
+  let cbk_event = match(Map.find_opt(requestedEventId, s.events), {
+      Some: event => event,
+      None: () => failwith(Errors.no_event_id)
+    });
+  let c_opt = Tezos.get_entrypoint_opt("%saveEvent", callbackAddr);
+  let destination = match (c_opt , {
+      Some:(c) => c,
+      None:() => failwith("Unknown contract")
+    });
+  let op: operation = Tezos.transaction(cbk_event, (0 as mutez), destination);
+  [list([op]), s]
+  };
+
+const updateEvent = (updatedEventId, updatedEvent, s: Types.storage) => {
+  Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
+  let _ = match(Map.find_opt(updatedEventId, s.events), {
+      Some: event => event,
+      None: () => failwith(Errors.no_event_id)
+    });
+  let new_events: map <nat, Types.event_type> = Map.update(updatedEventId, (Some(updatedEvent)), s.events);
+  [list([]), {...s, events: new_events}]
+  };
+
+const main = (action: Types.action, s: Types.storage) : Types.return_ =>
+  match (action, {
+    ChangeManager: a => changeManager(a, s),
+    ChangeSigner: a => changeSigner(a, s),
+    SwitchPause: () => switchPause(s),
+    AddEvent: a => addEvent(a, s),
+    GetEvent: a => getEvent(a.requestedEventId, a.callback, s),
+    UpdateEvent: a => updateEvent(a.updatedEventId, a.updatedEvent, s)
+  });
+
+// @view
+const getManager = (_ : unit, s: Types.storage) => [Tezos.get_now(), s.manager];
+
+// @view
+const getSigner = (_ : unit, s: Types.storage) => [Tezos.get_now(), s.signer];
+
+// @view
+const getStatus = (_ : unit, s: Types.storage) => [Tezos.get_now(), s.isPaused];
+

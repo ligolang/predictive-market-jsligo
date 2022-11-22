@@ -1,0 +1,13 @@
+**/.DS_Store
+**/.vscode
+
+**/.ligo-project
+**/.ligo-work
+
+**/.env
+node_modules
+
+src/compiled/*
+deploy/*.js
+deployments/*
+backend/matches*.json

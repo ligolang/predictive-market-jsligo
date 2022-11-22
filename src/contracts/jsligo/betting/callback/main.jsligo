@@ -1,0 +1,85 @@
+#import "../types.jsligo" "BETTING_Types"
+
+type storage = 
+  [@layout:comb] {
+  name : string,
+  videogame : string,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : BETTING_Types.gameStatus,
+  start_bet_time : timestamp,
+  closed_bet_time : timestamp,
+  bets_teamOne : map <address, tez>,
+  bets_teamOne_index : nat,
+  bets_teamOne_total : tez,
+  bets_teamTwo : map <address, tez>,
+  bets_teamTwo_index : nat,
+  bets_teamTwo_total : tez,
+  metadata : map <string, bytes>,
+  bettingAddr : address
+  };
+
+type requested_event_param =
+  [@layout:comb] {
+  name : string,
+  videogame : string,
+  beginAt : timestamp,
+  endAt : timestamp,
+  modifiedAt : timestamp,
+  opponents : { teamOne : string, teamTwo : string},
+  gameStatus : BETTING_Types.gameStatus,
+  start_bet_time : timestamp,
+  closed_bet_time : timestamp,
+  bets_teamOne : map <address, tez>,
+  bets_teamOne_index : nat,
+  bets_teamOne_total : tez,
+  bets_teamTwo : map <address, tez>,
+  bets_teamTwo_index : nat,
+  bets_teamTwo_total : tez,
+};
+
+
+type parameter = ["SaveEvent", requested_event_param] | ["RequestEvent", nat];
+
+type return_ = [list<operation>, storage];
+
+const saveEvent = (param: requested_event_param, store : storage) =>
+  [list([]),  {...store,
+    name : param.name,
+    videogame : param.videogame,
+    beginAt : param.beginAt,
+    endAt : param.endAt,
+    modifiedAt : param.modifiedAt,
+    opponents : param.opponents,
+    gameStatus : param.gameStatus,
+    start_bet_time : param.start_bet_time,
+    closed_bet_time : param.closed_bet_time,
+    bets_teamOne : param.bets_teamOne,
+    bets_teamOne_index : param.bets_teamOne_index,
+    bets_teamOne_total : param.bets_teamOne_total,
+    bets_teamTwo : param.bets_teamTwo,
+    bets_teamTwo_index : param.bets_teamTwo_index,
+    bets_teamTwo_total : param.bets_teamTwo_total
+  }];
+
+const requestEvent = (param: nat, store : storage) => {
+  let payload = {
+    requestedEventId : param,
+    callback : Tezos.get_self_address()
+  };
+  let c_opt = Tezos.get_entrypoint_opt("%getEvent", store.bettingAddr);
+  let destination = match (c_opt , {
+    Some:(c) => c,
+    None:() => (failwith("missing_entrypoint_sendvalue") as contract<BETTING_Types.callback_asked_parameter>)
+  });
+  let op = Tezos.transaction(payload, (0 as mutez), destination);
+  [list([op]), store]
+};
+
+const main = (param: parameter, store: storage) : return_ =>
+  match (param, {
+    SaveEvent: param => saveEvent(param, store),
+    RequestEvent: param => requestEvent(param, store)
+  });

@@ -1,0 +1,96 @@
+#import "../../../src/contracts/jsligo/betting/types.jsligo" "Types"
+
+const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
+
+const eventype_to_addeventparam = (evttype : Types.event_type) => {
+  let addEvtParam : Types.add_event_parameter = {
+    name            : evttype.name,
+    videogame       : evttype.videogame,
+    beginAt        : evttype.beginAt,
+    endAt          : evttype.endAt,
+    modifiedAt     : evttype.modifiedAt,
+    opponents       : evttype.opponents,
+    gameStatus     : evttype.gameStatus,
+    start_bet_time  : evttype.start_bet_time,
+    closed_bet_time : evttype.closed_bet_time
+  };
+  return addEvtParam;
+};
+
+const primary_event : Types.event_type = {
+  name             : "First Event",
+  videogame        : "Videogame ONE",
+  beginAt         : plain_timestamp + 3074,
+  endAt           : plain_timestamp + 4096,
+  modifiedAt      : plain_timestamp,
+  opponents        : {teamOne : "Team ONE", teamTwo : "Team TWO"},
+  gameStatus      : Ongoing(),
+  start_bet_time   : plain_timestamp,
+  closed_bet_time  : plain_timestamp + 3072,
+  is_claimed       : false
+};
+
+const secondary_event : Types.event_type = {
+  name             : "Secondary Event",
+  videogame        : "Videogame TWO",
+  beginAt         : plain_timestamp + 3074,
+  endAt           : plain_timestamp + 4096,
+  modifiedAt      : plain_timestamp,
+  opponents        : {teamOne : "Team THREE", teamTwo : "Team FOUR"},
+  gameStatus      : Ongoing(),
+  start_bet_time   : plain_timestamp,
+  closed_bet_time  : plain_timestamp + 3072,
+  is_claimed       : false
+};
+
+const finalized_event_team1_win : Types.event_type = {
+  name             : "First Event",
+  videogame        : "Videogame ONE",
+  beginAt         : plain_timestamp + 3,
+  endAt           : plain_timestamp + 4,
+  modifiedAt      : plain_timestamp,
+  opponents        : {teamOne : "Team ONE", teamTwo : "Team TWO"},
+  gameStatus      : Team1Win(),
+  start_bet_time   : plain_timestamp + 1,
+  closed_bet_time  : plain_timestamp + 2,
+  is_claimed       : false
+};
+
+const finalized_event_team2_win : Types.event_type = {
+  name            : "First Event",
+  videogame       : "Videogame ONE",
+  beginAt        : plain_timestamp + 3,
+  endAt          : plain_timestamp + 4,
+  modifiedAt     : plain_timestamp,
+  opponents        : {teamOne : "Team ONE", teamTwo : "Team TWO"},
+  gameStatus     : Team2Win(),
+  start_bet_time  : plain_timestamp + 1,
+  closed_bet_time : plain_timestamp + 2,
+  is_claimed      : false
+}
+
+const finalized_event_draw : Types.event_type = {
+  name             : "First Event",
+  videogame        : "Videogame ONE",
+  beginAt         : plain_timestamp + 3,
+  endAt           : plain_timestamp + 4,
+  modifiedAt      : plain_timestamp,
+  opponents        : {teamOne : "Team ONE", teamTwo : "Team TWO"},
+  gameStatus      : Draw(),
+  start_bet_time   : plain_timestamp + 1,
+  closed_bet_time  : plain_timestamp + 2,
+  is_claimed       : false
+}
+
+const finalized_event_too_long : Types.event_type = {
+  name            : "First Event",
+  videogame       : "Videogame ONE",
+  beginAt        : plain_timestamp + 3,
+  endAt          : plain_timestamp + 400000,
+  modifiedAt     : plain_timestamp,
+  opponents        : {teamOne : "Team ONE", teamTwo : "Team TWO"},
+  gameStatus     : Draw(),
+  start_bet_time  : plain_timestamp + 1,
+  closed_bet_time : plain_timestamp + 2,
+  is_claimed      : false
+}

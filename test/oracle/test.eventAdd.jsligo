@@ -1,0 +1,36 @@
+#import "../../src/contracts/jsligo/oracle/errors.jsligo" "Errors"
+#import "helpers/bootstrap.jsligo" "Bootstrap"
+#import "helpers/helper.jsligo" "Helper"
+#import "helpers/assert.jsligo" "Assert"
+#import "../common/log.jsligo" "Log"
+
+const _ = Log.describe("[Oracle - EventAdd] test suite")
+
+const _test_add_event_from_manager_should_work = () => {
+    let [oracle_contract, oracle_taddress, elon, _, _, _, _] = Bootstrap.bootstrap_oracle();
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
+    Assert.events_map(oracle_taddress, Helper.one_event_map);
+    "OK"
+}; 
+
+const _test_add_event_from_signer_should_work = () => {
+    let [oracle_contract, oracle_taddress, _, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    Helper.trsc_add_event_success (oracle_contract, jeff, Bootstrap.primary_event);
+    Assert.events_map(oracle_taddress, Helper.one_event_map);
+    "OK"
+};
+
+const _test_add_event_from_unauthorized_address_should_not_work = () => {
+    let [oracle_contract, oracle_taddress, _, _, alice, _, _] = Bootstrap.bootstrap_oracle();
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    let ret = Helper.trsc_add_event (oracle_contract, alice, Bootstrap.primary_event);
+    Assert.string_failure(ret, Errors.not_manager_nor_signer);
+    Assert.events_map(oracle_taddress, Helper.empty_map);
+    "OK"
+};
+
+const test_add_event_from_manager_should_work = _test_add_event_from_manager_should_work();
+const test_add_event_from_signer_should_work = _test_add_event_from_signer_should_work();
+const test_add_event_from_unauthorized_address_should_not_work = _test_add_event_from_unauthorized_address_should_not_work();

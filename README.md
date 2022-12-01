@@ -73,25 +73,25 @@ let init_storage : storage = {
 ### - Compile Betting contract :
 - To compile the Betting contract to Michelson code :
 ```bash
-docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile contract src/contracts/cameligo/betting/main.mligo > src/compiled/betting.tz
+docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile contract src/contracts/jsligo/betting/main.jsligo > src/compiled/betting.tz
 ```
 - To compile the Betting contract to Michelson code in JSON format :
 ```bash
-docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile contract src/contracts/cameligo/betting/main.mligo --michelson-format json > src/compiled/betting.json
+docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile contract src/contracts/jsligo/betting/main.jsligo --michelson-format json > src/compiled/betting.json
 ```
 
 ### - Compile Betting storage :
 - Using `tz1bdTsc3QdAj1935KiMxou6frwdm5RDdssT` as example for `storage.manager`
 - Using `KT1KMjSSDxTAUZAb7rgGYx3JF4Yz1cwQpwUi` as example for `storage.oracle_address`
 ```bash
-docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile storage ./contracts/cameligo/betting/main.mligo '{manager: ("tz1bdTsc3QdAj1935KiMxou6frwdm5RDdssT" as address), oracle_address: ("KT1KMjSSDxTAUZAb7rgGYx3JF4Yz1cwQpwUi" as address), bet_config: {is_betting_paused: false, is_event_creation_paused: false, min_bet_amount: 5 as tez, retained_profit_quota: 10 as nat}, events: (Map.empty as map<nat, TYPES.event_type>), events_bets: (Map.empty as map<nat, TYPES.event_bets>), events_index: 0 as nat, metadata: (Map.empty as map<string, bytes>)}' -e main
+docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile storage ./contracts/jsligo/betting/main.jsligo '{manager: ("tz1bdTsc3QdAj1935KiMxou6frwdm5RDdssT" as address), oracle_address: ("KT1KMjSSDxTAUZAb7rgGYx3JF4Yz1cwQpwUi" as address), bet_config: {is_betting_paused: false, is_event_creation_paused: false, min_bet_amount: 5 as tez, retained_profit_quota: 10 as nat}, events: (Map.empty as map<nat, TYPES.event_type>), events_bets: (Map.empty as map<nat, TYPES.event_bets>), events_index: 0 as nat, metadata: (Map.empty as map<string, bytes>)}' -e main
 ```
 
 ### - Simulate execution of entrypoints (with ligo compiler) :
 
 - For entrypoint SendValue
 ```bash
-docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable run dry-run src/contracts/cameligo/betting/main.mligo 'SendValue()' '37' -e main
+docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable run dry-run src/contracts/jsligo/betting/main.jsligo 'SendValue()' '37' -e main
 ```
 
 ### - Originate the Betting contract (with tezos-client CLI) :
@@ -99,7 +99,7 @@ docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang
 - Using `tz1bdTsc3QdAj1935KiMxou6frwdm5RDdssT` as example for `storage.manager`
 - Using `KT1KMjSSDxTAUZAb7rgGYx3JF4Yz1cwQpwUi` as example for `storage.oracle_address`
 ```bash
-docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile storage ./contracts/cameligo/betting/main.mligo '{manager: ("tz1bdTsc3QdAj1935KiMxou6frwdm5RDdssT" as address), oracle_address: ("KT1KMjSSDxTAUZAb7rgGYx3JF4Yz1cwQpwUi" as address), bet_config: {is_betting_paused: false, is_event_creation_paused: false, min_bet_amount: 5 as tez, retained_profit_quota: 10 as nat}, events: (Map.empty as map<nat, TYPES.event_type>), events_bets: (Map.empty as map<nat, TYPES.event_bets>), events_index: 0 as nat; metadata: (Map.empty as map<string, bytes>)}' -e main
+docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable compile storage ./contracts/jsligo/betting/main.jsligo '{manager: ("tz1bdTsc3QdAj1935KiMxou6frwdm5RDdssT" as address), oracle_address: ("KT1KMjSSDxTAUZAb7rgGYx3JF4Yz1cwQpwUi" as address), bet_config: {is_betting_paused: false, is_event_creation_paused: false, min_bet_amount: 5 as tez, retained_profit_quota: 10 as nat}, events: (Map.empty as map<nat, TYPES.event_type>), events_bets: (Map.empty as map<nat, TYPES.event_bets>), events_index: 0 as nat; metadata: (Map.empty as map<string, bytes>)}' -e main
 ```
 - This command produces the following Michelson storage :
 ```lisp

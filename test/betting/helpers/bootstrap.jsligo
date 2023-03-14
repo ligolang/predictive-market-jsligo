@@ -40,10 +40,10 @@ const bootstrap = () => {
   let betting_taddress = (Test.cast_address(betting_address) as typed_address<Types.action,Types.storage> );
   let betting_contract = Test.to_contract (betting_taddress);
   
-  [betting_address, betting_contract, betting_taddress, elon, jeff, alice, bob, james]
+  return [betting_address, betting_contract, betting_taddress, elon, jeff, alice, bob, james]
 };
 
 const bootstrap_betting_callback = (bettingAddr : address) => {
     let betting_callback = Helper_betting_callback.originate_from_file(Helper_betting_callback.base_storage(bettingAddr));    
-    betting_callback
+    return betting_callback
 };

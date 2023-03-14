@@ -19,7 +19,7 @@ const _test_update_event_from_manager_should_work = () => {
     // Updating the first Event from Manager
     Helper.trsc_update_event_success (betting_contract, elon, 0 as nat, Events.secondary_event);
     Assert.events_map(betting_taddress, updated_eventMap);
-    "OK"
+    return "OK"
 };
 
 const _test_update_event_from_oracle_should_work = () => {
@@ -28,7 +28,7 @@ const _test_update_event_from_oracle_should_work = () => {
     // Updating the first Event from Manager
     Helper.trsc_update_event_success (betting_contract, jeff, 0 as nat, Events.secondary_event);
     Assert.events_map(betting_taddress, updated_eventMap);
-    "OK"
+    return "OK"
 };
 
 const _test_update_event_from_unauthorized_address_should_not_work = () => {
@@ -38,7 +38,7 @@ const _test_update_event_from_unauthorized_address_should_not_work = () => {
     let result = Helper.trsc_update_event (betting_contract, alice, 0 as nat, Events.secondary_event);
     Assert.string_failure(result, Errors.not_manager_nor_oracle);
     Assert.events_map(betting_taddress, Helper.one_event_map);
-    "OK"
+    return "OK"
 };
 
 const _test_update_third_event_from_manager_should_work = () => {
@@ -51,7 +51,7 @@ const _test_update_third_event_from_manager_should_work = () => {
     // Updating the third Event from Manager
     Helper.trsc_update_event_success (betting_contract, elon, 1 as nat, Events.primary_event);
     Assert.events_map(betting_taddress, Helper.three_event_map);
-    "OK"
+    return "OK"
 };
 
 const _test_update_third_event_from_oracle_should_work = () => {
@@ -64,7 +64,7 @@ const _test_update_third_event_from_oracle_should_work = () => {
     // Updating the third Event from Oracle
     Helper.trsc_update_event_success (betting_contract, jeff, 1 as nat, Events.primary_event);
     Assert.events_map(betting_taddress, Helper.three_event_map);
-    "OK"
+    return "OK"
 };
 
 const test_update_event_from_manager_should_work = _test_update_event_from_manager_should_work();

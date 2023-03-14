@@ -13,7 +13,7 @@ const _test_change_oracle_address_from_manager_should_work = () => {
 
     Helper.trsc_change_oracle_address_success(betting_contract, elon, elon);
     Assert.oracle(betting_taddress, elon);
-    "OK"
+    return "OK"
 };
 
 const _test_change_oracle_address_from_oracle_should_not_work = () => {
@@ -23,7 +23,7 @@ const _test_change_oracle_address_from_oracle_should_not_work = () => {
     let ret = Helper.trsc_change_oracle_address(betting_contract, jeff, elon);
     Assert.string_failure(ret, Errors.not_manager);
     Assert.oracle(betting_taddress, jeff);
-    "OK"
+    return "OK"
 };
 
 const _test_change_oracle_address_from_unauthorized_address_should_not_work = () => {
@@ -33,7 +33,7 @@ const _test_change_oracle_address_from_unauthorized_address_should_not_work = ()
     let ret = Helper.trsc_change_oracle_address(betting_contract, alice, alice);
     Assert.string_failure(ret, Errors.not_manager);
     Assert.oracle(betting_taddress, jeff);
-    "OK"
+    return "OK"
 };
 
 

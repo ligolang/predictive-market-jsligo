@@ -29,7 +29,7 @@ const _test_win_basic_team1_should_work = () => {
   assert (expected_alice_balance == Test.get_balance(alice));
   assert (expected_bob_balance   == Test.get_balance(bob));
   assert (expected_mike_balance  == Test.get_balance(mike));
-  "OK"
+  return "OK"
 };
 
 // Basic Draw Reward Test
@@ -52,7 +52,7 @@ const _test_draw_should_work = () => {
   assert (expected_alice_balance == Test.get_balance(alice));
   assert (expected_bob_balance   == Test.get_balance(bob));
   assert (expected_mike_balance  == Test.get_balance(mike));
-  "OK"
+  return "OK"
 };
 
 
@@ -84,7 +84,7 @@ const _test_win_weighted_team1_should_work = () => {
   //]));
   assert (alice_bal_error < (1 as tez));
   assert (bob_bal_error   < (1 as tez));
-  "OK"
+  return "OK"
 };
 
 
@@ -116,7 +116,7 @@ const _test_win_weighted_team2_should_work = () => {
   //]));
   assert (mike_bal_error < (1 as tez));
   assert (bob_bal_error < (1 as tez));
-  "OK"
+  return "OK"
 };
 
 
@@ -132,7 +132,7 @@ const _test_finalizing_bet_two_times_should_fail = () => {
   let ret = Helper.trsc_update_event (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
   //Then
   Assert.string_failure(ret, Errors.bet_finished);
-  "OK"
+  return "OK"
 };
 
 
@@ -150,7 +150,7 @@ const _test_claim_bet_two_times_should_fail = () => {
   let ret = Helper.trsc_finalize_bet (betting_contract, elon, (0 as nat));
   //Then
   Assert.string_failure(ret, Errors.event_already_claimed);
-  "OK"
+  return "OK"
 };
 
 
@@ -165,7 +165,7 @@ const _test_finalizing_bet_without_outcome_should_fail = () => {
   let ret = Helper.trsc_finalize_bet (betting_contract, elon, (0 as nat));
   //Then
   Assert.string_failure(ret, Errors.bet_not_finished);
-  "OK"
+  return "OK"
 };
 
 
@@ -181,7 +181,7 @@ const _test_finalizing_bet_with_wrong_id_should_fail = () => {
   let ret = Helper.trsc_finalize_bet (betting_contract, elon, (1 as nat));
   //Then
   Assert.string_failure(ret, Errors.no_event_id);
-  "OK"
+  return "OK"
 };
 
 
@@ -197,7 +197,7 @@ const _test_winning_without_counterparty_refund_should_work = () => {
   Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
   //Then
   assert (expected_alice_balance == Test.get_balance(alice));
-  "OK"
+  return "OK"
 };
 
 
@@ -213,7 +213,7 @@ const _test_finalizing_event_not_finished_should_fail = () => {
   let ret = Helper.trsc_finalize_bet (betting_contract, elon, (0 as nat));
   //Then
   Assert.string_failure(ret, Errors.bet_period_not_finished);
-  "OK"
+  return "OK"
 };
 
 
@@ -228,7 +228,7 @@ const _test_finalizing_event_without_manager_rights_should_fail = () => {
   let ret = Helper.trsc_finalize_bet (betting_contract, alice, (0 as nat));
   //Then
   Assert.string_failure(ret, Errors.not_manager);
-  "OK"
+  return "OK"
 };
 
 const test_win_basic_team1_should_work = _test_win_basic_team1_should_work();

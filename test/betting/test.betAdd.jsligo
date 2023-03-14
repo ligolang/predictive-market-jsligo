@@ -30,7 +30,7 @@ const _test_bet_team_one_should_work = () => {
 
     Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 2000000 as mutez);
     Assert.events_bet_map(betting_taddress, bet_one_map);
-    "OK"
+    return "OK"
 
 };
 
@@ -56,7 +56,7 @@ const _test_bet_team_both_should_work = () => {
     Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 2000000 as mutez);
     Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (false as bool), 4000000 as mutez);
     Assert.events_bet_map(betting_taddress, bet_both_map);
-    "OK"
+    return "OK"
 
 };
 
@@ -85,7 +85,7 @@ const _test_bet_various_entries_should_work = () => {
     Helper.trsc_add_bet_success (betting_contract, mike, 0 as nat, (false as bool), 3000000 as mutez);
     Helper.trsc_add_bet_success (betting_contract, bob, 0 as nat, (false as bool), 7000000 as mutez);
     Assert.events_bet_map(betting_taddress, bet_last_map);
-    "OK"
+    return "OK"
 };
 
 const test_bet_team_one_should_work = _test_bet_team_one_should_work();

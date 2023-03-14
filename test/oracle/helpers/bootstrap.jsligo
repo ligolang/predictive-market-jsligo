@@ -53,10 +53,10 @@ const bootstrap_oracle = () => {
     let oracle_taddress = (Test.cast_address(oracle_address) as typed_address<Types.action,Types.storage>);
     let oracle_contract = Test.to_contract(oracle_taddress);
     
-    [oracle_contract, oracle_taddress, elon, jeff, alice, bob, james]
+    return [oracle_contract, oracle_taddress, elon, jeff, alice, bob, james]
 };
 
 const bootstrap_oracle_callback = () => {
     let oracle_callback = Helper_Callback.originate_from_file(Helper_Callback.base_storage);   
-    oracle_callback
+    return oracle_callback
 };

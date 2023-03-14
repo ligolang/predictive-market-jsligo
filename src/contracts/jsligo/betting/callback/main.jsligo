@@ -45,7 +45,7 @@ type parameter = ["SaveEvent", requested_event_param] | ["RequestEvent", nat];
 
 type return_ = [list<operation>, storage];
 
-const saveEvent = (param: requested_event_param, store : storage) =>
+const saveEvent = (param: requested_event_param, store : storage) : return_ =>
   [list([]),  {...store,
     name : param.name,
     videogame : param.videogame,
@@ -64,7 +64,7 @@ const saveEvent = (param: requested_event_param, store : storage) =>
     bets_teamTwo_total : param.bets_teamTwo_total
   }];
 
-const requestEvent = (param: nat, store : storage) => {
+const requestEvent = (param: nat, store : storage) : return_ => {
   let payload = {
     requestedEventId : param,
     callback : Tezos.get_self_address()
@@ -75,7 +75,7 @@ const requestEvent = (param: nat, store : storage) => {
     None:() => (failwith("missing_entrypoint_sendvalue") as contract<BETTING_Types.callback_asked_parameter>)
   });
   let op = Tezos.transaction(payload, (0 as mutez), destination);
-  [list([op]), store]
+  return [list([op]), store]
 };
 
 const main = (param: parameter, store: storage) : return_ =>

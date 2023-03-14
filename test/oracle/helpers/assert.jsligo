@@ -2,7 +2,7 @@
 #import "../../../src/contracts/jsligo/oracle/callback/main.jsligo" "Callback"
 
 // Assert contract call results; failwith with given string
-const string_failure = ([res, p_expected]: [test_exec_result, string]) =>  {
+const string_failure = (res : test_exec_result, p_expected : string) =>  {
   let expected = Test.eval (p_expected) ;
   match (res, {
     Fail: (x: test_exec_error) => (
@@ -28,33 +28,33 @@ type taddr = typed_address<Types.action, Types.storage>;
 type taddrCallback = typed_address<Callback.parameter, Callback.storage>;
 
 // Assert Manager parameter with expected result 
-const manager = ([ctr_taddr, expected] : [taddr, address]) => {
+const manager = (ctr_taddr : taddr, expected : address) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.manager);
     assert (ctr_value == expected)
 };
 
 // Assert Signer parameter with expected result
-const signer = ([ctr_taddr, expected] : [taddr,  address]) =>  {
+const signer = (ctr_taddr : taddr, expected : address) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.signer);
     assert (ctr_value == expected)
 };
 // Assert isPaused parameter with expected result
-const ispaused = ([ctr_taddr, expected] : [taddr, bool]) =>  {
+const ispaused = (ctr_taddr : taddr, expected : bool) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.isPaused);
     assert (ctr_value == expected)
 };
 
 // Assert isPaused parameter with expected result
-const events_map = ([ctr_taddr, expected] : [taddr,  map<nat, Types.event_type>]) =>  {
+const events_map = (ctr_taddr : taddr, expected : map<nat, Types.event_type>) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = ctr_storage.events;
     assert (ctr_value == expected)
 };
 
-const event = ([taddr, expected_event] : [taddrCallback, Types.event_type]) =>  {
+const event = (taddr : taddrCallback, expected_event : Types.event_type) =>  {
     let storage = Test.get_storage(taddr);
     assert(storage.name == expected_event.name);
     assert(storage.videogame == expected_event.videogame);

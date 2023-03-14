@@ -13,7 +13,7 @@ const _test_change_signer_from_manager_should_work = () => {
 
     Helper.trsc_change_signer_success(oracle_contract, elon, elon);
     Assert.signer(oracle_taddress, elon);
-    "OK"
+    return "OK"
 };
 
 const _test_change_signer_from_signer_should_work = () => {
@@ -22,7 +22,7 @@ const _test_change_signer_from_signer_should_work = () => {
 
     Helper.trsc_change_signer_success(oracle_contract, jeff, elon);
     Assert.signer(oracle_taddress, elon);
-    "OK"
+    return "OK"
 };
 
 const _test_change_signer_from_unauthorized_address_should_not_work = () => {
@@ -32,7 +32,7 @@ const _test_change_signer_from_unauthorized_address_should_not_work = () => {
     let ret = Helper.trsc_change_signer (oracle_contract, alice, alice);
     Assert.string_failure(ret, Errors.not_manager_nor_signer);
     Assert.signer(oracle_taddress, jeff);
-    "OK"
+    return "OK"
 };
 
 const test_change_signer_from_manager_should_work = _test_change_signer_from_manager_should_work();

@@ -18,7 +18,7 @@ const _test_callback_contract_from_manager_should_work = () => {
     
     Helper.trsc_get_event_success (betting_contract, elon, originated_betting_callback.addr, 0 as nat);
     Assert.event(originated_betting_callback.taddr, Events.primary_event);
-    "OK"
+    return "OK"
 };
 
 const _test_callback_contract_from_user_should_work = () => {
@@ -31,7 +31,7 @@ const _test_callback_contract_from_user_should_work = () => {
     
     Helper.trsc_get_event_success (betting_contract, alice, originated_betting_callback.addr, 0 as nat);
     Assert.event(originated_betting_callback.taddr, Events.primary_event);
-    "OK"
+    return "OK"
 };
 
 const _test_callback_contract_no_event_should_not_work = () => {
@@ -44,7 +44,7 @@ const _test_callback_contract_no_event_should_not_work = () => {
     
     let ret = Helper.trsc_get_event (betting_contract, elon, originated_betting_callback.addr, 3 as nat);
     Assert.string_failure(ret, Errors.no_event_id);
-    "OK"
+    return "OK"
 };
 
 const test_callback_contract_from_manager_should_work = _test_callback_contract_from_manager_should_work();

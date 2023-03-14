@@ -14,7 +14,7 @@ const _test_change_manager_from_manager_should_work = () => {
     Assert.manager(betting_taddress, jeff);
     Helper.trsc_change_manager_success (betting_contract, jeff, elon);
     Assert.manager(betting_taddress, elon);
-    "OK"
+    return "OK"
 };
 
 const _test_change_manager_from_unauthorized_address_should_not_work = () => {
@@ -23,7 +23,7 @@ const _test_change_manager_from_unauthorized_address_should_not_work = () => {
     let result = Helper.trsc_change_manager (betting_contract, jeff, jeff);
     Assert.string_failure(result, Betting.Errors.not_manager);
     Assert.manager(betting_taddress, elon);
-    "OK"
+    return "OK"
 };
 
 const test_change_manager_from_manager_should_work = _test_change_manager_from_manager_should_work();

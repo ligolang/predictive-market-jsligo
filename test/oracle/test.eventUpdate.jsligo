@@ -24,7 +24,7 @@ const _test_update_event_from_manager_should_work = () => {
 
     Helper.trsc_update_event_success (oracle_contract, elon, 0 as nat, Bootstrap.secondary_event);
     Assert.events_map(oracle_taddress, updated_eventMap);
-    "OK"
+    return "OK"
 };
 
 const _test_update_event_from_signer_should_work = () => {
@@ -34,7 +34,7 @@ const _test_update_event_from_signer_should_work = () => {
 
     Helper.trsc_update_event_success (oracle_contract, jeff, 0 as nat, Bootstrap.secondary_event);
     Assert.events_map(oracle_taddress, updated_eventMap);
-    "OK"
+    return "OK"
 };
 
 const _test_update_event_from_unauthorized_address_should_not_work = () => {
@@ -45,7 +45,7 @@ const _test_update_event_from_unauthorized_address_should_not_work = () => {
     let ret = Helper.trsc_update_event (oracle_contract, alice, 0 as nat, Bootstrap.secondary_event);
     Assert.string_failure(ret, Errors.not_manager_nor_signer);
     Assert.events_map(oracle_taddress, Helper.one_event_map);
-    "OK"
+    return "OK"
 };
 
 const _test_update_third_event_from_manager_should_work = () => {
@@ -57,7 +57,7 @@ const _test_update_third_event_from_manager_should_work = () => {
 
     Helper.trsc_update_event_success (oracle_contract, elon, 2 as nat, Bootstrap.secondary_event);
     Assert.events_map(oracle_taddress, updated_three_event_map);
-    "OK"
+    return "OK"
 };
 
 const _test_update_third_event_from_signer_should_work = () => {
@@ -69,7 +69,7 @@ const _test_update_third_event_from_signer_should_work = () => {
     
     Helper.trsc_update_event_success (oracle_contract, jeff, 2 as nat, Bootstrap.secondary_event);
     Assert.events_map(oracle_taddress, updated_three_event_map);
-    "OK"
+    return "OK"
 };
 
 const test_update_event_from_manager_should_work = _test_update_event_from_manager_should_work();

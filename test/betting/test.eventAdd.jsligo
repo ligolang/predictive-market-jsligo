@@ -14,7 +14,7 @@ const _test_add_event_by_manager_should_work = () => {
     // Adding an Event from Manager
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
-    "OK"
+    return "OK"
 };
 
 const _test_add_event_by_oracle_should_work = () => {
@@ -23,7 +23,7 @@ const _test_add_event_by_oracle_should_work = () => {
     // Adding an Event from Oracle
     Helper.trsc_add_event_success (betting_contract, jeff, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
-    "OK"
+    return "OK"
 };
 
 const _test_add_event_unauthorized_should_not_work = () => {
@@ -33,7 +33,7 @@ const _test_add_event_unauthorized_should_not_work = () => {
     let result = Helper.trsc_add_event (betting_contract, alice, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.string_failure(result, Errors.not_manager_nor_oracle); 
     Assert.events_map(betting_taddress, Helper.empty_map);
-    "OK"
+    return "OK"
 };
 
 const _test_add_two_events_by_manager_and_oracle_should_work = () => {
@@ -45,7 +45,7 @@ const _test_add_two_events_by_manager_and_oracle_should_work = () => {
     // Adding an Event from Oracle
     Helper.trsc_add_event_success (betting_contract, jeff, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.double_event_map);
-    "OK"
+    return "OK"
 };
 
 const test_add_event_by_manager_should_work = _test_add_event_by_manager_should_work();

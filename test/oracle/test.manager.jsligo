@@ -23,7 +23,7 @@ const _test_change_manager_from_signer_should_work = () => {
     let ret = Helper.trsc_change_manager (oracle_contract, jeff, jeff);
     Assert.string_failure(ret, Errors.not_manager);
     Assert.manager(oracle_taddress, elon);
-    "OK"
+    return "OK"
 }
 
 const _test_change_manager_from_unauthorized_address_should_not_work = () => {
@@ -33,7 +33,7 @@ const _test_change_manager_from_unauthorized_address_should_not_work = () => {
     let ret = Helper.trsc_change_manager (oracle_contract, alice, alice);
     Assert.string_failure(ret, Errors.not_manager);
     Assert.manager(oracle_taddress, elon);
-    "OK"
+    return "OK"
 }
 
 const test_change_manager_from_manager_should_work = _test_change_manager_from_manager_should_work();

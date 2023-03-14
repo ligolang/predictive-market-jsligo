@@ -2,7 +2,7 @@
 #import "../../../src/contracts/jsligo/betting/callback/main.jsligo" "Callback"
 
 // Assert contract call results; failwith with given string
-const string_failure = ([res, p_expected] : [test_exec_result, string]) => {
+const string_failure = (res : test_exec_result, p_expected : string) => {
   let expected = Test.eval (p_expected) ;
   match (res, {
     Fail: (x: test_exec_error) => (
@@ -23,7 +23,7 @@ const tx_success = (res: test_exec_result) : unit =>
   } );
 
 // Assert Manager parameter with expected result
-const balance = ([p_address, expected] : [address, tez]) => {
+const balance = (p_address : address, expected : tez) => {
     let balance_value = Test.get_balance(p_address);
     assert (balance_value == expected)
 };
@@ -36,41 +36,41 @@ const manager = (ctr_taddr : typed_address<Types.action, Types.storage>, expecte
 };
 
 // Assert Oracle Address parameter with expected result 
-const oracle = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, address]) => {
+const oracle = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : address) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.oracle_address);
     assert (ctr_value == expected)
 };
 
 // Assert is_betting_paused parameter with expected result 
-const is_betting_paused = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, bool]) => {
+const is_betting_paused = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : bool) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.bet_config.is_betting_paused);
     assert(ctr_value == expected)
 };
 
 // Assert isPauseis_event_creation_pausedd parameter with expected result 
-const is_event_creation_paused = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, bool]) => {
+const is_event_creation_paused = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : bool) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.bet_config.is_event_creation_paused);
     assert (ctr_value == expected)
 };
 
 // Assert Events Map parameter with expected result 
-const events_map = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, big_map<nat, Types.event_type>] ) => {
+const events_map = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : big_map<nat, Types.event_type>) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = ctr_storage.events;
     assert (ctr_value == expected)
 };
 
 // Assert Events Bets Map parameter with expected result 
-const events_bet_map = ([ctr_taddr, expected] : [typed_address<Types.action, Types.storage>, big_map<nat, Types.event_bets>]) => {
+const events_bet_map = (ctr_taddr : typed_address<Types.action, Types.storage>, expected : big_map<nat, Types.event_bets>) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.events_bets);
     assert (ctr_value == expected)
 };
 
-const event = ([taddr, expected_event] : [typed_address<Callback.parameter, Callback.storage>, Types.event_type]) => {
+const event = (taddr : typed_address<Callback.parameter, Callback.storage>, expected_event : Types.event_type) => {
     let storage = Test.get_storage(taddr);
     assert(storage.name == expected_event.name);
     assert(storage.videogame == expected_event.videogame);

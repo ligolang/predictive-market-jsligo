@@ -27,7 +27,7 @@ type parameter = ["SaveEvent", requested_event_param] | ["Nothing", unit];
 
 type return_ = [list<operation>, storage];
 
-const saveEvent = (param: requested_event_param, store : storage) =>
+const saveEvent = (param: requested_event_param, store : storage) : return_ =>
   [list([]),  {...store,
     name : param.name,
     videogame : param.videogame,

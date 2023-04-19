@@ -7,7 +7,7 @@ const string_failure = (res : test_exec_result, p_expected : string) => {
   match (res, {
     Fail: (x: test_exec_error) => (
       match (x, {
-        Rejected : (x : [michelson_code, address]) => assert (Test.michelson_equal (x[0], expected)),
+        Rejected : (x : [michelson_program, address]) => assert (Test.michelson_equal (x[0], expected)),
         Balance_too_low : _ => Test.failwith ("contract failed for an unknown reason"),
         Other : (_ : string) => Test.failwith ("contract failed for an unknown reason")
       })),

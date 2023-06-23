@@ -22,7 +22,7 @@ const base_storage : Callback.storage = {
     modifiedAt : plain_timestamp,
     opponents : { teamOne : "", teamTwo : ""},
     gameStatus : Ongoing(),
-    metadata : (Map.empty as map<string, bytes>)
+    meta : (Map.empty as map<string, bytes>)
 }
 
 const originate_from_file = (initial_storage : Callback.storage) => {

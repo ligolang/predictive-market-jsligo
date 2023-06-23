@@ -43,7 +43,7 @@ const bootstrap_oracle = () => {
         signer : jeff,
         events : (Map.empty as map<nat, Types.event_type>),
         eventsIndex : 0 as nat,
-        metadata : (Map.empty as map<string, bytes>)
+        meta : (Map.empty as map<string, bytes>)
     };
 
     // Boostrapping Oracle contract 

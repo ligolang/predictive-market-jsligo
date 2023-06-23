@@ -28,7 +28,7 @@ const base_storage = (bettingAddr : address) : Callback.storage => {return {
     bets_teamTwo       : (Map.empty as map<address, tez>),
     bets_teamTwo_index : 0 as nat,
     bets_teamTwo_total : 0 as mutez,
-    metadata            : (Map.empty as map<string, bytes>),
+    meta           : (Map.empty as map<string, bytes>),
     bettingAddr         : bettingAddr
 }};
 

@@ -18,7 +18,7 @@ type storage =
   signer : address,
   events : map <nat, event_type>,
   eventsIndex : nat,
-  metadata : map <string, bytes>
+  meta : map <string, bytes>
 };
 
 type update_event_parameter =

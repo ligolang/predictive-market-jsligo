@@ -40,7 +40,7 @@ type storage = {
   events : big_map <event_key, event_type>,
   events_bets : big_map <event_key, event_bets>,
   eventsIndex : event_key,
-  metadata : map <string, bytes>
+  meta : map <string, bytes>
 };
 
 type callback_asked_parameter =

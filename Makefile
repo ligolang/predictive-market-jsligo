@@ -48,42 +48,42 @@ compile_callback_betting: callback_betting.tz callback_betting.json
 oracle.tz: src/contracts/jsligo/oracle/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling Oracle smart contract to Michelson..."
-	@$(ligo_compiler) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 oracle.json: src/contracts/jsligo/oracle/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling Oracle smart contract to Michelson in JSON format..."
-	@$(ligo_compiler) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^ $(JSON_OPT)  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 betting.tz: src/contracts/jsligo/betting/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling Betting smart contract to Michelson..."
-	@$(ligo_compiler) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 betting.json: src/contracts/jsligo/betting/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling Betting smart contract to Michelson in JSON format..."
-	@$(ligo_compiler) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^ $(JSON_OPT)  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 callback_oracle.tz: src/contracts/jsligo/oracle/callback/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling callback_Oracle smart contract to Michelson..."
-	@$(ligo_compiler) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 callback_oracle.json: src/contracts/jsligo/oracle/callback/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling callback_Oracle smart contract to Michelson in JSON format..."
-	@$(ligo_compiler) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^ $(JSON_OPT)  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 callback_betting.tz: src/contracts/jsligo/betting/callback/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling callback_Betting smart contract to Michelson..."
-	@$(ligo_compiler) compile contract $^ -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 callback_betting.json: src/contracts/jsligo/betting/callback/main.jsligo
 	@if [ ! -d src/compiled ]; then mkdir src/compiled ; fi
 	@echo "Compiling callback_Betting smart contract to Michelson in JSON format..."
-	@$(ligo_compiler) compile contract $^ $(JSON_OPT) -e main $(PROTOCOL_OPT) --output-file src/compiled/$@
+	@$(ligo_compiler) compile contract $^ $(JSON_OPT)  $(PROTOCOL_OPT) --output-file src/compiled/$@
 
 # -------------------------
 # 		TEST SECTION

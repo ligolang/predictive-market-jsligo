@@ -1,8 +1,8 @@
 #import "../../../src/contracts/jsligo/betting/callback/main.jsligo" "Callback"
 
 // (* Some types for readability *)
-type taddr = typed_address<Callback.parameter, Callback.storage>;
-type contr = contract<Callback.parameter>;
+type taddr = typed_address<parameter_of Callback, Callback.storage>;
+type contr = contract<parameter_of Callback>;
 type originated = {
     addr: address,
     taddr: taddr,
@@ -11,8 +11,8 @@ type originated = {
 
 const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
 
-// Base Callback storage 
-const base_storage = (bettingAddr : address) : Callback.storage => {return {
+// Base Callback storage
+export const base_storage = (bettingAddr : address) : Callback.storage => {return {
     name                : "",
     videogame           : "",
     beginAt            : plain_timestamp + 2048,
@@ -32,11 +32,11 @@ const base_storage = (bettingAddr : address) : Callback.storage => {return {
     bettingAddr         : bettingAddr
 }};
 
-const originate_from_file = (initial_storage : Callback.storage) : originated => {
+export const originate_from_file = (initial_storage : Callback.storage) : originated => {
     let betting_path           = "../../../src/contracts/jsligo/betting/callback/main.jsligo";
     let iTres                  = Test.run( (x : Callback.storage) => x, initial_storage);
-    let [callback_addr, _, _]  = Test.originate_from_file(betting_path, "main", (list([]) as list<string>), iTres, 0 as mutez);
-    let callback_taddress      = (Test.cast_address(callback_addr) as typed_address<Callback.parameter, Callback.storage>);
+    let [callback_addr, _, _]  = Test.originate_from_file(betting_path, iTres, 0 as mutez);
+    let callback_taddress      = (Test.cast_address(callback_addr) as typed_address<parameter_of Callback, Callback.storage>);
     let callback_contract      = Test.to_contract (callback_taddress);
     return {
         contr : callback_contract,

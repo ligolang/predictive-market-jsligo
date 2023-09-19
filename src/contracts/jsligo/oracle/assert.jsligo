@@ -1,22 +1,22 @@
 #import "types.jsligo" "Types"
 #import "errors.jsligo" "Errors"
 
-const isManager = (p_sender : address, p_manager : address) => {
+export const isManager = (p_sender : address, p_manager : address) => {
   if (p_sender != p_manager) {return failwith(Errors.not_manager);};
   };
 
-const isManagerOrSigner = (p_sender : address, p_manager : address, p_signer : address) => {
+export const isManagerOrSigner = (p_sender : address, p_manager : address, p_signer : address) => {
   if ((p_sender != p_manager) && (p_sender != p_signer) ) {return failwith(Errors.not_manager_nor_signer);};
   };
 
-const notPreviousManager = (p_new_manager : address, p_prev_manager : address) => {
+export const notPreviousManager = (p_new_manager : address, p_prev_manager : address) => {
   if (p_new_manager == p_prev_manager) {return failwith(Errors.same_previous_manager);};
   };
 
-const notPreviousSigner = (p_new_signer : address, p_prev_signer : address) => {
+export const notPreviousSigner = (p_new_signer : address, p_prev_signer : address) => {
   if (p_new_signer == p_prev_signer) {return failwith(Errors.same_previous_signer);};
   };
 
-const eventCreationNotPaused = (p_event_creation_paused : bool) => {
+export const eventCreationNotPaused = (p_event_creation_paused : bool) => {
   if (p_event_creation_paused) {return failwith(Errors.event_creation_paused);};
   };

@@ -5,23 +5,23 @@
 //       CONFIG RELATED ASSERTIONS
 // --------------------------------------
 
-const isManager = (p_sender : address, p_manager : address) => {
+export const isManager = (p_sender : address, p_manager : address) => {
   if (p_sender != p_manager) {return failwith(Errors.not_manager)}
   };
 
-const isManagerOrOracle = (p_sender : address, p_manager : address, p_oracle : address) => {
+export const isManagerOrOracle = (p_sender : address, p_manager : address, p_oracle : address) => {
   if ((p_sender != p_manager) && (p_sender != p_oracle) ) {return failwith(Errors.not_manager_nor_oracle)}
   };
 
-const notManagerNorOracle = (p_sender : address, p_manager : address, p_oracle : address) => {
+export const notManagerNorOracle = (p_sender : address, p_manager : address, p_oracle : address) => {
   if ((p_sender == p_manager) || (p_sender == p_oracle) ) {return failwith(Errors.not_manager_nor_oracle)}
   };
 
-const notPreviousManager = (p_new_manager : address, p_prev_manager : address) => {
+export const notPreviousManager = (p_new_manager : address, p_prev_manager : address) => {
   if (p_new_manager == p_prev_manager) {return failwith(Errors.same_previous_manager)}
   };
 
-const notPreviousOracle = (p_new_oracle : address, p_prev_oracle : address) => {
+export const notPreviousOracle = (p_new_oracle : address, p_prev_oracle : address) => {
   if (p_new_oracle == p_prev_oracle) {return failwith(Errors.same_previous_oracle)}
   };
 
@@ -29,23 +29,23 @@ const notPreviousOracle = (p_new_oracle : address, p_prev_oracle : address) => {
 //         EVENT RELATED ASSERTIONS
 // --------------------------------------
 
-const eventCreationNotPaused = (p_event_creation_paused : bool) => {
+export const eventCreationNotPaused = (p_event_creation_paused : bool) => {
   if (p_event_creation_paused) {return failwith(Errors.event_creation_paused)}
   };
 
-const eventStartToEndDate = (p_event_start : timestamp, p_event_end : timestamp) => {
+export const eventStartToEndDate = (p_event_start : timestamp, p_event_end : timestamp) => {
   if (p_event_start > p_event_end) {return failwith(Errors.event_end_before_start)}
   };
 
-const eventBetStartToEndDate = (p_event_bet_start : timestamp, p_event_bet_end : timestamp) => {
+export const eventBetStartToEndDate = (p_event_bet_start : timestamp, p_event_bet_end : timestamp) => {
   if (p_event_bet_start > p_event_bet_end) {return failwith(Errors.event_betting_end_before_start)}
   };
 
-const eventBetStartAfterEnd = (p_event_bet_start : timestamp, p_event_end : timestamp) => {
+export const eventBetStartAfterEnd = (p_event_bet_start : timestamp, p_event_end : timestamp) => {
   if (p_event_bet_start > p_event_end) {return failwith(Errors.event_betting_start_after_end)}
   };
 
-const eventBetEndsAfterEnd = (p_event_bet_end : timestamp, p_event_end : timestamp) => {
+export const eventBetEndsAfterEnd = (p_event_bet_end : timestamp, p_event_end : timestamp) => {
   if (p_event_bet_end > p_event_end) {return failwith(Errors.event_betting_end_after_end)}
   };
 
@@ -53,46 +53,46 @@ const eventBetEndsAfterEnd = (p_event_bet_end : timestamp, p_event_end : timesta
 //         BETTING RELATED ASSERTIONS
 // --------------------------------------
 
-const bettingNotPaused = (p_betting_paused : bool) => {
+export const bettingNotPaused = (p_betting_paused : bool) => {
   if (p_betting_paused) {return failwith(Errors.betting_paused)}
   };
 
-const bettingNotFinalized = (p : Types.gameStatus) => 
-  match (p , {
-    Ongoing : (c) => c,
-    Team1Win : () => {return failwith(Errors.bet_finished)},
-    Team2Win : () => {return failwith(Errors.bet_finished)},
-    Draw : () => {return failwith(Errors.bet_finished)}
-  });
+export const bettingNotFinalized = (p : Types.gameStatus) =>
+  match (p) {
+    when(Ongoing(c)): c;
+    when(Team1Win()): failwith(Errors.bet_finished);
+    when(Team2Win()): failwith(Errors.bet_finished);
+    when(Draw()): failwith(Errors.bet_finished);
+  };
 
-const bettingFinalized = (p : Types.gameStatus) => 
-  match (p , {
-    Ongoing : () => {return failwith(Errors.bet_not_finished)},
-    Team1Win : (c) => c,
-    Team2Win : (c) => c,
-    Draw : (c) => c
-  });
+export const bettingFinalized = (p : Types.gameStatus) =>
+  match (p) {
+    when(Ongoing()): failwith(Errors.bet_not_finished);
+    when(Team1Win(c)): c;
+    when(Team2Win(c)): c;
+    when(Draw(c)): c;
+  };
 
-const noTez = (p_asserted_amount : tez) => {
+export const noTez = (p_asserted_amount : tez) => {
   if (p_asserted_amount == (0 as mutez)) {return failwith(Errors.bet_with_noTez)}
   };
 
-const tezLowerThanMin = (p_asserted_amount : tez, p_asserted_min_value : tez) => {
+export const tezLowerThanMin = (p_asserted_amount : tez, p_asserted_min_value : tez) => {
   if (p_asserted_amount < p_asserted_min_value) {return failwith(Errors.bet_lower_than_minimum)}
   };
 
-const bettingBeforePeriodStart = (p_start_at : timestamp) => {
+export const bettingBeforePeriodStart = (p_start_at : timestamp) => {
   if (p_start_at > (Tezos.get_now())) {return failwith(Errors.bet_period_not_started)}
   };
 
-const bettingAfterPeriodEnd = (p_endAt : timestamp) => {
+export const bettingAfterPeriodEnd = (p_endAt : timestamp) => {
   if (p_endAt < (Tezos.get_now())) {return failwith(Errors.bet_period_finished)}
   };
 
-const finalizingBeforePeriodEnd = (p_endAt : timestamp) => {
+export const finalizingBeforePeriodEnd = (p_endAt : timestamp) => {
   if (p_endAt > (Tezos.get_now())) {return failwith(Errors.bet_period_not_finished)}
   };
-    
-const betIsDraw = (p_is_draw : bool) => {
+
+export const betIsDraw = (p_is_draw : bool) => {
   if (p_is_draw) {return failwith(Errors.bet_ended_as_draw)}
   };

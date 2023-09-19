@@ -1,6 +1,6 @@
-type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
+export type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
-type event_type = 
+export type event_type =
   [@layout:comb] {
   name : string,
   videogame : string,
@@ -14,7 +14,7 @@ type event_type =
   is_claimed : bool
 };
 
-type event_bets =
+export type event_bets =
   [@layout:comb] {
   bets_teamOne : map <address, tez>,
   bets_teamOne_index : nat,
@@ -24,16 +24,16 @@ type event_bets =
   bets_teamTwo_total : tez
   };
 
-type event_key = nat;
+export type event_key = nat;
 
-type bet_config_type = {
+export type bet_config_type = {
   is_betting_paused : bool,
   is_event_creation_paused : bool,
   min_bet_amount : tez,
   retained_profit_quota : nat
 };
 
-type storage = {
+export type storage = {
   manager : address,
   oracle_address : address,
   bet_config : bet_config_type,
@@ -43,27 +43,27 @@ type storage = {
   meta : map <string, bytes>
 };
 
-type callback_asked_parameter =
+export type callback_asked_parameter =
   [@layout:comb] {
   requestedEventId : nat,
   callback : address
 };
 
-type update_event_parameter =
+export type update_event_parameter =
   [@layout:comb] {
   updatedEventId : nat,
   updatedEvent : event_type
 };
 
-type add_bet_parameter =
+export type add_bet_parameter =
   [@layout:comb] {
   requestedEventId : nat,
   teamOne_bet : bool
 };
 
-type finalize_bet_parameter = nat;
+export type finalize_bet_parameter = nat;
 
-type add_event_parameter = 
+export type add_event_parameter =
 [@layout:comb] {
   name : string,
   videogame : string,
@@ -88,4 +88,4 @@ type action =
   | ["AddBet", add_bet_parameter]
   | ["FinalizeBet", finalize_bet_parameter];
 
-  type return_ = [list<operation>, storage];
+export type return_ = [list<operation>, storage];

@@ -1,19 +1,20 @@
 #import "../../../src/contracts/jsligo/oracle/types.jsligo" "Types"
+#import "../../../src/contracts/jsligo/oracle/main.jsligo" "Oracle"
 #import "bootstrap.jsligo" "Bootstrap"
 #import "assert.jsligo" "Assert"
 
 //  VARIABLES
 
-const empty_map : map<nat, Types.event_type> = (Map.empty as map<nat, Types.event_type>);
+export const empty_map : map<nat, Types.event_type> = (Map.empty as map<nat, Types.event_type>);
 
-const one_event_map : map<nat, Types.event_type> = Map.literal(list([
+export const one_event_map : map<nat, Types.event_type> = Map.literal(list([
     [0 as nat, Bootstrap.primary_event]
     ]));
-const double_event_map : map<nat, Types.event_type> = Map.literal(list([
+export const double_event_map : map<nat, Types.event_type> = Map.literal(list([
     [0 as nat, Bootstrap.primary_event],
     [1 as nat, Bootstrap.primary_event]
     ]));
-const three_event_map : map<nat, Types.event_type> = Map.literal(list([
+export const three_event_map : map<nat, Types.event_type> = Map.literal(list([
     [0 as nat, Bootstrap.primary_event],
     [1 as nat, Bootstrap.primary_event],
     [2 as nat, Bootstrap.primary_event]
@@ -21,73 +22,63 @@ const three_event_map : map<nat, Types.event_type> = Map.literal(list([
 
 //  FUNCTIONS
 
-const trsc_change_manager = (contr, from_, new) => {
+export const trsc_change_manager = (contr, from_, new) => {
     Test.set_source(from_);
-    let result = Test.transfer_to_contract(contr, (ChangeManager (new) as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (ChangeManager (new) as parameter_of Oracle), 0 as mutez);
     return result
 };
 
-const trsc_change_manager_success = (contr : contract<Types.action>, from_ : address, new : address) => {
+export const trsc_change_manager_success = (contr : contract<parameter_of Oracle>, from_ : address, new : address) => {
   return Assert.tx_success (trsc_change_manager(contr, from_, new))
 };
 
-const trsc_change_signer = (contr : contract<Types.action>, from_ : address, new : address) => {
+export const trsc_change_signer = (contr : contract<parameter_of Oracle>, from_ : address, new : address) => {
     let _= Test.set_source(from_);
-    let result = Test.transfer_to_contract(contr, (ChangeSigner (new) as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (ChangeSigner (new) as parameter_of Oracle), 0 as mutez);
     return result
 };
 
-const trsc_change_signer_success = (contr : contract<Types.action>, from_ : address, new : address) => {
+export const trsc_change_signer_success = (contr : contract<parameter_of Oracle>, from_ : address, new : address) => {
   return Assert.tx_success (trsc_change_signer(contr, from_, new))
 };
 
-const trsc_switch_pause = (contr : contract<Types.action>, from_ : address) => {
+export const trsc_switch_pause = (contr : contract<parameter_of Oracle>, from_ : address) => {
     let _= Test.set_source (from_);
-    let result = Test.transfer_to_contract(contr, (SwitchPause() as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (SwitchPause() as parameter_of Oracle), 0 as mutez);
     return result
 };
 
-const trsc_switch_pause_success = (contr : contract<Types.action>, from_ : address) => {
+export const trsc_switch_pause_success = (contr : contract<parameter_of Oracle>, from_ : address) => {
   return Assert.tx_success (trsc_switch_pause(contr, from_))
 };
 
-const trsc_add_event = (contr : contract<Types.action>, from_ : address, event : Types.event_type) => {
+export const trsc_add_event = (contr : contract<parameter_of Oracle>, from_ : address, event : Types.event_type) => {
     let _= Test.set_source (from_);
-    let result = Test.transfer_to_contract(contr, (AddEvent (event) as Types.action), 0 as mutez);
+    let result = Test.transfer_to_contract(contr, (AddEvent (event) as parameter_of Oracle), 0 as mutez);
     return result
 };
 
-const trsc_add_event_success = (contr : contract<Types.action>, from_ : address, event : Types.event_type) => {
+export const trsc_add_event_success = (contr : contract<parameter_of Oracle>, from_ : address, event : Types.event_type) => {
   return Assert.tx_success (trsc_add_event(contr, from_, event))
 };
 
-const trsc_update_event = (contr : contract<Types.action>, from_ : address, event_num : nat, event : Types.event_type) => {
+export const trsc_update_event = (contr : contract<parameter_of Oracle>, from_ : address, event_num : nat, event : Types.event_type) => {
     let _= Test.set_source (from_);
-    let updateEventParam =
-    {
-        updatedEventId : event_num,
-        updatedEvent : event
-    };
-   
-    let result = Test.transfer_to_contract(contr, (UpdateEvent (updateEventParam) as Types.action), 0 as mutez);
+
+    let result = Test.transfer_to_contract(contr, (UpdateEvent (event_num, event) as parameter_of Oracle), 0 as mutez);
     return result
 };
 
-const trsc_update_event_success = (contr : contract<Types.action>, from_ : address, event_num : nat, event : Types.event_type) => {
+export const trsc_update_event_success = (contr : contract<parameter_of Oracle>, from_ : address, event_num : nat, event : Types.event_type) => {
   return Assert.tx_success (trsc_update_event(contr, from_, event_num, event))
 };
 
-const trsc_get_event = (contr : contract<Types.action>, from_ : address, cbk_addr : address, event_num : nat) => {
+export const trsc_get_event = (contr : contract<parameter_of Oracle>, from_ : address, cbk_addr : address, event_num : nat) => {
     let _= Test.set_source (from_);
-    let callbackParameter =
-    {
-        requestedEventId : event_num,
-        callback : cbk_addr
-    };
-    let result_cbk = Test.transfer_to_contract(contr, (GetEvent (callbackParameter) as Types.action), 0 as mutez);
+    let result_cbk = Test.transfer_to_contract(contr, (GetEvent (event_num, cbk_addr) as parameter_of Oracle), 0 as mutez);
     return result_cbk
 };
 
-const trsc_get_event_success = (contr : contract<Types.action>, from_ : address, cbk_addr : address, event_num : nat) => {
+export const trsc_get_event_success = (contr : contract<parameter_of Oracle>, from_ : address, cbk_addr : address, event_num : nat) => {
   return Assert.tx_success (trsc_get_event(contr, from_, cbk_addr, event_num))
 };

@@ -1,60 +1,61 @@
 #import "../../../src/contracts/jsligo/oracle/types.jsligo" "Types"
+#import "../../../src/contracts/jsligo/oracle/main.jsligo" "Oracle"
 #import "../../../src/contracts/jsligo/oracle/callback/main.jsligo" "Callback"
 
 // Assert contract call results; failwith with given string
-const string_failure = (res : test_exec_result, p_expected : string) =>  {
+export const string_failure = (res : test_exec_result, p_expected : string) =>  {
   let expected = Test.eval (p_expected) ;
-  match (res, {
-    Fail: (x: test_exec_error) => (
-      match (x, {
-        Rejected: (x:[michelson_program,address]) => assert (Test.michelson_equal (x[0], expected)),
-        Balance_too_low: _ => Test.failwith ("contract failed for an unknown reason"),
-        Other: _ => Test.failwith ("contract failed for an unknown reason")
-      })),
-    Success: _ => Test.failwith ("bad price check")
-  } );
+  match (res) {
+    when(Fail(x)):
+      match (x) {
+        when(Rejected(x)): assert (Test.michelson_equal (x[0], expected));
+        when(Balance_too_low(_)): Test.failwith ("contract failed for an unknown reason");
+        when(Other(_)): Test.failwith ("contract failed for an unknown reason");
+      };
+    when(Success(_)): Test.failwith ("bad price check");
+  };
 } ;
 
 // Assert contract result is successful
-const tx_success = (res: test_exec_result) => 
-  match (res, {
-    Fail: _ => Test.failwith("Transaction should not fail"),
-    Success: _ => unit
-  } );
+export const tx_success = (res: test_exec_result) =>
+  match (res) {
+    when(Fail(_)): Test.failwith("Transaction should not fail");
+    when(Success(_)): unit;
+  };
 
 
 // Some types for readability
-type taddr = typed_address<Types.action, Types.storage>;
-type taddrCallback = typed_address<Callback.parameter, Callback.storage>;
+type taddr = typed_address<parameter_of Oracle, Types.storage>;
+type taddrCallback = typed_address<parameter_of Callback, Callback.storage>;
 
-// Assert Manager parameter with expected result 
-const manager = (ctr_taddr : taddr, expected : address) => {
+// Assert Manager parameter with expected result
+export const manager = (ctr_taddr : taddr, expected : address) => {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.manager);
     assert (ctr_value == expected)
 };
 
 // Assert Signer parameter with expected result
-const signer = (ctr_taddr : taddr, expected : address) =>  {
+export const signer = (ctr_taddr : taddr, expected : address) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.signer);
     assert (ctr_value == expected)
 };
 // Assert isPaused parameter with expected result
-const ispaused = (ctr_taddr : taddr, expected : bool) =>  {
+export const ispaused = (ctr_taddr : taddr, expected : bool) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = (ctr_storage.isPaused);
     assert (ctr_value == expected)
 };
 
 // Assert isPaused parameter with expected result
-const events_map = (ctr_taddr : taddr, expected : map<nat, Types.event_type>) =>  {
+export const events_map = (ctr_taddr : taddr, expected : map<nat, Types.event_type>) =>  {
     let ctr_storage = Test.get_storage(ctr_taddr);
     let ctr_value = ctr_storage.events;
     assert (ctr_value == expected)
 };
 
-const event = (taddr : taddrCallback, expected_event : Types.event_type) =>  {
+export const event = (taddr : taddrCallback, expected_event : Types.event_type) =>  {
     let storage = Test.get_storage(taddr);
     assert(storage.name == expected_event.name);
     assert(storage.videogame == expected_event.videogame);

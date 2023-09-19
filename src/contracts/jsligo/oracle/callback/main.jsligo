@@ -1,6 +1,6 @@
 type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
-type storage = 
+export type storage =
   [@layout:comb] {
   name : string,
   videogame : string,
@@ -12,7 +12,7 @@ type storage =
   meta : map <string, bytes>
   };
 
-type requested_event_param = 
+type requested_event_param =
   [@layout:comb] {
     name : string,
     videogame : string,
@@ -27,6 +27,7 @@ type parameter = ["SaveEvent", requested_event_param] | ["Nothing", unit];
 
 type return_ = [list<operation>, storage];
 
+@entry
 const saveEvent = (param: requested_event_param, store : storage) : return_ =>
   [list([]),  {...store,
     name : param.name,
@@ -38,8 +39,6 @@ const saveEvent = (param: requested_event_param, store : storage) : return_ =>
     gameStatus : param.gameStatus
   }];
 
-const main = (param: parameter, store: storage) : return_ =>
-  match (param, {
-    SaveEvent: param => saveEvent(param, store),
-    Nothing: () => [(list([]) as list<operation>), store]
-  });
+@entry
+const nothing = (_: unit, store: storage) : return_ =>
+  [(list([]) as list<operation>), store];

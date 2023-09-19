@@ -1,6 +1,6 @@
 #import "../types.jsligo" "BETTING_Types"
 
-type storage = 
+export type storage =
   [@layout:comb] {
   name : string,
   videogame : string,
@@ -21,7 +21,7 @@ type storage =
   bettingAddr : address
   };
 
-type requested_event_param =
+export type requested_event_param =
   [@layout:comb] {
   name : string,
   videogame : string,
@@ -45,6 +45,7 @@ type parameter = ["SaveEvent", requested_event_param] | ["RequestEvent", nat];
 
 type return_ = [list<operation>, storage];
 
+@entry
 const saveEvent = (param: requested_event_param, store : storage) : return_ =>
   [list([]),  {...store,
     name : param.name,
@@ -64,22 +65,17 @@ const saveEvent = (param: requested_event_param, store : storage) : return_ =>
     bets_teamTwo_total : param.bets_teamTwo_total
   }];
 
+@entry
 const requestEvent = (param: nat, store : storage) : return_ => {
   let payload = {
     requestedEventId : param,
     callback : Tezos.get_self_address()
   };
   let c_opt = Tezos.get_entrypoint_opt("%getEvent", store.bettingAddr);
-  let destination = match (c_opt , {
-    Some:(c) => c,
-    None:() => (failwith("missing_entrypoint_sendvalue") as contract<BETTING_Types.callback_asked_parameter>)
-  });
+  let destination = match (c_opt) {
+    when(Some(c)): c;
+    when(None()): (failwith("missing_entrypoint_sendvalue") as contract<BETTING_Types.callback_asked_parameter>);
+  };
   let op = Tezos.transaction(payload, (0 as mutez), destination);
   return [list([op]), store]
 };
-
-const main = (param: parameter, store: storage) : return_ =>
-  match (param, {
-    SaveEvent: param => saveEvent(param, store),
-    RequestEvent: param => requestEvent(param, store)
-  });

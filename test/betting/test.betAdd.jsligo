@@ -69,17 +69,17 @@ const _test_bet_various_entries_should_work = () => {
 
     let bet_last_map = Big_map.literal(list([
     [0 as nat, {
-        bets_teamOne : Map.literal(list([ [alice, (20000000 as mutez)], [bob, 1000000 as mutez] ])),
-        bets_teamOne_index : (1 as nat) + (1 as nat),
-        bets_teamOne_total : (20000000 as mutez) + (1000000 as mutez) ,
-        bets_teamTwo : Map.literal(list([ [alice, (10000000 as mutez)], [mike, 3000000 as mutez], [bob, 7000000 as mutez] ])),
-        bets_teamTwo_index : (1 as nat) + (1 as nat) + (1 as nat) ,
-        bets_teamTwo_total : (10000000 as mutez) + (3000000 as mutez) + (7000000 as mutez) 
+        bets_teamOne : Map.literal(list([ [alice, 20000000mutez], [bob, 1000000 as mutez] ])),
+        bets_teamOne_index : 1n + 1n,
+        bets_teamOne_total : 20000000mutez + 1000000mutez ,
+        bets_teamTwo : Map.literal(list([ [alice, 10000000mutez], [mike, 3000000 as mutez], [bob, 7000000 as mutez] ])),
+        bets_teamTwo_index : 1n + 1n + 1n ,
+        bets_teamTwo_total : 10000000mutez + 3000000mutez + 7000000mutez 
         }
         ]
     ]));
 
-    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), (20000000 as mutez));
+    Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (true as bool), 20000000mutez);
     Helper.trsc_add_bet_success (betting_contract, bob, 0 as nat, (true as bool), 1000000 as mutez);
     Helper.trsc_add_bet_success (betting_contract, alice, 0 as nat, (false as bool), 10000000 as mutez);
     Helper.trsc_add_bet_success (betting_contract, mike, 0 as nat, (false as bool), 3000000 as mutez);

@@ -14,17 +14,17 @@ const _test_win_basic_team1_should_work = () => {
   //Given
   let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), (800000000000 as mutez));
-  Helper.trsc_add_bet_success (betting_contract, bob,   (0 as nat), (true  as bool), (800000000000 as mutez));
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), (800000000000 as mutez));
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 800000000000mutez);
+  Helper.trsc_add_bet_success (betting_contract, bob,   0n, (true  as bool), 800000000000mutez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 800000000000mutez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
-  let expected_alice_balance = Test.get_balance(alice) + ((800000000000 as mutez) + (400000000000 as mutez)) * quota_left / (100 as nat);
-  let expected_bob_balance   = Test.get_balance(bob)   + ((800000000000 as mutez) + (400000000000 as mutez)) * quota_left / (100 as nat);
+  let quota_left = abs(100n - storage.bet_config.retained_profit_quota);
+  let expected_alice_balance = Test.get_balance(alice) + (800000000000mutez + 400000000000mutez) * quota_left / 100n;
+  let expected_bob_balance   = Test.get_balance(bob)   + (800000000000mutez + 400000000000mutez) * quota_left / 100n;
   let expected_mike_balance  = Test.get_balance(mike);
   //When
-  Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
+  Helper.trsc_finalize_bet_success (betting_contract, elon, 0n);
   //Then
   assert (expected_alice_balance == Test.get_balance(alice));
   assert (expected_bob_balance   == Test.get_balance(bob));
@@ -37,17 +37,17 @@ const _test_draw_should_work = () => {
   //Given
   let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), (800000000000 as mutez));
-  Helper.trsc_add_bet_success (betting_contract, bob,   (0 as nat), (true  as bool), (800000000000 as mutez));
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), (800000000000 as mutez));
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_draw);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 800000000000mutez);
+  Helper.trsc_add_bet_success (betting_contract, bob,   0n, (true  as bool), 800000000000mutez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 800000000000mutez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_draw);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
-  let expected_alice_balance = Test.get_balance(alice) + (800000000000 as mutez) * quota_left / (100 as nat);
-  let expected_bob_balance   = Test.get_balance(bob)   + (800000000000 as mutez) * quota_left / (100 as nat);
-  let expected_mike_balance  = Test.get_balance(mike)  + (800000000000 as mutez) * quota_left / (100 as nat);
+  let quota_left = abs(100n - storage.bet_config.retained_profit_quota);
+  let expected_alice_balance = Test.get_balance(alice) + 800000000000mutez * quota_left / 100n;
+  let expected_bob_balance   = Test.get_balance(bob)   + 800000000000mutez * quota_left / 100n;
+  let expected_mike_balance  = Test.get_balance(mike)  + 800000000000mutez * quota_left / 100n;
   //When
-  Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
+  Helper.trsc_finalize_bet_success (betting_contract, elon, 0n);
   //Then
   assert (expected_alice_balance == Test.get_balance(alice));
   assert (expected_bob_balance   == Test.get_balance(bob));
@@ -61,16 +61,16 @@ const _test_win_weighted_team1_should_work = () => {
   //Given
   let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), (800000000000 as mutez));
-  Helper.trsc_add_bet_success (betting_contract, bob,   (0 as nat), (true  as bool), (400000000000 as mutez));
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), (600000000000 as mutez));
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 800000000000mutez);
+  Helper.trsc_add_bet_success (betting_contract, bob,   0n, (true  as bool), 400000000000mutez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 600000000000mutez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
-  let expected_alice_balance = Test.get_balance(alice) + ((800000000000 as mutez) + (400000000000 as mutez)) * quota_left / (100 as nat);
-  let expected_bob_balance   = Test.get_balance(bob)   + ((400000000000 as mutez) + (200000000000 as mutez)) * quota_left / (100 as nat);
+  let quota_left = abs(100n - storage.bet_config.retained_profit_quota);
+  let expected_alice_balance = Test.get_balance(alice) + (800000000000mutez + 400000000000mutez) * quota_left / 100n;
+  let expected_bob_balance   = Test.get_balance(bob)   + (400000000000mutez + 200000000000mutez) * quota_left / 100n;
   //When
-  Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
+  Helper.trsc_finalize_bet_success (betting_contract, elon, 0n);
   //Then
   let alice_bal_error  = Option.unopt(expected_alice_balance - Test.get_balance(alice));
   //let alice_bal_error  = match( (expected_alice_balance - Test.get_balance(alice)), list([
@@ -82,8 +82,8 @@ const _test_win_weighted_team1_should_work = () => {
   //  Some: (b: tez) => b,
   //  None: ()   => failwith("Weighted Win Reward Test Fails")
   //]));
-  assert (alice_bal_error < (1 as tez));
-  assert (bob_bal_error   < (1 as tez));
+  assert (alice_bal_error < 1tez);
+  assert (bob_bal_error   < 1tez);
   return "OK"
 };
 
@@ -93,16 +93,16 @@ const _test_win_weighted_team2_should_work = () => {
   //Given
   let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 30000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), 60000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, bob,   (0 as nat), (false as bool), 30000 as tez);
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team2_win);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 30000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 60000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, bob,   0n, (false as bool), 30000 as tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team2_win);
   let storage = Test.get_storage(betting_taddress);
-  let quota_left = abs((100 as nat) - storage.bet_config.retained_profit_quota);
-  let expected_mike_balance = Test.get_balance(mike) + ((60000 as tez) + (20000 as tez)) * quota_left / (100 as nat);
-  let expected_bob_balance = Test.get_balance(bob) + ((30000 as tez) + (10000 as tez)) * quota_left / (100 as nat);
+  let quota_left = abs(100n - storage.bet_config.retained_profit_quota);
+  let expected_mike_balance = Test.get_balance(mike) + (60000tez + 20000tez) * quota_left / 100n;
+  let expected_bob_balance = Test.get_balance(bob) + (30000tez + 10000tez) * quota_left / 100n;
   //When
-  Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
+  Helper.trsc_finalize_bet_success (betting_contract, elon, 0n);
   //Then
   let mike_bal_error  = Option.unopt(expected_mike_balance - Test.get_balance(mike));
   //let mike_bal_error  = match( (expected_mike_balance - Test.get_balance(mike)), list([
@@ -114,8 +114,8 @@ const _test_win_weighted_team2_should_work = () => {
   //  Some: (b: tez) => b, 
   //  None: () => failwith("Double Weighted Win Reward Test Team 2 Fails")
   //]));
-  assert (mike_bal_error < (1 as tez));
-  assert (bob_bal_error < (1 as tez));
+  assert (mike_bal_error < 1tez);
+  assert (bob_bal_error < 1tez);
   return "OK"
 };
 
@@ -125,11 +125,11 @@ const _test_finalizing_bet_two_times_should_fail = () => {
   //Given
   let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 30000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), 60000 as tez);
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 30000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 60000 as tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
   //When
-  let ret = Helper.trsc_update_event (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
+  let ret = Helper.trsc_update_event (betting_contract, elon, 0n, Events.finalized_event_team1_win);
   //Then
   Assert.string_failure(ret, Errors.bet_finished);
   return "OK"
@@ -142,12 +142,12 @@ const _test_claim_bet_two_times_should_fail = () => {
   //Given
   let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 30000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), 60000 as tez);
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
-  Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 30000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 60000 as tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
+  Helper.trsc_finalize_bet_success (betting_contract, elon, 0n);
   //When
-  let ret = Helper.trsc_finalize_bet (betting_contract, elon, (0 as nat));
+  let ret = Helper.trsc_finalize_bet (betting_contract, elon, 0n);
   //Then
   Assert.string_failure(ret, Errors.event_already_claimed);
   return "OK"
@@ -159,10 +159,10 @@ const _test_finalizing_bet_without_outcome_should_fail = () => {
   //Given
   let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 1000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), 1000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 1000 as tez);
   //When
-  let ret = Helper.trsc_finalize_bet (betting_contract, elon, (0 as nat));
+  let ret = Helper.trsc_finalize_bet (betting_contract, elon, 0n);
   //Then
   Assert.string_failure(ret, Errors.bet_not_finished);
   return "OK"
@@ -174,11 +174,11 @@ const _test_finalizing_bet_with_wrong_id_should_fail = () => {
   //Given
   let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 1000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), 1000 as tez);
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 1000 as tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
   //When
-  let ret = Helper.trsc_finalize_bet (betting_contract, elon, (1 as nat));
+  let ret = Helper.trsc_finalize_bet (betting_contract, elon, 1n);
   //Then
   Assert.string_failure(ret, Errors.no_event_id);
   return "OK"
@@ -190,11 +190,11 @@ const _test_winning_without_counterparty_refund_should_work = () => {
   //Given
   let [_, betting_contract, _betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), (1000 as tez));
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_team1_win);
-  let expected_alice_balance = Test.get_balance(alice) + (1000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
+  let expected_alice_balance = Test.get_balance(alice) + 1000tez;
   //When
-  Helper.trsc_finalize_bet_success (betting_contract, elon, (0 as nat));
+  Helper.trsc_finalize_bet_success (betting_contract, elon, 0n);
   //Then
   assert (expected_alice_balance == Test.get_balance(alice));
   return "OK"
@@ -206,11 +206,11 @@ const _test_finalizing_event_not_finished_should_fail = () => {
   //Given
   let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 1000 as tez);
-  Helper.trsc_add_bet_success (betting_contract, mike,  (0 as nat), (false as bool), 1000 as tez);
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_too_long);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
+  Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 1000 as tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_too_long);
   //When
-  let ret = Helper.trsc_finalize_bet (betting_contract, elon, (0 as nat));
+  let ret = Helper.trsc_finalize_bet (betting_contract, elon, 0n);
   //Then
   Assert.string_failure(ret, Errors.bet_period_not_finished);
   return "OK"
@@ -222,10 +222,10 @@ const _test_finalizing_event_without_manager_rights_should_fail = () => {
   //Given
   let [_, betting_contract, _, elon, _, alice, _, _] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
-  Helper.trsc_add_bet_success (betting_contract, alice, (0 as nat), (true  as bool), 1000 as tez);
-  Helper.trsc_update_event_success (betting_contract, elon, (0 as nat), Events.finalized_event_too_long);
+  Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
+  Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_too_long);
   //When
-  let ret = Helper.trsc_finalize_bet (betting_contract, alice, (0 as nat));
+  let ret = Helper.trsc_finalize_bet (betting_contract, alice, 0n);
   //Then
   Assert.string_failure(ret, Errors.not_manager);
   return "OK"

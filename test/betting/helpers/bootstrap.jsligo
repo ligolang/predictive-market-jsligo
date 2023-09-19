@@ -18,8 +18,8 @@ export const bootstrap = () => {
   let init_bet_config = {
     is_betting_paused       : false,
     is_event_creation_paused : false,
-    min_bet_amount          : (1000000 as mutez),
-    retained_profit_quota   : (10 as nat)
+    min_bet_amount          : 1000000mutez,
+    retained_profit_quota   : 10n
   };
 
   // Boostrapping storage
@@ -29,7 +29,7 @@ export const bootstrap = () => {
     bet_config     : init_bet_config,
     events        : (Big_map.empty as big_map<nat, Types.event_type>),
     events_bets   : (Big_map.empty as big_map<nat, Types.event_bets>),
-    eventsIndex  : (0 as nat),
+    eventsIndex  : 0n,
     meta      : (Map.empty as map<string, bytes>)
   };
 

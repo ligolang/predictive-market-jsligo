@@ -76,6 +76,6 @@ const requestEvent = (param: nat, store : storage) : return_ => {
     when(Some(c)): c;
     when(None()): (failwith("missing_entrypoint_sendvalue") as contract<BETTING_Types.callback_asked_parameter>);
   };
-  let op = Tezos.transaction(payload, (0 as mutez), destination);
+  let op = Tezos.transaction(payload, 0mutez, destination);
   return [list([op]), store]
 };

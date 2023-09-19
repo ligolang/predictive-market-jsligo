@@ -58,14 +58,14 @@ const addEvent = (p_new_event : Types.add_event_parameter, s : Types.storage) : 
   let new_events = Big_map.add(s.eventsIndex, new_event, s.events);
   let new_event_bet = {
     bets_teamOne : (Map.empty as map <address, tez>),
-    bets_teamOne_index : (0 as nat),
-    bets_teamOne_total : (0 as mutez),
+    bets_teamOne_index : 0n,
+    bets_teamOne_total : 0mutez,
     bets_teamTwo : (Map.empty as map <address, tez>),
-    bets_teamTwo_index : (0 as nat),
-    bets_teamTwo_total : (0 as mutez)
+    bets_teamTwo_index : 0n,
+    bets_teamTwo_total : 0mutez
   };
   let new_events_bets = Big_map.add(s.eventsIndex, new_event_bet, s.events_bets);
-  return [list([]), {...s, events : new_events, events_bets : new_events_bets, eventsIndex : s.eventsIndex + (1 as nat) }]
+  return [list([]), {...s, events : new_events, events_bets : new_events_bets, eventsIndex : s.eventsIndex + 1n }]
 };
 
 @entry
@@ -102,7 +102,7 @@ const getEvent = ([requestedEventId, callbackAddr] : [nat, address], s : Types.s
       when(None()): failwith("Unknown contract");
       when(Some(ctr)): ctr;
     };
-  let op = Tezos.transaction(payload, (0 as mutez), destination);
+  let op = Tezos.transaction(payload, 0mutez, destination);
   return [list([op]), s]
 };
 
@@ -132,7 +132,7 @@ const add_bet_teamOne_amount_to_existing_user = (p_requestedEventBets : Types.ev
 const add_bet_teamOne_amount_to_new_user = (p_requestedEventBets : Types.event_bets) => {
   //TODO
   let p_new_bets_teamOne = Map.add((Tezos.get_sender()), (Tezos.get_amount()), p_requestedEventBets.bets_teamOne);
-  let p_new_bets_teamOne_index = p_requestedEventBets.bets_teamOne_index + (1 as nat);
+  let p_new_bets_teamOne_index = p_requestedEventBets.bets_teamOne_index + 1n;
   return [p_new_bets_teamOne, p_new_bets_teamOne_index]
 };
 
@@ -156,7 +156,7 @@ const add_bet_teamTwo_amount_to_existing_user = (p_requestedEventBets : Types.ev
 const add_bet_teamTwoAmountToNewUser = (p_requestedEventBets : Types.event_bets) => {
   //TODO
   let p_newbets_teamTwo = Map.add((Tezos.get_sender()), (Tezos.get_amount()), p_requestedEventBets.bets_teamTwo);
-  let p_newbets_teamTwo_index = p_requestedEventBets.bets_teamTwo_index + (1 as nat);
+  let p_newbets_teamTwo_index = p_requestedEventBets.bets_teamTwo_index + 1n;
   return [p_newbets_teamTwo, p_newbets_teamTwo_index]
 };
 
@@ -207,8 +207,8 @@ const addBet = ([p_requested_event_id, team_one_bet] : [nat, bool], s : Types.st
 
 const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) : operation => {
   //TODO
-  let quota_to_send = abs((100 as nat) - profit_quota);
-  let value_to_send = value_won * quota_to_send / (100 as nat);
+  let quota_to_send = abs(100n - profit_quota);
+  let value_to_send = value_won * quota_to_send / 100n;
   let dest_opt = Tezos.get_contract_opt(addr);
   let destination = match(dest_opt) {
     when(None()): failwith("Not found");
@@ -220,8 +220,8 @@ const make_transfer_op = (addr : address, value_won : tez, profit_quota : nat) :
 const compose_payment = ( winner_map : map <address, tez>, total_value_bet : tez, total_value_won : tez, profit_quota : nat) : list<operation> => {
   //TODO
   let folded_op_list = ([op_list, [address, bet_amount]] : [list<operation>, [address, tez]]) => {
-    let won_reward_percentage = (10000000 as nat) * bet_amount / total_value_bet;
-    let added_reward =  total_value_won * won_reward_percentage / (10000000 as nat);
+    let won_reward_percentage = 10000000n * bet_amount / total_value_bet;
+    let added_reward =  total_value_won * won_reward_percentage / 10000000n;
     let reward_to_distribute = bet_amount + added_reward;
     let reward_op = make_transfer_op(address, reward_to_distribute, profit_quota);
     return list([reward_op, ...op_list])
@@ -244,9 +244,9 @@ const refund_bet = (event_bets : Types.event_bets, profit_quota : nat) : list<op
 
 const resolve_team_win = (event_bets : Types.event_bets, is_teamOne_win : bool, profit_quota : nat) : list<operation> => {
   //TODO
-  if (event_bets.bets_teamOne_total == (0 as mutez) || event_bets.bets_teamTwo_total == (0 as mutez) )
+  if (event_bets.bets_teamOne_total == 0mutez || event_bets.bets_teamTwo_total == 0mutez )
     {
-      return refund_bet(event_bets, (0 as nat))
+      return refund_bet(event_bets, 0n)
     }
   else
     if (is_teamOne_win)

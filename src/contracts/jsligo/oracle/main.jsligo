@@ -36,7 +36,7 @@ const addEvent = (new_event, s: Types.storage) : Types.return_ => {
   Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
   Assert.eventCreationNotPaused (s.isPaused);
   let new_events: map <nat, Types.event_type> = Map.add (s.eventsIndex, new_event, s.events);
-  return [list([]), {...s, events: new_events, eventsIndex: s.eventsIndex + (1 as nat) }]
+  return [list([]), {...s, events: new_events, eventsIndex: s.eventsIndex + 1n }]
 };
 
 @entry
@@ -50,7 +50,7 @@ const getEvent = ([requestedEventId, callbackAddr], s: Types.storage) : Types.re
       when(Some(c)): c;
       when(None()): failwith("Unknown contract");
     };
-  let op: operation = Tezos.transaction(cbk_event, (0 as mutez), destination);
+  let op: operation = Tezos.transaction(cbk_event, 0mutez, destination);
   return [list([op]), s]
 };
 

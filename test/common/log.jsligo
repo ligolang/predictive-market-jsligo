@@ -2,10 +2,10 @@
 // Return str repeated n times
 export const repeat = (str: string, n: nat) => {
     const loop = (n: nat, acc: string) : string => {
-        if (n == (0 as nat)) {
+        if (n == 0n) {
             return acc;
         } else {
-            return loop(abs(n - (1 as nat)), acc + str);
+            return loop(abs(n - 1n), acc + str);
         };
     };
 
@@ -18,7 +18,7 @@ export const repeat = (str: string, n: nat) => {
 // "| My string |"
 // "+-----------+"
 export const describe = (lbl : string) => {
-    const hr = "+" + repeat("-", String.length(lbl) + (2 as nat)) +  "+";
+    const hr = "+" + repeat("-", String.length(lbl) + 2n) +  "+";
     Test.log(hr);
     Test.log("| " + lbl + " |");
     Test.log(hr);

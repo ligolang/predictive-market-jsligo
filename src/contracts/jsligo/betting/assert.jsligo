@@ -74,7 +74,7 @@ export const bettingFinalized = (p : Types.gameStatus) =>
   };
 
 export const noTez = (p_asserted_amount : tez) => {
-  if (p_asserted_amount == (0 as mutez)) {return failwith(Errors.bet_with_noTez)}
+  if (p_asserted_amount == 0mutez) {return failwith(Errors.bet_with_noTez)}
   };
 
 export const tezLowerThanMin = (p_asserted_amount : tez, p_asserted_min_value : tez) => {

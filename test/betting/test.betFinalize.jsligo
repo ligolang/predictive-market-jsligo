@@ -10,9 +10,9 @@ const _ = Log.describe("[Betting - FinalizeBet] test suite");
 
 // Basic Win Reward Test
 
-const _test_win_basic_team1_should_work = () => { 
+const _test_win_basic_team1_should_work = () => {
   //Given
-  let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+  let [_ba, betting_contract, betting_taddress, elon, _je, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 800000000000mutez);
   Helper.trsc_add_bet_success (betting_contract, bob,   0n, (true  as bool), 800000000000mutez);
@@ -33,9 +33,9 @@ const _test_win_basic_team1_should_work = () => {
 };
 
 // Basic Draw Reward Test
-const _test_draw_should_work = () => { 
+const _test_draw_should_work = () => {
   //Given
-  let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+  let [_ba, betting_contract, betting_taddress, elon, _je, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 800000000000mutez);
   Helper.trsc_add_bet_success (betting_contract, bob,   0n, (true  as bool), 800000000000mutez);
@@ -57,9 +57,9 @@ const _test_draw_should_work = () => {
 
 
 // Weighted Win Reward Test
-const _test_win_weighted_team1_should_work = () => { 
+const _test_win_weighted_team1_should_work = () => {
   //Given
-  let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+  let [_ba, betting_contract, betting_taddress, elon, _je, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 800000000000mutez);
   Helper.trsc_add_bet_success (betting_contract, bob,   0n, (true  as bool), 400000000000mutez);
@@ -89,9 +89,9 @@ const _test_win_weighted_team1_should_work = () => {
 
 
 //  Weighted Win Reward Test Team 2
-const _test_win_weighted_team2_should_work = () => { 
+const _test_win_weighted_team2_should_work = () => {
   //Given
-  let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+  let [_ba, betting_contract, betting_taddress, elon, _je, alice, bob, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 30000 as tez);
   Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 60000 as tez);
@@ -106,12 +106,12 @@ const _test_win_weighted_team2_should_work = () => {
   //Then
   let mike_bal_error  = Option.unopt(expected_mike_balance - Test.get_balance(mike));
   //let mike_bal_error  = match( (expected_mike_balance - Test.get_balance(mike)), list([
-  //  Some: (b: tez) => b, 
+  //  Some: (b: tez) => b,
   //  None: () => failwith("Double Weighted Win Reward Test Team 2 Fails")
   //]));
   let bob_bal_error  =Option.unopt(expected_bob_balance - Test.get_balance(bob));
   //let bob_bal_error  = match((expected_bob_balance - Test.get_balance(bob)), list([
-  //  Some: (b: tez) => b, 
+  //  Some: (b: tez) => b,
   //  None: () => failwith("Double Weighted Win Reward Test Team 2 Fails")
   //]));
   assert (mike_bal_error < 1tez);
@@ -121,9 +121,9 @@ const _test_win_weighted_team2_should_work = () => {
 
 
 // Finalizing a bet two times should fail
-const _test_finalizing_bet_two_times_should_fail = () => { 
+const _test_finalizing_bet_two_times_should_fail = () => {
   //Given
-  let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
+  let [_ba, betting_contract, _bt, elon, _je, alice, _b, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 30000 as tez);
   Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 60000 as tez);
@@ -138,9 +138,9 @@ const _test_finalizing_bet_two_times_should_fail = () => {
 
 // Claiming a bet two times should fail
 
-const _test_claim_bet_two_times_should_fail = () => { 
+const _test_claim_bet_two_times_should_fail = () => {
   //Given
-  let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
+  let [_be, betting_contract, _bt, elon, _je, alice, _b, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 30000 as tez);
   Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 60000 as tez);
@@ -155,9 +155,9 @@ const _test_claim_bet_two_times_should_fail = () => {
 
 
 // Finalising a bet without outcome should fail
-const _test_finalizing_bet_without_outcome_should_fail = () => { 
+const _test_finalizing_bet_without_outcome_should_fail = () => {
   //Given
-  let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
+  let [_be, betting_contract, _bt, elon, _je, alice, _b, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
   Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 1000 as tez);
@@ -170,9 +170,9 @@ const _test_finalizing_bet_without_outcome_should_fail = () => {
 
 
 // Finalising a wrong Id
-const _test_finalizing_bet_with_wrong_id_should_fail = () => { 
+const _test_finalizing_bet_with_wrong_id_should_fail = () => {
   //Given
-  let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
+  let [_be, betting_contract, _bt, elon, _je, alice, _b, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
   Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 1000 as tez);
@@ -186,9 +186,9 @@ const _test_finalizing_bet_with_wrong_id_should_fail = () => {
 
 
 // Winning without counterparty should refund
-const _test_winning_without_counterparty_refund_should_work = () => { 
+const _test_winning_without_counterparty_refund_should_work = () => {
   //Given
-  let [_, betting_contract, _betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+  let [_be, betting_contract, _betting_taddress, elon, _je, alice, _b, _j] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000tez);
   Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_team1_win);
@@ -202,9 +202,9 @@ const _test_winning_without_counterparty_refund_should_work = () => {
 
 
 // Finalising an event not finished should fail
-const _test_finalizing_event_not_finished_should_fail = () => { 
+const _test_finalizing_event_not_finished_should_fail = () => {
   //Given
-  let [_, betting_contract, _, elon, _, alice, _, mike] = Bootstrap.bootstrap();
+  let [_, betting_contract, _bt, elon, _je, alice, _b, mike] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
   Helper.trsc_add_bet_success (betting_contract, mike,  0n, (false as bool), 1000 as tez);
@@ -218,9 +218,9 @@ const _test_finalizing_event_not_finished_should_fail = () => {
 
 
 // Finalising an event without manager rights should fail
-const _test_finalizing_event_without_manager_rights_should_fail = () => { 
+const _test_finalizing_event_without_manager_rights_should_fail = () => {
   //Given
-  let [_, betting_contract, _, elon, _, alice, _, _] = Bootstrap.bootstrap();
+  let [_betting_address, betting_contract, _bt, elon, _je, alice, _b, _j] = Bootstrap.bootstrap();
   Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
   Helper.trsc_add_bet_success (betting_contract, alice, 0n, (true  as bool), 1000 as tez);
   Helper.trsc_update_event_success (betting_contract, elon, 0n, Events.finalized_event_too_long);

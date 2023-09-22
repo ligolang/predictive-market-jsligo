@@ -7,7 +7,7 @@
 const _ = Log.describe("[Oracle - ChangeManager] test suite")
 
 const _test_change_manager_from_manager_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.manager(oracle_taddress, elon);
 
     let ret = Helper.trsc_change_manager (oracle_contract, elon, jeff);
@@ -17,7 +17,7 @@ const _test_change_manager_from_manager_should_work = () => {
 }
 
 const _test_change_manager_from_signer_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, jeff, _a, _b, _c] = Bootstrap.bootstrap_oracle();
     Assert.manager(oracle_taddress, elon);
 
     let ret = Helper.trsc_change_manager (oracle_contract, jeff, jeff);
@@ -27,7 +27,7 @@ const _test_change_manager_from_signer_should_work = () => {
 }
 
 const _test_change_manager_from_unauthorized_address_should_not_work = () => {
-    let [oracle_contract, oracle_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, _je, alice, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.manager(oracle_taddress, elon);
 
     let ret = Helper.trsc_change_manager (oracle_contract, alice, alice);

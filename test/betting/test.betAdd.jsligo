@@ -11,7 +11,7 @@
 const _ = Log.describe("[Betting - AddBet] test suite");
 
 const _test_bet_team_one_should_work = () => {
-    let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+    let [_, betting_contract, betting_taddress, elon, _je, alice, _b, _j] = Bootstrap.bootstrap();
     Assert.events_map(betting_taddress, Helper.empty_map);
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
@@ -36,7 +36,7 @@ const _test_bet_team_one_should_work = () => {
 
 
 const _test_bet_team_both_should_work = () => {
-    let [_, betting_contract, betting_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap();
+    let [_, betting_contract, betting_taddress, elon, _je, alice, _b, _j] = Bootstrap.bootstrap();
     Assert.events_map(betting_taddress, Helper.empty_map);
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
@@ -62,7 +62,7 @@ const _test_bet_team_both_should_work = () => {
 
 
 const _test_bet_various_entries_should_work = () => {
-    let [_, betting_contract, betting_taddress, elon, _, alice, bob, mike] = Bootstrap.bootstrap();
+    let [_, betting_contract, betting_taddress, elon, _je, alice, bob, mike] = Bootstrap.bootstrap();
     Assert.events_map(betting_taddress, Helper.empty_map);
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Assert.events_map(betting_taddress, Helper.one_event_map);
@@ -74,7 +74,7 @@ const _test_bet_various_entries_should_work = () => {
         bets_teamOne_total : 20000000mutez + 1000000mutez ,
         bets_teamTwo : Map.literal(list([ [alice, 10000000mutez], [mike, 3000000 as mutez], [bob, 7000000 as mutez] ])),
         bets_teamTwo_index : 1n + 1n + 1n ,
-        bets_teamTwo_total : 10000000mutez + 3000000mutez + 7000000mutez 
+        bets_teamTwo_total : 10000000mutez + 3000000mutez + 7000000mutez
         }
         ]
     ]));

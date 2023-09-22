@@ -35,7 +35,7 @@ export const base_storage = (bettingAddr : address) : Callback.storage => {retur
 export const originate_from_file = (initial_storage : Callback.storage) : originated => {
     let betting_path           = "../../../src/contracts/jsligo/betting/callback/main.jsligo";
     let iTres                  = Test.run( (x : Callback.storage) => x, initial_storage);
-    let [callback_addr, _, _]  = Test.originate_from_file(betting_path, iTres, 0 as mutez);
+    let [callback_addr, _c, _n]  = Test.originate_from_file(betting_path, iTres, 0 as mutez);
     let callback_taddress      = (Test.cast_address(callback_addr) as typed_address<parameter_of Callback, Callback.storage>);
     let callback_contract      = Test.to_contract (callback_taddress);
     return {

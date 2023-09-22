@@ -50,7 +50,7 @@ export const bootstrap_oracle = () => {
     // Boostrapping Oracle contract
     let oracle_path = "../../../src/contracts/jsligo/oracle/main.jsligo";
     let iBis = Test.run( (x : Types.storage) => x, init_storage);
-    let [oracle_address, _, _] = Test.originate_from_file(oracle_path, iBis, 0 as mutez);
+    let [oracle_address, _c, _n] = Test.originate_from_file(oracle_path, iBis, 0 as mutez);
     let oracle_taddress = (Test.cast_address(oracle_address) as typed_address<parameter_of Oracle,Types.storage>);
     let oracle_contract = Test.to_contract(oracle_taddress);
 

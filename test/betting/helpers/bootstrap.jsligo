@@ -36,7 +36,7 @@ export const bootstrap = () => {
   // Boostrapping BETTING contract
   let betting_path = "../../../src/contracts/jsligo/betting/main.jsligo";
   let iBis = Test.run( (x : Types.storage) => x, init_storage);
-  let [betting_address, _, _] = Test.originate_from_file(betting_path, iBis, 0 as mutez);
+  let [betting_address, _c, _n] = Test.originate_from_file(betting_path, iBis, 0 as mutez);
   let betting_taddress = (Test.cast_address(betting_address) as typed_address<parameter_of Betting,Types.storage> );
   let betting_contract = Test.to_contract (betting_taddress);
 

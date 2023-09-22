@@ -57,7 +57,7 @@ const getEvent = ([requestedEventId, callbackAddr], s: Types.storage) : Types.re
 @entry
 const updateEvent = ([updatedEventId, updatedEvent], s: Types.storage) : Types.return_ => {
   Assert.isManagerOrSigner (Tezos.get_sender(), s.manager, s.signer);
-  let _ = match(Map.find_opt(updatedEventId, s.events)) {
+  match(Map.find_opt(updatedEventId, s.events)) {
       when(Some(event)): event;
       when(None()): failwith(Errors.no_event_id);
     };

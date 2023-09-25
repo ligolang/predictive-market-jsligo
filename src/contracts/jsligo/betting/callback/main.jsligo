@@ -40,9 +40,6 @@ export type requested_event_param =
   bets_teamTwo_total : tez,
 };
 
-
-type parameter = ["SaveEvent", requested_event_param] | ["RequestEvent", nat];
-
 type return_ = [list<operation>, storage];
 
 @entry

@@ -23,8 +23,6 @@ type requested_event_param =
     gameStatus : gameStatus
   };
 
-type parameter = ["SaveEvent", requested_event_param] | ["Nothing", unit];
-
 type return_ = [list<operation>, storage];
 
 @entry

@@ -39,12 +39,4 @@ type callback_returned_value =
   callback : address
 };
 
-type action =
-  | ["ChangeManager", address]
-  | ["ChangeSigner", address]
-  | ["SwitchPause"]
-  | ["AddEvent", event_type]
-  | ["GetEvent", callback_asked_parameter]
-  | ["UpdateEvent", update_event_parameter];
-
 export type return_ = [list<operation>, storage];

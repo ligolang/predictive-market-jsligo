@@ -76,16 +76,4 @@ export type add_event_parameter =
   closed_bet_time : timestamp
 };
 
-type action =
-  | ["ChangeManager", address]
-  | ["ChangeOracleAddress", address]
-  | ["SwitchPauseBetting"]
-  | ["SwitchPauseEventCreation"]
-  | ["UpdateConfigType", bet_config_type]
-  | ["AddEvent", add_event_parameter]
-  | ["GetEvent", callback_asked_parameter]
-  | ["UpdateEvent", update_event_parameter]
-  | ["AddBet", add_bet_parameter]
-  | ["FinalizeBet", finalize_bet_parameter];
-
 export type return_ = [list<operation>, storage];

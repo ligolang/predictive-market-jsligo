@@ -18,7 +18,7 @@ const updated_three_event_map : map<nat, Types.event_type> = Map.literal( list([
     ]))
 
 const _test_update_event_from_manager_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, _, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, _je, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Assert.events_map(oracle_taddress, Helper.one_event_map);
 
@@ -28,7 +28,7 @@ const _test_update_event_from_manager_should_work = () => {
 };
 
 const _test_update_event_from_signer_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Assert.events_map(oracle_taddress, Helper.one_event_map);
 
@@ -38,7 +38,7 @@ const _test_update_event_from_signer_should_work = () => {
 };
 
 const _test_update_event_from_unauthorized_address_should_not_work = () => {
-    let [oracle_contract, oracle_taddress, elon, _, alice, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, _je, alice, _b, _j] = Bootstrap.bootstrap_oracle();
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Assert.events_map(oracle_taddress, Helper.one_event_map);
 
@@ -49,7 +49,7 @@ const _test_update_event_from_unauthorized_address_should_not_work = () => {
 };
 
 const _test_update_third_event_from_manager_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, _, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, _je, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
@@ -61,12 +61,12 @@ const _test_update_third_event_from_manager_should_work = () => {
 };
 
 const _test_update_third_event_from_signer_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Helper.trsc_add_event_success (oracle_contract, elon, Bootstrap.primary_event);
     Assert.events_map(oracle_taddress, Helper.three_event_map);
-    
+
     Helper.trsc_update_event_success (oracle_contract, jeff, 2 as nat, Bootstrap.secondary_event);
     Assert.events_map(oracle_taddress, updated_three_event_map);
     return "OK"

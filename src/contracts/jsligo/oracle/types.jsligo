@@ -1,6 +1,6 @@
 type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
-type event_type = 
+export type event_type =
   [@layout:comb] {
   name : string,
   videogame : string,
@@ -11,7 +11,7 @@ type event_type =
   gameStatus : gameStatus
 };
 
-type storage =
+export type storage =
   [@layout:comb] {
   isPaused : bool,
   manager : address,
@@ -39,12 +39,4 @@ type callback_returned_value =
   callback : address
 };
 
-type action =
-  | ["ChangeManager", address]
-  | ["ChangeSigner", address]
-  | ["SwitchPause"]
-  | ["AddEvent", event_type]
-  | ["GetEvent", callback_asked_parameter]
-  | ["UpdateEvent", update_event_parameter];
-
-type return_ = [list<operation>, storage];
+export type return_ = [list<operation>, storage];

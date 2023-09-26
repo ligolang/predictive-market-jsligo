@@ -1,8 +1,8 @@
 #import "../../../src/contracts/jsligo/oracle/callback/main.jsligo" "Callback"
 
 // Some types for readability
-type taddr = typed_address<Callback.parameter, Callback.storage>;
-type contr = contract<Callback.parameter>; 
+type taddr = typed_address<parameter_of Callback, Callback.storage>;
+type contr = contract<parameter_of Callback>;
 type originated = {
     addr: address,
     taddr: taddr,
@@ -14,7 +14,7 @@ const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
 type gameStatus = ["Ongoing"] | ["Team1Win"] | ["Team2Win"] | ["Draw"];
 
 // Base Callback storage
-const base_storage : Callback.storage = {
+export const base_storage : Callback.storage = {
     name : "",
     videogame : "",
     beginAt : plain_timestamp + 2000,
@@ -25,10 +25,10 @@ const base_storage : Callback.storage = {
     meta : (Map.empty as map<string, bytes>)
 }
 
-const originate_from_file = (initial_storage : Callback.storage) => {
+export const originate_from_file = (initial_storage : Callback.storage) => {
     let oracle_path = "../../../src/contracts/jsligo/oracle/callback/main.jsligo";
     let iTres = Test.run( (x : Callback.storage) => x, initial_storage);
-    let [callback_addr, _, _] = Test.originate_from_file(oracle_path, "main", (list([]) as list<string>), iTres, 0 as mutez);
+    let [callback_addr, _c, _n] = Test.originate_from_file(oracle_path, iTres, 0 as mutez);
     let callback_taddress = (Test.cast_address(callback_addr) as taddr);
     let callback_contract = Test.to_contract(callback_taddress);
     return {

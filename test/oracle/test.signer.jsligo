@@ -8,7 +8,7 @@
 const _log = Log.describe("[Oracle - ChangeSigner] test suite")
 
 const _test_change_signer_from_manager_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.signer(oracle_taddress, jeff);
 
     Helper.trsc_change_signer_success(oracle_contract, elon, elon);
@@ -17,7 +17,7 @@ const _test_change_signer_from_manager_should_work = () => {
 };
 
 const _test_change_signer_from_signer_should_work = () => {
-    let [oracle_contract, oracle_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.signer(oracle_taddress, jeff);
 
     Helper.trsc_change_signer_success(oracle_contract, jeff, elon);
@@ -26,7 +26,7 @@ const _test_change_signer_from_signer_should_work = () => {
 };
 
 const _test_change_signer_from_unauthorized_address_should_not_work = () => {
-    let [oracle_contract, oracle_taddress, _, jeff, alice, _, _] = Bootstrap.bootstrap_oracle();
+    let [oracle_contract, oracle_taddress, _e, jeff, alice, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.signer(oracle_taddress, jeff);
 
     let ret = Helper.trsc_change_signer (oracle_contract, alice, alice);

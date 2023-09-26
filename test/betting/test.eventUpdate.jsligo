@@ -14,7 +14,7 @@ const updated_eventMap : big_map<nat, Types.event_type>  = Big_map.literal(list(
 
 
 const _test_update_event_from_manager_should_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, _, _, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, _je, _a, _b, _j] = Bootstrap.bootstrap();
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     // Updating the first Event from Manager
     Helper.trsc_update_event_success (betting_contract, elon, 0 as nat, Events.secondary_event);
@@ -23,7 +23,7 @@ const _test_update_event_from_manager_should_work = () => {
 };
 
 const _test_update_event_from_oracle_should_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap();
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     // Updating the first Event from Manager
     Helper.trsc_update_event_success (betting_contract, jeff, 0 as nat, Events.secondary_event);
@@ -32,7 +32,7 @@ const _test_update_event_from_oracle_should_work = () => {
 };
 
 const _test_update_event_from_unauthorized_address_should_not_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, _jeff, alice, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, _jeff, alice, _b, _j] = Bootstrap.bootstrap();
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     // Updating the first Event from unauthorized address
     let result = Helper.trsc_update_event (betting_contract, alice, 0 as nat, Events.secondary_event);
@@ -42,7 +42,7 @@ const _test_update_event_from_unauthorized_address_should_not_work = () => {
 };
 
 const _test_update_third_event_from_manager_should_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, _, _, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, _je, _a, _b, _j] = Bootstrap.bootstrap();
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
@@ -55,7 +55,7 @@ const _test_update_third_event_from_manager_should_work = () => {
 };
 
 const _test_update_third_event_from_oracle_should_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap();
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));
     Helper.trsc_add_event_success (betting_contract, elon, Events.eventype_to_addeventparam(Events.primary_event));

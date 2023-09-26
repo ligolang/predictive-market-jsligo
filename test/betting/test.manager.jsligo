@@ -8,7 +8,7 @@
 const _ = Log.describe("[Betting - ChangeManager] test suite")
 
 const _test_change_manager_from_manager_should_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap();
     Assert.manager(betting_taddress, elon);
     Helper.trsc_change_manager_success (betting_contract, elon, jeff);
     Assert.manager(betting_taddress, jeff);
@@ -18,7 +18,7 @@ const _test_change_manager_from_manager_should_work = () => {
 };
 
 const _test_change_manager_from_unauthorized_address_should_not_work = () => {
-    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _, _, _] = Bootstrap.bootstrap();
+    let [_betting_address, betting_contract, betting_taddress, elon, jeff, _a, _b, _j] = Bootstrap.bootstrap();
     Assert.manager(betting_taddress, elon);
     let result = Helper.trsc_change_manager (betting_contract, jeff, jeff);
     Assert.string_failure(result, Betting.Errors.not_manager);

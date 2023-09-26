@@ -1,10 +1,11 @@
 #import "../../../src/contracts/jsligo/oracle/types.jsligo" "Types"
+#import "../../../src/contracts/jsligo/oracle/main.jsligo" "Oracle"
 #import "../../../src/contracts/jsligo/oracle/callback/main.jsligo" "Callback"
 #import "callback.jsligo" "Helper_Callback"
 
 const plain_timestamp : timestamp = ("1970-01-01T00:00:01Z" as timestamp);
 
-const primary_event : Types.event_type =
+export const primary_event : Types.event_type =
     {
         name : "First Event",
         videogame : "Videogame ONE",
@@ -15,7 +16,7 @@ const primary_event : Types.event_type =
         gameStatus : Ongoing()
     };
 
-const secondary_event : Types.event_type =
+export const secondary_event : Types.event_type =
     {
         name : "Secondary Event",
         videogame : "Videogame TWO",
@@ -26,7 +27,7 @@ const secondary_event : Types.event_type =
         gameStatus : Ongoing()
     };
 
-const bootstrap_oracle = () => {
+export const bootstrap_oracle = () => {
     // Boostrapping accounts
     Test.reset_state(6 as nat, (list([]) as list<tez>));
     let _baker: address = Test.nth_bootstrap_account(0);
@@ -46,17 +47,17 @@ const bootstrap_oracle = () => {
         meta : (Map.empty as map<string, bytes>)
     };
 
-    // Boostrapping Oracle contract 
+    // Boostrapping Oracle contract
     let oracle_path = "../../../src/contracts/jsligo/oracle/main.jsligo";
     let iBis = Test.run( (x : Types.storage) => x, init_storage);
-    let [oracle_address, _, _] = Test.originate_from_file(oracle_path, "main", (list(["getManager", "getSigner", "getStatus"]) as list<string>), iBis, 0 as mutez);
-    let oracle_taddress = (Test.cast_address(oracle_address) as typed_address<Types.action,Types.storage>);
+    let [oracle_address, _c, _n] = Test.originate_from_file(oracle_path, iBis, 0 as mutez);
+    let oracle_taddress = (Test.cast_address(oracle_address) as typed_address<parameter_of Oracle,Types.storage>);
     let oracle_contract = Test.to_contract(oracle_taddress);
-    
+
     return [oracle_contract, oracle_taddress, elon, jeff, alice, bob, james]
 };
 
-const bootstrap_oracle_callback = () => {
-    let oracle_callback = Helper_Callback.originate_from_file(Helper_Callback.base_storage);   
+export const bootstrap_oracle_callback = () => {
+    let oracle_callback = Helper_Callback.originate_from_file(Helper_Callback.base_storage);
     return oracle_callback
 };

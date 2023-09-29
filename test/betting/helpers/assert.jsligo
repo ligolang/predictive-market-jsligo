@@ -25,7 +25,7 @@ export const tx_success = (res: test_exec_result) : unit =>
 
 // Assert Manager parameter with expected result
 export const balance = (p_address : address, expected : tez) => {
-    let balance_value = Test.get_balance(p_address);
+    let balance_value = Test.get_balance_of_address(p_address);
     assert (balance_value == expected)
 };
 

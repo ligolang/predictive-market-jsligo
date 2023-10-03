@@ -6,7 +6,7 @@
 
 const _ = Log.describe("[Oracle - EventGet] test suite");
 
-const _test_callback_contract_from_manager_should_work = () => {
+const test_callback_contract_from_manager_should_work = do {
     let [oracle_contract, oracle_taddress, elon, _je, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.events_map(oracle_taddress, Helper.empty_map);
     let originated_oracle_callback = Bootstrap.bootstrap_oracle_callback();
@@ -19,7 +19,7 @@ const _test_callback_contract_from_manager_should_work = () => {
     return "OK"
 };
 
-const _test_callback_contract_from_user_should_work = () => {
+const test_callback_contract_from_user_should_work = do {
     let [oracle_contract, oracle_taddress, elon, _je, alice, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.events_map(oracle_taddress, Helper.empty_map);
     let originated_oracle_callback = Bootstrap.bootstrap_oracle_callback();
@@ -32,7 +32,7 @@ const _test_callback_contract_from_user_should_work = () => {
     return "OK"
 };
 
-const _test_callback_contract_no_event_should_not_work = () => {
+const test_callback_contract_no_event_should_not_work = do {
     let [oracle_contract, oracle_taddress, elon, _je, _a, _b, _j] = Bootstrap.bootstrap_oracle();
     Assert.events_map(oracle_taddress, Helper.empty_map);
     let originated_oracle_callback = Bootstrap.bootstrap_oracle_callback();
@@ -44,8 +44,3 @@ const _test_callback_contract_no_event_should_not_work = () => {
     Assert.string_failure(ret, Errors.no_event_id);
     return "OK"
     };
-
-
-const test_callback_contract_from_manager_should_work = _test_callback_contract_from_manager_should_work();
-const test_callback_contract_from_user_should_work = _test_callback_contract_from_user_should_work();
-const test_callback_contract_no_event_should_not_work = _test_callback_contract_no_event_should_not_work();

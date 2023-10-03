@@ -34,13 +34,12 @@ export const bootstrap = () => {
   };
 
   // Boostrapping BETTING contract
-  let betting_path = "../../../src/contracts/jsligo/betting/main.jsligo";
-  let iBis = Test.run( (x : Types.storage) => x, init_storage);
-  let [betting_address, _c, _n] = Test.originate_from_file(betting_path, iBis, 0 as mutez);
-  let betting_taddress = (Test.cast_address(betting_address) as typed_address<parameter_of Betting,Types.storage> );
-  let betting_contract = Test.to_contract (betting_taddress);
+  const betting_path = "../../../src/contracts/jsligo/betting/main.jsligo";
+  const orig : origination_result<parameter_of Betting,Types.storage> = Test.originate_from_file(betting_path, init_storage, 0 as mutez);
+  const betting_contract = Test.to_contract (orig.addr);
+  const betting_address = Test.to_address (orig.addr);
 
-  return [betting_address, betting_contract, betting_taddress, elon, jeff, alice, bob, james]
+  return [betting_address, betting_contract, orig.addr, elon, jeff, alice, bob, james]
 };
 
 export const bootstrap_betting_callback = (bettingAddr : address) => {

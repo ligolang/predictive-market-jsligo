@@ -25,15 +25,12 @@ export const base_storage : Callback.storage = {
     meta : (Map.empty as map<string, bytes>)
 }
 
-export const originate_from_file = (initial_storage : Callback.storage) => {
-    let oracle_path = "../../../src/contracts/jsligo/oracle/callback/main.jsligo";
-    let iTres = Test.run( (x : Callback.storage) => x, initial_storage);
-    let [callback_addr, _c, _n] = Test.originate_from_file(oracle_path, iTres, 0 as mutez);
-    let callback_taddress = (Test.cast_address(callback_addr) as taddr);
-    let callback_contract = Test.to_contract(callback_taddress);
+export const originate_from_file = (initial_storage : Callback.storage) : originated => {
+    const oracle_path = "../../../src/contracts/jsligo/oracle/callback/main.jsligo";
+    const orig = Test.originate_from_file(oracle_path, initial_storage, 0 as mutez);
     return {
-        contr : callback_contract,
-        taddr : callback_taddress,
-        addr : callback_addr,
+        contr : Test.to_contract(orig.addr),
+        taddr : orig.addr,
+        addr : Test.to_address(orig.addr),
     }
 };
